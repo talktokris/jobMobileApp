@@ -23,7 +23,7 @@ function JobsDetailScreen({ route }) {
     id: 2,
     title: "Assistant Program Coordinator",
     subTitle: "D1 Lorem Ipsum is simply dummy text of the printing  ",
-    vacancies: "10",
+    vacancies: "10 Vacancies",
     salleryMin: "RM 3000",
     salleryMax: "RM 4000",
     jobCategory: "Administration / Officer",
@@ -81,33 +81,37 @@ function JobsDetailScreen({ route }) {
       <View style={styles.upperContainer}>
         <Image style={styles.image} source={listing.image} />
         <View style={styles.detailsInfo}>
-          <AppText style={styles.title}>{listing.title}</AppText>
-          <AppText style={styles.subTitle}>{listing.subTitle}</AppText>
+          <AppText style={styles.title} numberOfLines={2}>
+            {listing.title}
+          </AppText>
+          <AppText style={styles.subTitle} numberOfLines={2}>
+            {listing.subTitle}
+          </AppText>
 
           {listing.jobCategory && (
-            <AppText style={styles.midTitle}>
-              <Text style={{ fontWeight: "800" }}>Category : </Text>
-              {listing.jobCategory}
+            <AppText style={styles.midTitle} numberOfLines={1}>
+              <Text style={{ fontWeight: "600" }}>Category : </Text>
+              {" " + listing.jobCategory}
             </AppText>
           )}
 
           {listing.education && (
-            <AppText style={styles.midTitle}>
-              <Text style={{ fontWeight: "800" }}>Educaion : </Text>
-              {listing.education}
+            <AppText style={styles.midTitle} numberOfLines={1}>
+              <Text style={{ fontWeight: "600" }}>Educaion : </Text>
+              {" " + listing.education}
             </AppText>
           )}
 
           {listing.skillRequire && (
-            <AppText style={styles.midTitle}>
-              <Text style={{ fontWeight: "800" }}>Skill Required : </Text>{" "}
-              {"  " + listing.skillRequire}
+            <AppText style={styles.midTitle} numberOfLines={1}>
+              <Text style={{ fontWeight: "600" }}>Skill Required : </Text>{" "}
+              {" " + listing.skillRequire}
             </AppText>
           )}
 
           {listing.salleryMin && (
-            <AppText style={styles.sallery}>
-              <Text style={{ fontWeight: "800", color: colors.medium }}>
+            <AppText style={styles.sallery} numberOfLines={1}>
+              <Text style={{ fontWeight: "600", color: colors.medium }}>
                 Salary Min :{" "}
               </Text>
               {"  " + listing.salleryMin}
@@ -118,8 +122,8 @@ function JobsDetailScreen({ route }) {
             </AppText>
           )}
           {listing.salleryMax && (
-            <AppText style={styles.sallery}>
-              <Text style={{ fontWeight: "800", color: colors.medium }}>
+            <AppText style={styles.sallery} numberOfLines={1}>
+              <Text style={{ fontWeight: "600", color: colors.medium }}>
                 Salary Max :{" "}
               </Text>
               {" " + listing.salleryMax}
@@ -136,7 +140,7 @@ function JobsDetailScreen({ route }) {
             <View style={styles.inlineIconLeft}>
               <MaterialCommunityIcons
                 style={styles.iconSmall}
-                name="account-supervisor"
+                name="account-outline"
                 size={16}
                 color={colors.medium}
               />
@@ -144,7 +148,7 @@ function JobsDetailScreen({ route }) {
                 style={(styles.subTitle, styles.downText)}
                 numberOfLines={1}
               >
-                {listing.vacancies} Vacancy
+                {listing.vacancies}
               </AppText>
             </View>
           </View>
@@ -247,12 +251,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: "500",
+    fontWeight: "800",
   },
   subTitle: {
     fontSize: 16,
     color: colors.medium,
-    fontWeight: "800",
+    fontWeight: "600",
     marginVertical: 10,
   },
   midTitle: {
@@ -263,16 +267,16 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 18,
-    fontWeight: "800",
+    fontWeight: "600",
     padding: 10,
     color: colors.secondary,
   },
   sallery: {
-    fontSize: 18,
+    fontSize: 16,
     color: colors.primary,
     paddingRight: 60,
-
-    fontWeight: "800",
+    fontWeight: "600",
+    marginVertical: 5,
   },
   containerBottom: {
     width: "100%",
@@ -303,7 +307,7 @@ const styles = StyleSheet.create({
     paddingRight: 5,
   },
   downText: {
-    fontSize: 16,
+    fontSize: 14,
     color: colors.medium,
     opacity: 0.8,
   },
