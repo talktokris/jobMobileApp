@@ -23,7 +23,7 @@ function WelcomeScreen({ navigation }) {
           style={styles.logo}
         />
 
-        <Text style={styles.tagLine}>Your Seach End Here</Text>
+        <Text style={styles.tagLine}>Your seach end here</Text>
       </View>
       <View style={styles.buttonContainer}>
         <AppButton title="Login" onPress={() => navigation.navigate("Login")} />
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: 160,
-    height: 110,
+    height: 120,
     // resizeMode: "center",
   },
   tagLine: {

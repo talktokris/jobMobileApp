@@ -22,11 +22,13 @@ const validationSchema = Yup.object().shape({
 });
 
 function RegisterScreen({ navigation }) {
+  const [error, setError] = useState();
+  /*
   const registerApi = useApi(usersApi.register);
   const loginApi = useApi(authApi.login);
 
   const auth = useAuth();
-  const [error, setError] = useState();
+ 
 
   const handleSubmit = async (userInfo) => {
     const result = await registerApi.request(userInfo);
@@ -45,17 +47,17 @@ function RegisterScreen({ navigation }) {
     );
     auth.logIn(authToken);
   };
-
+*/
   return (
     <>
-      <ActivityIndicator visible={registerApi.loading || loginApi.loading} />
+      {/* <ActivityIndicator visible={registerApi.loading || loginApi.loading} /> */}
       <Screen>
         <View style={styles.container}>
-          <ErrorMessage error={error} visible={setError} />
+          {/*  <ErrorMessage error={error} visible={setError} /> */}
 
           <AppForm
             initialValues={{ name: "", email: "", password: "" }}
-            onSubmit={handleSubmit}
+            onSubmit={() => console.log("clicked")}
             validationSchema={validationSchema}
           >
             <AppFormField

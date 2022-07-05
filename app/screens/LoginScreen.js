@@ -19,6 +19,7 @@ const validationSchema = Yup.object().shape({
 });
 
 function LoginScreen({ navigation }) {
+  /*
   const { logIn } = useAuth();
   const [loginFailed, setLoginFailed] = useState(false);
   const handleSubmit = async ({ email, password }) => {
@@ -30,6 +31,7 @@ function LoginScreen({ navigation }) {
 
     // console.log(user);
   };
+  */
   return (
     <Screen>
       <View style={styles.container}>
@@ -37,13 +39,13 @@ function LoginScreen({ navigation }) {
           source={require("../assets/images/logo.png")}
           style={styles.image}
         />
-        <ErrorMessage
+        {/* <ErrorMessage
           error="Invalid email and/or password"
           visible={loginFailed}
-        />
+        /> */}
         <AppForm
           initialValues={{ email: "", password: "" }}
-          onSubmit={handleSubmit}
+          // onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >
           <AppFormField
