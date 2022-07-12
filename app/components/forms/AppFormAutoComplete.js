@@ -2,14 +2,25 @@ import React from "react";
 import { useFormikContext } from "formik";
 
 import ErrorMessage from "./ErrorMessage";
-import AppTextInput from "../AppTextInput";
+import AppAutoComplete from "../AppAutoComplete";
 
-function AppFormField({ name, lebel, width, ...otherProps }) {
+function AppFormAutoComplete({
+  name,
+  width,
+  dataSet,
+  apiLink,
+  lebel,
+  placeHolderText,
+  zIndex,
+  ...otherProps
+}) {
   const { setFieldTouched, setFieldValue, errors, touched, values } =
     useFormikContext();
   return (
     <>
-      <AppTextInput
+      <AppAutoComplete
+        dataSet={dataSet}
+        apiLink={apiLink}
         //autoCapitalize="none"
         // autoCorrect={false}
         // icon="email"
@@ -18,7 +29,7 @@ function AppFormField({ name, lebel, width, ...otherProps }) {
         onChangeText={(text) => setFieldValue(name, text)}
         value={values[name]}
         width={width}
-        lebel={lebel}
+        placeHolderText={placeHolderText}
         {...otherProps}
         //  placeholder="Email"
         // textContentType="emailAddress"
@@ -28,4 +39,4 @@ function AppFormField({ name, lebel, width, ...otherProps }) {
   );
 }
 
-export default AppFormField;
+export default AppFormAutoComplete;

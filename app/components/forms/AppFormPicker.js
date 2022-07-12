@@ -7,6 +7,7 @@ import ErrorMessage from "./ErrorMessage";
 function AppFormPicker({
   items,
   name,
+  lebel,
   numberOfColumns,
   PickerItemComponent,
   placeholder,
@@ -22,6 +23,7 @@ function AppFormPicker({
         onSelectItem={(item) => setFieldValue(name, item)}
         PickerItemComponent={PickerItemComponent}
         placeholder={placeholder}
+        lebel={lebel}
         selectedItem={values[name]}
         bnBlue={() => setFieldTouched(name)}
         width={width}

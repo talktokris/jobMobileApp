@@ -8,6 +8,7 @@ import {
   Modal,
   Button,
   FlatList,
+  Text,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
@@ -19,6 +20,7 @@ import PickerItem from "./PickerItem";
 function AppPicker({
   icon,
   items,
+  lebel,
   numberOfColumns = 1,
   onSelectItem,
   PickerItemComponent = PickerItem,
@@ -30,6 +32,7 @@ function AppPicker({
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <>
+      {lebel && <Text style={styles.lebel}>{lebel} :</Text>}
       <TouchableWithoutFeedback onPress={() => setModalVisible(true)}>
         <View style={[styles.container, { width }]}>
           {icon && (
@@ -80,7 +83,7 @@ function AppPicker({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.lightGray,
-    borderRadius: 25,
+    borderRadius: 20,
     width: "100%",
     flexDirection: "row",
     padding: 15,
@@ -98,6 +101,14 @@ const styles = StyleSheet.create({
   placeholder: { color: colors.medium, flex: 1 },
   icon: {
     marginRight: 10,
+  },
+  lebel: {
+    fontSize: 16,
+    fontFamily: Platform.OS === "android" ? fonts.android : fonts.ios,
+    fontWeight: "600",
+    paddingTop: 10,
+    paddingLeft: 10,
+    color: colors.medium,
   },
 });
 

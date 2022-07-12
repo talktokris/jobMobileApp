@@ -1,26 +1,29 @@
 import React from "react";
-import { View, TextInput, StyleSheet, Platform } from "react-native";
+import { View, TextInput, StyleSheet, Platform, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import colors from "../config/colors";
 import fonts from "../config/fonts";
 
-function AppTextInput({ icon, width = "100%", ...otherProps }) {
+function AppTextInput({ icon, lebel, width = "100%", ...otherProps }) {
   return (
-    <View style={[styles.container, { width: width }]}>
-      {icon && (
-        <MaterialCommunityIcons
-          name={icon}
-          size={20}
-          style={styles.icon}
-          color={colors.medium}
+    <>
+      {lebel && <Text style={styles.lebel}>{lebel} :</Text>}
+      <View style={[styles.container, { width: width }]}>
+        {icon && (
+          <MaterialCommunityIcons
+            name={icon}
+            size={20}
+            style={styles.icon}
+            color={colors.medium}
+          />
+        )}
+        <TextInput
+          placeholderTextColor={colors.medium}
+          style={styles.textInput}
+          {...otherProps}
         />
-      )}
-      <TextInput
-        placeholderTextColor={colors.medium}
-        style={styles.textInput}
-        {...otherProps}
-      />
-    </View>
+      </View>
+    </>
   );
 }
 
@@ -29,7 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lightGray,
     borderRadius: 20,
     flexDirection: "row",
-    padding: 10,
+    padding: 15,
     marginVertical: 10,
   },
   textInput: {
@@ -40,6 +43,14 @@ const styles = StyleSheet.create({
   icon: {
     marginRight: 10,
     padding: Platform.OS === "android" ? 7 : 5,
+  },
+  lebel: {
+    fontSize: 16,
+    fontFamily: Platform.OS === "android" ? fonts.android : fonts.ios,
+    fontWeight: "600",
+    paddingTop: 10,
+    paddingLeft: 10,
+    color: colors.medium,
   },
 });
 

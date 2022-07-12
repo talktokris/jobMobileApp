@@ -2,14 +2,14 @@ import React from "react";
 import { useFormikContext } from "formik";
 
 import ErrorMessage from "./ErrorMessage";
-import AppTextInput from "../AppTextInput";
+import AppDatePicker from "../AppDatePicker";
 
-function AppFormField({ name, lebel, width, ...otherProps }) {
+function AppFormDatePicker({ name, width = "100%", ...otherProps }) {
   const { setFieldTouched, setFieldValue, errors, touched, values } =
     useFormikContext();
   return (
     <>
-      <AppTextInput
+      <AppDatePicker
         //autoCapitalize="none"
         // autoCorrect={false}
         // icon="email"
@@ -18,7 +18,6 @@ function AppFormField({ name, lebel, width, ...otherProps }) {
         onChangeText={(text) => setFieldValue(name, text)}
         value={values[name]}
         width={width}
-        lebel={lebel}
         {...otherProps}
         //  placeholder="Email"
         // textContentType="emailAddress"
@@ -28,4 +27,4 @@ function AppFormField({ name, lebel, width, ...otherProps }) {
   );
 }
 
-export default AppFormField;
+export default AppFormDatePicker;

@@ -9,5 +9,6 @@ export default {
   danger: "#ff5252",
   lightGray: "#f8f4f4",
   errorColor: "#ff5252",
+  orange: "#FFA500",
 };
 
