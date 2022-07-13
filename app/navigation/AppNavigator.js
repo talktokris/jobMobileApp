@@ -5,15 +5,16 @@ import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 
 import ListingEditScreen from "../screens/ListingEditScreen";
-
-import FeedNavigator from "./FeedNavigator";
-import AccountNavigator from "./AccountNavigator";
 import NewListingButton from "./NewListingButton";
+
+import JobsNavigator from "./JobsNavigator";
+import AccountNavigator from "./AccountNavigator";
+import ResumeNavigator from "./ResumeNavigator";
 
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = () => {
-  useEffect(() => {
+  /*  useEffect(() => {
     registerForPushNotifications();
   }, []);
 
@@ -46,26 +47,29 @@ const AppNavigator = () => {
       });
     }
   };
+  */
 
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="Feed"
-        component={FeedNavigator}
+        name="Resume"
+        component={ResumeNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="file-account"
+              color={color}
+              size={size}
+            />
           ),
         }}
       />
       <Tab.Screen
-        name="ListingEdit"
-        component={ListingEditScreen}
+        name="Jobs"
+        component={JobsNavigator}
         options={({ navigation }) => ({
           tabBarButton: () => (
-            <NewListingButton
-              onPress={() => navigation.navigate("ListingEdit")}
-            />
+            <NewListingButton onPress={() => navigation.navigate("Jobs")} />
           ),
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons

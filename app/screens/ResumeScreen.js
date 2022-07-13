@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, StyleSheet, FlatList, ScrollView } from "react-native";
 import ProfileBasic from "../components/ProfileBasic";
 import Screen from "../components/Screen";
@@ -7,7 +7,7 @@ import AppText from "../components/AppText";
 import Separater from "../components/Separater";
 import ResumeHeading from "../components/ResumeHeading";
 import ResumeInnerView from "../components/ResumeInnerView";
-
+import routes from "../navigation/routes";
 const profile = {
   id: 1,
   basicInfo: {
@@ -162,7 +162,7 @@ const profile = {
   ],
 };
 
-function ResumeScreen(props) {
+function ResumeScreen({ navigation }) {
   return (
     <Screen>
       <ScrollView>
@@ -181,14 +181,15 @@ function ResumeScreen(props) {
           country={profile.basicInfo.counryliveIn}
           profileType={profile.basicInfo.profileType}
           image={profile.basicInfo.image}
-          onPress={() => console.log("Message Selected:- " + profile.id)}
         />
 
         <ResumeHeading
           id={profile.id}
           title="Personal Details"
           type="Update"
-          onPress={() => console.log("Message Selected:- " + profile.id)}
+          onPress={() =>
+            navigation.navigate(routes.PRO_PERSONAL_DETAILS, profile.id)
+          }
         />
         {profile.basicInfo && (
           <ResumeInnerView
@@ -204,36 +205,12 @@ function ResumeScreen(props) {
             titleEight={profile.basicInfo.counryliveIn}
           />
         )}
+
         <ResumeHeading
           id={profile.id}
           title="Skills"
           type="Add"
-          onPress={() => console.log("Message Selected:- " + profile.id)}
-        />
-        {profile.skills.map((d, idx) => (
-          <ResumeInnerView
-            id={profile.id}
-            viewID={d.viewID}
-            titleOne={d.skillName}
-            titleTwo={d.skillType}
-            onPressUpdate={() =>
-              console.log(
-                "Message Selected:- Update " + profile.id + "-" + d.id
-              )
-            }
-            onPressDelete={() =>
-              console.log(
-                "Message Selected:- Delete " + profile.id + "-" + d.id
-              )
-            }
-          />
-        ))}
-
-        <ResumeHeading
-          id={profile.id}
-          title="IT Skills"
-          type="Add"
-          onPress={() => console.log("Message Selected:- " + profile.id)}
+          onPress={() => navigation.navigate(routes.PRO_SKILL, profile.id)}
         />
 
         {profile.skills.map((d, idx) => (
@@ -243,14 +220,10 @@ function ResumeScreen(props) {
             titleOne={d.skillName}
             titleTwo={d.skillType}
             onPressUpdate={() =>
-              console.log(
-                "Message Selected:- Update " + profile.id + "-" + d.id
-              )
+              navigation.navigate(routes.PRO_SKILL, profile.id)
             }
             onPressDelete={() =>
-              console.log(
-                "Message Selected:- Delete " + profile.id + "-" + d.id
-              )
+              navigation.navigate(routes.PRO_SKILL, profile.id)
             }
           />
         ))}
@@ -259,7 +232,9 @@ function ResumeScreen(props) {
           id={profile.id}
           title="Job Preferences"
           type="Update"
-          onPress={() => console.log("Message Selected:- " + profile.id)}
+          onPress={() =>
+            navigation.navigate(routes.PRO_JOB_PREFERENCES, profile.id)
+          }
         />
         {profile.jobPreferences.map((jbp, idx) => (
           <ResumeInnerView
@@ -270,9 +245,7 @@ function ResumeScreen(props) {
             titleThree={jbp.city + ", " + jbp.country}
             titleFour={jbp.type}
             onPressDelete={() =>
-              console.log(
-                "Message Selected:- Delete " + profile.id + "-" + d.id
-              )
+              navigation.navigate(routes.PRO_JOB_PREFERENCES, profile.id)
             }
           />
         ))}
@@ -281,7 +254,7 @@ function ResumeScreen(props) {
           id={profile.id}
           title="Work Experience"
           type="Add"
-          onPress={() => console.log("Message Selected:- " + profile.id)}
+          onPress={() => navigation.navigate(routes.PRO_EXPERIENCE, profile.id)}
         />
         {profile.experiences.map((exp, idx) => (
           <ResumeInnerView
@@ -291,14 +264,10 @@ function ResumeScreen(props) {
             titleTwo={exp.company + ", " + exp.country}
             titleThree={exp.startDate + " - " + exp.endDate}
             onPressUpdate={() =>
-              console.log(
-                "Message Selected:- Update " + profile.id + "-" + exp.id
-              )
+              navigation.navigate(routes.PRO_EXPERIENCE, profile.id)
             }
             onPressDelete={() =>
-              console.log(
-                "Message Selected:- Delete " + profile.id + "-" + exp.id
-              )
+              navigation.navigate(routes.PRO_EXPERIENCE, profile.id)
             }
           />
         ))}
@@ -307,7 +276,7 @@ function ResumeScreen(props) {
           id={profile.id}
           title="Educational Information"
           type="Add"
-          onPress={() => console.log("Message Selected:- " + profile.id)}
+          onPress={() => navigation.navigate(routes.PRO_EDUCATION, profile.id)}
         />
         {profile.educations.map((edu, idx) => (
           <ResumeInnerView
@@ -318,14 +287,10 @@ function ResumeScreen(props) {
             titleThree={edu.school + ", " + edu.country}
             titleFour={edu.startDate + " - " + edu.endDate}
             onPressUpdate={() =>
-              console.log(
-                "Message Selected:- Update " + profile.id + "-" + d.id
-              )
+              navigation.navigate(routes.PRO_EDUCATION, profile.id)
             }
             onPressDelete={() =>
-              console.log(
-                "Message Selected:- Delete " + profile.id + "-" + d.id
-              )
+              navigation.navigate(routes.PRO_EDUCATION, profile.id)
             }
           />
         ))}
@@ -334,7 +299,7 @@ function ResumeScreen(props) {
           id={profile.id}
           title="Training & Certifications "
           type="Add"
-          onPress={() => console.log("Message Selected:- " + profile.id)}
+          onPress={() => navigation.navigate(routes.PRO_TRANING, profile.id)}
         />
         {profile.tranings.map((trn, idx) => (
           <ResumeInnerView
@@ -344,14 +309,10 @@ function ResumeScreen(props) {
             titleTwo={trn.org + ", " + trn.country}
             titleThree={trn.startDate + " - " + trn.endDate}
             onPressUpdate={() =>
-              console.log(
-                "Message Selected:- Update " + profile.id + "-" + trn.id
-              )
+              navigation.navigate(routes.PRO_TRANING, profile.id)
             }
             onPressDelete={() =>
-              console.log(
-                "Message Selected:- Delete " + profile.id + "-" + d.id
-              )
+              navigation.navigate(routes.PRO_TRANING, profile.id)
             }
           />
         ))}
@@ -359,7 +320,7 @@ function ResumeScreen(props) {
           id={profile.id}
           title="Languages"
           type="Add"
-          onPress={() => console.log("Message Selected:- " + profile.id)}
+          onPress={() => navigation.navigate(routes.PRO_LANGUAGE, profile.id)}
         />
 
         {profile.languages.map((ln, idx) => (
@@ -369,14 +330,10 @@ function ResumeScreen(props) {
             titleOne={ln.skillName}
             titleTwo={ln.skillType}
             onPressUpdate={() =>
-              console.log(
-                "Message Selected:- Update " + profile.id + "-" + ln.id
-              )
+              console.log(navigation.navigate(routes.PRO_LANGUAGE, profile.id))
             }
             onPressDelete={() =>
-              console.log(
-                "Message Selected:- Delete " + profile.id + "-" + ln.id
-              )
+              console.log(navigation.navigate(routes.PRO_LANGUAGE, profile.id))
             }
           />
         ))}

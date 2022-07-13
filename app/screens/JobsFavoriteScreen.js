@@ -1,19 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, StyleSheet, FlatList } from "react-native";
-import * as Yup from "yup";
-
 import JobsListItem from "../components/JobsListItem";
 import Screen from "../components/Screen";
 import Separater from "../components/Separater";
-import routes from "../navigation/routes";
-import {
-  ErrorMessage,
-  AppForm,
-  AppFormField,
-  SubmitButton,
-} from "../components/forms";
-import AppFormSearch from "../components/forms/AppFormSearch";
-
 const messages = [
   {
     id: 1,
@@ -49,47 +38,9 @@ const messages = [
   },
 ];
 
-const validationSchema = Yup.object().shape({
-  email: Yup.string().required().email().label("Email"),
-  password: Yup.string().required().min(4).label("Password"),
-});
-function JobsListScreen({ navigation }) {
-  const { logIn } = useAuth();
-  const [loginFailed, setLoginFailed] = useState(false);
-  const handleSubmit = async ({ email, password }) => {
-    const result = await authApi.login(email, password);
-
-    if (!result.ok) return setLoginFailed(true);
-    setLoginFailed(false);
-    logIn(result.data);
-
-    // console.log(user);
-  };
-
+function JobsFavoriteScreen(props) {
   return (
     <Screen>
-      <View style={styles.container}>
-        <ErrorMessage
-          error="Invalid email and/or password"
-          visible={loginFailed}
-        />
-        <AppForm
-          initialValues={{ email: "", password: "" }}
-          onSubmit={handleSubmit}
-          validationSchema={validationSchema}
-        >
-          {/*} <AppTextSearch icon="magnify" placeholder="Search here" /> */}
-          <AppFormSearch
-            name="emails"
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="magnify"
-            keyboardType="email-address"
-            textContentType="emailAddress"
-            placeholder="Search here"
-          />
-        </AppForm>
-      </View>
       <FlatList
         data={messages}
         keyExtractor={(message) => message.id.toString()}
@@ -102,7 +53,7 @@ function JobsListScreen({ navigation }) {
             location={item.location}
             date={item.date}
             fav={item.fav}
-            onPress={() => navigation.navigate(routes.JOBS_DETAILS, item)}
+            onPress={() => console.log("Message Selected:- " + item.id)}
             renderRightActions={() => (
               <View style={{ backgroundColor: "red", height: 70 }}></View>
             )}
@@ -115,4 +66,4 @@ function JobsListScreen({ navigation }) {
 }
 const styles = StyleSheet.create({});
 
-export default JobsListScreen;
+export default JobsFavoriteScreen;

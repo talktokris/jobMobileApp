@@ -1,3 +1,12 @@
 export default Object.freeze({
-  LISTING_DETAILS: "ListingDetails",
+  JOBS_DETAILS: "Jobs Details",
+  JOBS_FAVORITE: "Jobs Favorite",
+  PRO_RESUME: "Resume",
+  PRO_SKILL: "Skill",
+  PRO_LANGUAGE: "Language",
+  PRO_EDUCATION: "Education",
+  PRO_EXPERIENCE: "Experience",
+  PRO_PERSONAL_DETAILS: "Personal Details",
+  PRO_JOB_PREFERENCES: "Job Preferences",
+  PRO_TRANING: "Traning",
 });

@@ -6,15 +6,15 @@ import Icon from "../components/Icon";
 import colors from "../config/colors";
 import Separater from "../components/Separater";
 import useAuth from "../auth/useAuth";
-
+import routes from "../navigation/routes";
 const menuItems = [
   {
-    title: "My Listing",
+    title: "Favorite Jobs",
     icon: {
-      name: "format-list-bulleted",
+      name: "cards-heart-outline",
       backgroundColor: colors.primary,
     },
-    targetScreen: "Messages",
+    targetScreen: "JobsFavoriteScreen",
   },
   {
     title: "My Messages",
@@ -50,7 +50,7 @@ function AccountScreen({ navigation }) {
                     backgroundColor={item.icon.backgroundColor}
                   />
                 }
-                onPress={() => navigation.navigate(item.targetScreen)}
+                onPress={() => navigation.navigate(routes.JOBS_FAVORITE, item)}
               />
             )}
             ItemSeparatorComponent={Separater}

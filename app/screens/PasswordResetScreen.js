@@ -18,8 +18,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required().min(4).label("Password"),
 });
 
-function LoginScreen({ navigation }) {
-  
+function PasswordResetScreen({ navigation }) {
   const { logIn } = useAuth();
   const [loginFailed, setLoginFailed] = useState(false);
   const handleSubmit = async ({ email, password }) => {
@@ -31,7 +30,7 @@ function LoginScreen({ navigation }) {
 
     // console.log(user);
   };
-  
+
   return (
     <Screen>
       <View style={styles.container}>
@@ -87,4 +86,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default PasswordResetScreen;
