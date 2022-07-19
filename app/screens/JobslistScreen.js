@@ -20,6 +20,7 @@ import useApi from "../hooks/useApi";
 import ActivityIndicator from "../components/ActivityIndicator";
 import settings from "../config/setting";
 import SubmitIcon from "../components/forms/SubmitIcon";
+import NoDataMessage from "../components/forms/NoDataMessage";
 
 const validationSchema = Yup.object().shape({
   //words: Yup.string().required().label("Search World"),
@@ -85,28 +86,33 @@ function JobsListScreen({ navigation }) {
             />
           </AppForm>
         </View>
-        <FlatList
-          data={getListingsAPi.data}
-          keyExtractor={(message) => message.id.toString()}
-          renderItem={({ item }) => (
-            <JobsListItem
-              title={item.title}
-              subTitle={item.subTitle}
-              sallery={item.salleryMax}
-              image={{
-                uri: settings.imageUrl + "jobs/" + item.id + "/" + item.image,
-              }}
-              location={item.location}
-              date={item.date}
-              favData={item.get_fav_info}
-              onPress={() => navigation.navigate(routes.JOBS_DETAILS, item)}
-              renderRightActions={() => (
-                <View style={{ backgroundColor: "red", height: 70 }}></View>
-              )}
-            />
-          )}
-          ItemSeparatorComponent={Separater}
-        />
+
+        {getListingsAPi.data.length > 0 ? (
+          <FlatList
+            data={getListingsAPi.data}
+            keyExtractor={(message) => message.id.toString()}
+            renderItem={({ item }) => (
+              <JobsListItem
+                title={item.title}
+                subTitle={item.subTitle}
+                sallery={item.salleryMax}
+                image={{
+                  uri: settings.imageUrl + "jobs/" + item.id + "/" + item.image,
+                }}
+                location={item.location}
+                date={item.date}
+                favData={item.get_fav_info}
+                onPress={() => navigation.navigate(routes.JOBS_DETAILS, item)}
+                renderRightActions={() => (
+                  <View style={{ backgroundColor: "red", height: 70 }}></View>
+                )}
+              />
+            )}
+            ItemSeparatorComponent={Separater}
+          />
+        ) : (
+          <NoDataMessage title="No Jobs Found" />
+        )}
       </Screen>
     </>
   );
