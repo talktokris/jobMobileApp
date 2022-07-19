@@ -80,7 +80,6 @@ function JobsListScreen({ navigation }) {
               autoCapitalize="none"
               autoCorrect={false}
               icon="magnify"
-              keyboardType="default"
               textContentType="jobTitle"
               placeholder="Search here"
             />

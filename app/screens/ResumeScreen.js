@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { View, StyleSheet, FlatList, ScrollView } from "react-native";
+import React, { useCallback, useContext, useState, useEffect } from "react";
+import { View, StyleSheet, FlatList, ScrollView, Text } from "react-native";
 import ProfileBasic from "../components/ProfileBasic";
 import Screen from "../components/Screen";
 import AppText from "../components/AppText";
@@ -8,7 +8,12 @@ import Separater from "../components/Separater";
 import ResumeHeading from "../components/ResumeHeading";
 import ResumeInnerView from "../components/ResumeInnerView";
 import routes from "../navigation/routes";
-const profile = {
+import resume from "../api/resume";
+import settings from "../config/setting";
+import ActivityIndicator from "../components/ActivityIndicator";
+
+/*
+const users.data[0] = {
   id: 1,
   basicInfo: {
     firstName: "Krishna",
@@ -24,11 +29,11 @@ const profile = {
     mobileNo: "+9779819857575",
     mobileStatus: "Not Verified",
     counryliveIn: "Malaysia",
-    profileType: "Professional",
-    profileTitle: "IT Professional",
+    users.data[0]Type: "Professional",
+    users.data[0]Title: "IT Professional",
     image: require("../assets/images/av.jpg"),
   },
-  skills: [
+  get_skill: [
     {
       id: "1",
       skillName: "PHP",
@@ -161,182 +166,275 @@ const profile = {
     },
   ],
 };
-
+*/
 function ResumeScreen({ navigation }) {
+  const { user, logOut } = useAuth();
+  //const currrentUser = user.id;
+  const currrentUser = 1;
+
+  const [isLoading, setLoading] = useState(true);
+  const [users, setUsers] = useState(null);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = useCallback(() => {
+    setLoading(true); // Start the loader, So when you start fetching data, you can display loading UI
+    // useApi(resume.getResumeData, { currrentUser });
+    resume
+      .getResumeDataSingle(currrentUser)
+      .then((data) => {
+        setUsers(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        // display error
+        setLoading(false); // stop the loader
+      });
+    // or your any data fetching query
+    // setUsers(getProfileApi.data);
+    // setLoading(false);
+  }, []);
+  // const currrentUser = 2;
+
+  // const [search, setSearch] = useState(0);
+  /*
+  const getListingsAPi = useApi(resume.getResumeData, { currrentUser });
+
+  useEffect(() => {
+    getListingsAPi.request(currrentUser);
+  }, []);
+*/
+  // console.log(users.id);
+  //console.log("hi");
+  // console.log(users.data[0]);
+  //idSetValue = users.data[0].id;
+
+  // const users.data[0] = users.data[0];
   return (
-    <Screen>
-      <ScrollView>
-        <ProfileBasic
-          name={
-            profile.basicInfo.firstName +
-            " " +
-            profile.basicInfo.middleName +
-            " " +
-            profile.basicInfo.lastName
-          }
-          email={profile.basicInfo.email}
-          emailStatus={profile.basicInfo.emailStatus}
-          mobileNo={profile.basicInfo.mobileNo}
-          mobileStatus={profile.basicInfo.mobileStatus}
-          country={profile.basicInfo.counryliveIn}
-          profileType={profile.basicInfo.profileType}
-          image={profile.basicInfo.image}
-        />
-        <ResumeHeading
-          id={profile.id}
-          title="Personal Details"
-          type="Update"
-          onPress={() =>
-            navigation.navigate(routes.PRO_PERSONAL_DETAILS, profile.id)
-          }
-        />
-        {profile.basicInfo && (
-          <ResumeInnerView
-            id={profile.id}
-            viewID={profile.basicInfo.id}
-            titleOne="Date of Birth :"
-            titleFive={profile.basicInfo.dob}
-            titleTwo="Gender :"
-            titleSix={profile.basicInfo.sex}
-            titleThree="Nationality :"
-            titleSeven={profile.basicInfo.nationality}
-            titleFour="Country Live in :"
-            titleEight={profile.basicInfo.counryliveIn}
-          />
-        )}
-        <ResumeHeading
-          id={profile.id}
-          title="Skills"
-          type="Add"
-          onPress={() => navigation.navigate(routes.PRO_SKILL, profile.id)}
-        />
-        {profile.skills.map((d, idx) => (
-          <ResumeInnerView
-            key={idx}
-            id={profile.id}
-            viewID={d.viewID}
-            titleOne={d.skillName}
-            titleTwo={d.skillType}
-            onPressUpdate={() =>
-              navigation.navigate(routes.PRO_SKILL, profile.id)
-            }
-            onPressDelete={() =>
-              navigation.navigate(routes.PRO_SKILL, profile.id)
-            }
-          />
-        ))}
-        <ResumeHeading
-          id={profile.id}
-          title="Job Preferences"
-          type="Update"
-          onPress={() =>
-            navigation.navigate(routes.PRO_JOB_PREFERENCES, profile.id)
-          }
-        />
-        {profile.jobPreferences.map((jbp, idx) => (
-          <ResumeInnerView
-            key={idx}
-            id={profile.id}
-            viewID={jbp.viewID}
-            titleOne={jbp.industry}
-            titleTwo={jbp.function}
-            titleThree={jbp.city + ", " + jbp.country}
-            titleFour={jbp.type}
-            onPressDelete={() =>
-              navigation.navigate(routes.PRO_JOB_PREFERENCES, profile.id)
-            }
-          />
-        ))}
-        <ResumeHeading
-          id={profile.id}
-          title="Work Experience"
-          type="Add"
-          onPress={() => navigation.navigate(routes.PRO_EXPERIENCE, profile.id)}
-        />
-        {profile.experiences.map((exp, idx) => (
-          <ResumeInnerView
-            key={idx}
-            id={profile.id}
-            viewID={exp.id}
-            titleOne={exp.post}
-            titleTwo={exp.company + ", " + exp.country}
-            titleThree={exp.startDate + " - " + exp.endDate}
-            onPressUpdate={() =>
-              navigation.navigate(routes.PRO_EXPERIENCE, profile.id)
-            }
-            onPressDelete={() =>
-              navigation.navigate(routes.PRO_EXPERIENCE, profile.id)
-            }
-          />
-        ))}
-        <ResumeHeading
-          id={profile.id}
-          title="Educational Information"
-          type="Add"
-          onPress={() => navigation.navigate(routes.PRO_EDUCATION, profile.id)}
-        />
-        {profile.educations.map((edu, idx) => (
-          <ResumeInnerView
-            key={idx}
-            id={profile.id}
-            viewID={edu.viewID}
-            titleOne={edu.name}
-            titleTwo={edu.level}
-            titleThree={edu.school + ", " + edu.country}
-            titleFour={edu.startDate + " - " + edu.endDate}
-            onPressUpdate={() =>
-              navigation.navigate(routes.PRO_EDUCATION, profile.id)
-            }
-            onPressDelete={() =>
-              navigation.navigate(routes.PRO_EDUCATION, profile.id)
-            }
-          />
-        ))}
-        <ResumeHeading
-          id={profile.id}
-          title="Training & Certifications "
-          type="Add"
-          onPress={() => navigation.navigate(routes.PRO_TRAINING, profile.id)}
-        />
-        {profile.tranings.map((trn, idx) => (
-          <ResumeInnerView
-            key={idx}
-            id={profile.id}
-            viewID={trn.viewID}
-            titleOne={trn.name}
-            titleTwo={trn.org + ", " + trn.country}
-            titleThree={trn.startDate + " - " + trn.endDate}
-            onPressUpdate={() =>
-              navigation.navigate(routes.PRO_TRAINING, profile.id)
-            }
-            onPressDelete={() =>
-              navigation.navigate(routes.PRO_TRAINING, profile.id)
-            }
-          />
-        ))}
-        <ResumeHeading
-          id={profile.id}
-          title="Languages"
-          type="Add"
-          onPress={() => navigation.navigate(routes.PRO_LANGUAGE, profile.id)}
-        />
-        {profile.languages.map((ln, idx) => (
-          <ResumeInnerView
-            key={idx}
-            id={profile.id}
-            viewID={ln.viewID}
-            titleOne={ln.skillName}
-            titleTwo={ln.skillType}
-            onPressUpdate={() =>
-              console.log(navigation.navigate(routes.PRO_LANGUAGE, profile.id))
-            }
-            onPressDelete={() =>
-              console.log(navigation.navigate(routes.PRO_LANGUAGE, profile.id))
-            }
-          />
-        ))}
-      </ScrollView>
-    </Screen>
+    <>
+      {/* <ActivityIndicator visible={getListingsAPi.loading} /> */}
+      {!isLoading && users && (
+        <Screen>
+          <ScrollView>
+            {/* 
+          {!isLoading && users && (
+            <View>
+              <Text>Email : {}</Text>
+              <Text>Name : {users.data[0].id}</Text>
+            </View>
+          )}
+          */}
+
+            <ProfileBasic
+              name={
+                users.data[0].firstName +
+                " " +
+                users.data[0].middleName +
+                " " +
+                users.data[0].lastName
+              }
+              email={users.data[0].email}
+              emailStatus={users.data[0].emailStatus}
+              mobileNo={users.data[0].mobileNo}
+              mobileStatus={users.data[0].mobileStatus}
+              country={users.data[0].countryLiveIn}
+              profileType={users.data[0].profile_type}
+              image={
+                settings.imageUrl +
+                "members/" +
+                users.data[0].id +
+                "/" +
+                users.data[0].image
+              }
+            />
+
+            <ResumeHeading
+              id={users.data[0].id}
+              title="Personal Details"
+              type="Update"
+              onPress={() =>
+                navigation.navigate(
+                  routes.PRO_PERSONAL_DETAILS,
+                  users.data[0].id
+                )
+              }
+            />
+
+            <ResumeInnerView
+              id={users.data[0].id}
+              viewID={users.data[0].id}
+              titleOne="Date of Birth :"
+              titleFive={users.data[0].dob}
+              titleTwo="Gender :"
+              titleSix={users.data[0].sex}
+              titleThree="Nationality :"
+              titleSeven={users.data[0].nationality}
+              titleFour="Country Live in :"
+              titleEight={users.data[0].countryLiveIn}
+            />
+
+            <ResumeHeading
+              id={users.data[0].id}
+              title="Skills"
+              type="Add"
+              onPress={() =>
+                navigation.navigate(routes.PRO_SKILL, users.data[0].id)
+              }
+            />
+            {users.data[0].get_skill.map((d, idx) => (
+              <ResumeInnerView
+                key={idx}
+                id={users.data[0].id}
+                viewID={d.viewID}
+                titleOne={d.skillName}
+                titleTwo={d.skill_level}
+                onPressUpdate={() =>
+                  navigation.navigate(routes.PRO_SKILL, users.data[0].id)
+                }
+                onPressDelete={() =>
+                  navigation.navigate(routes.PRO_SKILL, users.data[0].id)
+                }
+              />
+            ))}
+
+            <ResumeHeading
+              id={users.data[0].get_job_preferences.id}
+              title="Job Preferences"
+              type="Update"
+              onPress={() =>
+                navigation.navigate(
+                  routes.PRO_JOB_PREFERENCES,
+                  users.data[0].id
+                )
+              }
+            />
+            {users.data[0].get_job_preferences.map((jbp, idx) => (
+              <ResumeInnerView
+                key={idx}
+                id={users.data[0].id}
+                viewID={jbp.viewID}
+                titleOne={jbp.industry}
+                titleTwo={jbp.function}
+                titleThree={jbp.city + ", " + jbp.country}
+                titleFour={jbp.type}
+                onPressDelete={() =>
+                  navigation.navigate(
+                    routes.PRO_JOB_PREFERENCES,
+                    users.data[0].id
+                  )
+                }
+              />
+            ))}
+
+            <ResumeHeading
+              id={users.data[0].id}
+              title="Work Experience"
+              type="Add"
+              onPress={() =>
+                navigation.navigate(routes.PRO_EXPERIENCE, users.data[0].id)
+              }
+            />
+            {users.data[0].get_experiences.map((exp, idx) => (
+              <ResumeInnerView
+                key={idx}
+                id={users.data[0].id}
+                viewID={exp.id}
+                titleOne={exp.post}
+                titleTwo={exp.company + ", " + exp.country}
+                titleThree={exp.startDate + " - " + exp.endDate}
+                onPressUpdate={() =>
+                  navigation.navigate(routes.PRO_EXPERIENCE, users.data[0].id)
+                }
+                onPressDelete={() =>
+                  navigation.navigate(routes.PRO_EXPERIENCE, users.data[0].id)
+                }
+              />
+            ))}
+
+            <ResumeHeading
+              id={users.data[0].id}
+              title="Educational Information"
+              type="Add"
+              onPress={() =>
+                navigation.navigate(routes.PRO_EDUCATION, users.data[0].id)
+              }
+            />
+            {users.data[0].get_education.map((edu, idx) => (
+              <ResumeInnerView
+                key={idx}
+                id={users.data[0].id}
+                viewID={edu.viewID}
+                titleOne={edu.subject}
+                titleTwo={edu.level}
+                titleThree={edu.school + ", " + edu.country}
+                titleFour={edu.startDate + " - " + edu.endDate}
+                onPressUpdate={() =>
+                  navigation.navigate(routes.PRO_EDUCATION, users.data[0].id)
+                }
+                onPressDelete={() =>
+                  navigation.navigate(routes.PRO_EDUCATION, users.data[0].id)
+                }
+              />
+            ))}
+
+            <ResumeHeading
+              id={users.data[0].id}
+              title="Training & Certifications "
+              type="Add"
+              onPress={() =>
+                navigation.navigate(routes.PRO_TRAINING, users.data[0].id)
+              }
+            />
+            {users.data[0].get_tranings.map((trn, idx) => (
+              <ResumeInnerView
+                key={idx}
+                id={users.data[0].id}
+                viewID={trn.viewID}
+                titleOne={trn.name}
+                titleTwo={trn.org + ", " + trn.country}
+                titleThree={trn.startDate + " - " + trn.endDate}
+                onPressUpdate={() =>
+                  navigation.navigate(routes.PRO_TRAINING, users.data[0].id)
+                }
+                onPressDelete={() =>
+                  navigation.navigate(routes.PRO_TRAINING, users.data[0].id)
+                }
+              />
+            ))}
+
+            <ResumeHeading
+              id={users.data[0].id}
+              title="Languages"
+              type="Add"
+              onPress={() =>
+                navigation.navigate(routes.PRO_LANGUAGE, users.data[0].id)
+              }
+            />
+            {users.data[0].get_languages.map((ln, idx) => (
+              <ResumeInnerView
+                key={idx}
+                id={users.data[0].id}
+                viewID={ln.viewID}
+                titleOne={ln.language_name}
+                titleTwo={ln.language_level}
+                onPressUpdate={() =>
+                  console.log(
+                    navigation.navigate(routes.PRO_LANGUAGE, users.data[0].id)
+                  )
+                }
+                onPressDelete={() =>
+                  console.log(
+                    navigation.navigate(routes.PRO_LANGUAGE, users.data[0].id)
+                  )
+                }
+              />
+            ))}
+          </ScrollView>
+        </Screen>
+      )}
+    </>
   );
 }
 const styles = StyleSheet.create({

@@ -18,7 +18,7 @@ function ProfileBasic({
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        {image && <Image style={styles.image} source={image} />}
+        {image && <Image style={styles.image} source={{ uri: image }} />}
       </View>
       <TouchableHighlight underlayColor={colors.lightGray} onPress={onPress}>
         <View style={styles.camraButton}>
