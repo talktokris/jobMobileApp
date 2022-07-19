@@ -12,7 +12,7 @@ const messages = [
     location: "Kathmandu, Nepal",
     date: "3 days ago",
     fav: 1,
-    image: require("../assets/images/av.jpg"),
+    image: require("../assets/images/1.png"),
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ const messages = [
     location: "Kathmandu, Nepal",
     date: "3 days ago",
     fav: 0,
-    image: require("../assets/images/av.jpg"),
+    image: require("../assets/images/2.jpg"),
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ const messages = [
     location: "Kathmandu, Nepal",
     date: "3 days ago",
     fav: 1,
-    image: require("../assets/images/av.jpg"),
+    image: require("../assets/images/3.png"),
   },
 ];
 

@@ -1,51 +1,28 @@
 import React from "react";
 import { useFormikContext } from "formik";
-import {
-  View,
-  TextInput,
-  StyleSheet,
-  Platform,
-  TouchableOpacity,
-  Text,
-} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import colors from "../config/colors";
-import fonts from "../config/fonts";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
-function AppTextSearch({
-  icon,
-  color = "primary",
-  lebel,
-  width = "100%",
-  onPress,
-  ...otherProps
-}) {
+import colors from "../../config/colors";
+import fonts from "../../config/fonts";
+
+function SubmitIcon({ icon = "magnify", color = "primary" }) {
   const { handleSubmit } = useFormikContext();
 
   return (
-    <>
-      {lebel && <Text style={styles.lebel}>{lebel} :</Text>}
-      <View style={[styles.container, { width: width }]}>
-        <TextInput
-          placeholderTextColor={colors.medium}
-          style={styles.textInput}
-          {...otherProps}
+    <TouchableOpacity
+      style={[styles.buttonRight, { backgroundColor: colors[color] }]}
+      onPress={handleSubmit}
+    >
+      {icon && (
+        <MaterialCommunityIcons
+          name={icon}
+          size={20}
+          style={styles.icon}
+          color={colors.white}
         />
-        <TouchableOpacity
-          style={[styles.buttonRight, { backgroundColor: colors[color] }]}
-          onPress={handleSubmit}
-        >
-          {icon && (
-            <MaterialCommunityIcons
-              name={icon}
-              size={20}
-              style={styles.icon}
-              color={colors.white}
-            />
-          )}
-        </TouchableOpacity>
-      </View>
-    </>
+      )}
+    </TouchableOpacity>
   );
 }
 
@@ -90,4 +67,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppTextSearch;
+export default SubmitIcon;

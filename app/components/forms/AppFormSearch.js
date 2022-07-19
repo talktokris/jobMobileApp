@@ -4,6 +4,8 @@ import { useFormikContext } from "formik";
 import ErrorMessage from "./ErrorMessage";
 import AppTextSearch from "../AppTextSearch";
 
+
+
 function AppFormSearch({ name, lebel, width, ...otherProps }) {
   const { setFieldTouched, setFieldValue, errors, touched, values } =
     useFormikContext();
@@ -23,6 +25,7 @@ function AppFormSearch({ name, lebel, width, ...otherProps }) {
         //  placeholder="Email"
         // textContentType="emailAddress"
       />
+
       <ErrorMessage error={errors[name]} visible={touched[name]} />
     </>
   );

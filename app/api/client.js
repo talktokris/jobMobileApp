@@ -1,10 +1,10 @@
 import { create } from "apisauce";
 import authStorage from "../auth/storage";
-
+import settings from "../config/setting";
 
 const apiClient = create({
-  baseURL: "http://192.168.254.4:9000/api",
-  //baseURL: "http://192.168.1.68:9000/api",
+  // baseURL: "http://192.168.254.4:9000/api",
+  baseURL: settings.apiUrl,
 });
 
 apiClient.addAsyncRequestTransform(async (request) => {
@@ -12,7 +12,9 @@ apiClient.addAsyncRequestTransform(async (request) => {
 
   if (!authToken) return;
 
-  request.headers["x-auth-token"] = authToken;
+  //request.headers["access_token"] = authToken;
+
+  request.headers["Authorization"] = "Bearer " + authToken;
 });
 
 export default apiClient; 

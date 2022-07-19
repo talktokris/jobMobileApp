@@ -50,7 +50,12 @@ const AppNavigator = () => {
   */
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      initialRouteName="Jobs"
+      screenOptions={{
+        tabBarActiveTintColor: "#e91e63",
+      }}
+    >
       <Tab.Screen
         name="Resume"
         component={ResumeNavigator}

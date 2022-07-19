@@ -16,9 +16,14 @@ import ListItem from "../components/ListItem";
 import colors from "../config/colors";
 import AppBulletText from "../components/AppBulletText";
 import AppButton from "../components/AppButton";
+import settings from "../config/setting";
+import useAuth from "../auth/useAuth";
 
 function JobsDetailScreen({ route }) {
-  //  const listing = route.params;
+  const listing = route.params;
+  const { user, logOut } = useAuth();
+  const currrentUser = user.id;
+  /*
   const listing = {
     id: 2,
     title: "Assistant Program Coordinator",
@@ -32,7 +37,7 @@ function JobsDetailScreen({ route }) {
     location: "Kathmandu, Nepal",
     date: "3 days ago",
     fav: 1,
-    image: require("../assets/images/av.jpg"),
+    image: require("../assets/images/2.jpg"),
     jobSpecification: [
       {
         points:
@@ -53,10 +58,20 @@ function JobsDetailScreen({ route }) {
       { points: "D6 Lorem Ipsum is simply dummy text of the printing" },
     ],
   };
-
+*/
   var favDefaultName = "",
-    favDefaultColor = "";
-  if (listing.fav == 1) {
+    favDefaultColor = "",
+    fav = 0;
+
+  listing.get_fav_info.map((userData) => {
+    //console.log(userData.user_id + "-" + currrentUser);
+    if (userData.user_id == currrentUser) {
+      fav = 1;
+      // console.log("userData.user_id");
+    }
+  });
+
+  if (fav == 1) {
     favDefaultName = "cards-heart";
     favDefaultColor = colors.primary;
   } else {
@@ -79,7 +94,12 @@ function JobsDetailScreen({ route }) {
   return (
     <ScrollView style={styles.scrollView} nestedScrollEnabled={true}>
       <View style={styles.upperContainer}>
-        <Image style={styles.image} source={listing.image} />
+        <Image
+          style={styles.image}
+          source={{
+            uri: settings.imageUrl + "jobs/" + listing.id + "/" + listing.image,
+          }}
+        />
         <View style={styles.detailsInfo}>
           <AppText style={styles.title} numberOfLines={2}>
             {listing.title}
@@ -148,7 +168,7 @@ function JobsDetailScreen({ route }) {
                 style={(styles.subTitle, styles.downText)}
                 numberOfLines={1}
               >
-                {listing.vacancies}
+                {listing.vacancies + " Vacancies"}
               </AppText>
             </View>
           </View>
@@ -195,31 +215,31 @@ function JobsDetailScreen({ route }) {
                 style={(styles.subTitle, styles.downText)}
                 numberOfLines={1}
               >
-                {listing.date}
+                {listing.created_at}
               </AppText>
             </View>
           </View>
         </View>
 
-        {Object.keys(listing.jobSpecification).length >= 1 && (
+        {Object.keys(listing.get_job_specification).length >= 1 && (
           <AppText style={styles.heading}>Job Specification</AppText>
         )}
-        {listing.jobSpecification.map((d, idx) => (
+        {listing.get_job_specification.map((d, idx) => (
           <AppBulletText
             key={idx}
-            title={d.points}
+            title={d.title}
             iconName="circle-medium"
             scrollEnabled={false}
           />
         ))}
 
-        {Object.keys(listing.jobDescription).length >= 1 && (
+        {Object.keys(listing.get_job_description).length >= 1 && (
           <AppText style={styles.heading}>Job Description</AppText>
         )}
-        {listing.jobDescription.map((d, idx) => (
+        {listing.get_job_description.map((d, idx) => (
           <AppBulletText
             key={idx}
-            title={d.points}
+            title={d.title}
             iconName="circle-medium"
             scrollEnabled={false}
           />

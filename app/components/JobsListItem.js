@@ -10,6 +10,8 @@ import colors from "../config/colors";
 import AppText from "./AppText";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import useAuth from "../auth/useAuth";
+
 function JobsListItem({
   title,
   subTitle,
@@ -18,11 +20,24 @@ function JobsListItem({
   image,
   location,
   date,
-  fav,
+  favData,
   onPress,
 }) {
+  const { user, logOut } = useAuth();
   var favDefaultName = "",
     favDefaultColor = "";
+
+  var fav = 0;
+
+  const currrentUser = user.id;
+  //console.log(currrentUser);
+  favData.map((userData) => {
+    // console.log(currrentUser + "--" + userData.user_id);
+    if (userData.user_id == currrentUser) {
+      fav = 1;
+    }
+  });
+
   if (fav == 1) {
     favDefaultName = "cards-heart";
     favDefaultColor = colors.primary;

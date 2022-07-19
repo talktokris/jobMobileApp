@@ -8,5 +8,6 @@ export default Object.freeze({
   PRO_EXPERIENCE: "Experience",
   PRO_PERSONAL_DETAILS: "Personal Details",
   PRO_JOB_PREFERENCES: "Job Preferences",
-  PRO_TRANING: "Traning",
+  PRO_TRAINING: "Training",
+  AC_MESAGES: "Messages",
 });

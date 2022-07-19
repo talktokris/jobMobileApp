@@ -22,16 +22,29 @@ function LoginScreen({ navigation }) {
   
   const { logIn } = useAuth();
   const [loginFailed, setLoginFailed] = useState(false);
+  const [loginFailMessage, setloginFailMessage] = useState(null);
   const handleSubmit = async ({ email, password }) => {
     const result = await authApi.login(email, password);
+    // const tokenSet= result.access_token;
+    // console.log(result);
+    //console.log("==================");
 
-    if (!result.ok) return setLoginFailed(true);
+    if (!result.ok || result.data == null) {
+      setloginFailMessage(
+        "Unable to connect to server. Please check your Internet connection"
+      );
+      return setLoginFailed(true);
+    }
+    if (result.data.error == "Unauthorized") {
+      setloginFailMessage("Invalid email and/or password");
+      return setLoginFailed(true);
+    }
     setLoginFailed(false);
-    logIn(result.data);
+    logIn(result.data.access_token);
 
-    // console.log(user);
+    //console.log(user);
   };
-  
+
   return (
     <Screen>
       <View style={styles.container}>
@@ -39,10 +52,7 @@ function LoginScreen({ navigation }) {
           source={require("../assets/images/logo.png")}
           style={styles.image}
         />
-        <ErrorMessage
-          error="Invalid email and/or password"
-          visible={loginFailed}
-        />
+        <ErrorMessage error={loginFailMessage} visible={loginFailed} />
         <AppForm
           initialValues={{ email: "", password: "" }}
           onSubmit={handleSubmit}

@@ -182,7 +182,6 @@ function ResumeScreen({ navigation }) {
           profileType={profile.basicInfo.profileType}
           image={profile.basicInfo.image}
         />
-
         <ResumeHeading
           id={profile.id}
           title="Personal Details"
@@ -205,16 +204,15 @@ function ResumeScreen({ navigation }) {
             titleEight={profile.basicInfo.counryliveIn}
           />
         )}
-
         <ResumeHeading
           id={profile.id}
           title="Skills"
           type="Add"
           onPress={() => navigation.navigate(routes.PRO_SKILL, profile.id)}
         />
-
         {profile.skills.map((d, idx) => (
           <ResumeInnerView
+            key={idx}
             id={profile.id}
             viewID={d.viewID}
             titleOne={d.skillName}
@@ -227,7 +225,6 @@ function ResumeScreen({ navigation }) {
             }
           />
         ))}
-
         <ResumeHeading
           id={profile.id}
           title="Job Preferences"
@@ -238,6 +235,7 @@ function ResumeScreen({ navigation }) {
         />
         {profile.jobPreferences.map((jbp, idx) => (
           <ResumeInnerView
+            key={idx}
             id={profile.id}
             viewID={jbp.viewID}
             titleOne={jbp.industry}
@@ -249,7 +247,6 @@ function ResumeScreen({ navigation }) {
             }
           />
         ))}
-
         <ResumeHeading
           id={profile.id}
           title="Work Experience"
@@ -258,6 +255,7 @@ function ResumeScreen({ navigation }) {
         />
         {profile.experiences.map((exp, idx) => (
           <ResumeInnerView
+            key={idx}
             id={profile.id}
             viewID={exp.id}
             titleOne={exp.post}
@@ -271,7 +269,6 @@ function ResumeScreen({ navigation }) {
             }
           />
         ))}
-
         <ResumeHeading
           id={profile.id}
           title="Educational Information"
@@ -280,6 +277,7 @@ function ResumeScreen({ navigation }) {
         />
         {profile.educations.map((edu, idx) => (
           <ResumeInnerView
+            key={idx}
             id={profile.id}
             viewID={edu.viewID}
             titleOne={edu.name}
@@ -294,25 +292,25 @@ function ResumeScreen({ navigation }) {
             }
           />
         ))}
-
         <ResumeHeading
           id={profile.id}
           title="Training & Certifications "
           type="Add"
-          onPress={() => navigation.navigate(routes.PRO_TRANING, profile.id)}
+          onPress={() => navigation.navigate(routes.PRO_TRAINING, profile.id)}
         />
         {profile.tranings.map((trn, idx) => (
           <ResumeInnerView
+            key={idx}
             id={profile.id}
             viewID={trn.viewID}
             titleOne={trn.name}
             titleTwo={trn.org + ", " + trn.country}
             titleThree={trn.startDate + " - " + trn.endDate}
             onPressUpdate={() =>
-              navigation.navigate(routes.PRO_TRANING, profile.id)
+              navigation.navigate(routes.PRO_TRAINING, profile.id)
             }
             onPressDelete={() =>
-              navigation.navigate(routes.PRO_TRANING, profile.id)
+              navigation.navigate(routes.PRO_TRAINING, profile.id)
             }
           />
         ))}
@@ -322,9 +320,9 @@ function ResumeScreen({ navigation }) {
           type="Add"
           onPress={() => navigation.navigate(routes.PRO_LANGUAGE, profile.id)}
         />
-
         {profile.languages.map((ln, idx) => (
           <ResumeInnerView
+            key={idx}
             id={profile.id}
             viewID={ln.viewID}
             titleOne={ln.skillName}

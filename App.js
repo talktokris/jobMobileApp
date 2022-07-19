@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-console.disableYellowBox = true;
+import "./app/config/ignoreWarnings";
+//console.disableYellowBox = true;
 import { Button, StyleSheet, Text } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import AppLoading from "expo-app-loading";
 
-import Screen from "./app/components/Screen";
+//import Screen from "./app/components/Screen";
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import navigationTheme from "./app/navigation/NavigationTheme";
 import AppNavigator from "./app/navigation/AppNavigator";
@@ -62,8 +63,8 @@ export default function App() {
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <NavigationContainer theme={navigationTheme}>
-        {/* {user ? <AppNavigator /> : <AuthNavigator />} */}
-        <AppNavigator />
+        {user ? <AppNavigator /> : <AuthNavigator />}
+        {/* <AppNavigator /> */}
       </NavigationContainer>
     </AuthContext.Provider>
   );
