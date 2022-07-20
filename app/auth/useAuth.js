@@ -3,7 +3,9 @@ import AuthContext from "./context";
 import authStorage from "./storage";
 import jwtDecode from "jwt-decode";
 
-import client from "../api/client";
+
+import userRetrive from "./userRetrive";
+//import users from "../api/users";
 
 export default useAuth = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -17,11 +19,11 @@ export default useAuth = () => {
     // console.log(authToken);
     authStorage.storeToken(authToken);
 
-    const profile = await client.post("/profile", {});
-    //console.log(profile.data);
-
+    const profile = await userRetrive(authToken);
+    if (!profile.ok) return;
+    // console.log(profile);
     // const user = jwtDecode(authToken);
     setUser(profile.data);
-  };
+  };;
   return { user, logIn, logOut };
-};
+};;

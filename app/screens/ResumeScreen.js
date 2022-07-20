@@ -12,165 +12,11 @@ import resume from "../api/resume";
 import settings from "../config/setting";
 import ActivityIndicator from "../components/ActivityIndicator";
 
-/*
-const users.data[0] = {
-  id: 1,
-  basicInfo: {
-    firstName: "Krishna",
-    middleName: "Kumar",
-    lastName: "Jha",
-    sex: "Male",
-    dob: "1984 Aug 23",
-    hight: "5 feet 8 inches",
-    weight: "75 KG",
-    nationality: "Nepalese",
-    email: "freshkris@gmail.com",
-    emailStatus: "Verified",
-    mobileNo: "+9779819857575",
-    mobileStatus: "Not Verified",
-    counryliveIn: "Malaysia",
-    users.data[0]Type: "Professional",
-    users.data[0]Title: "IT Professional",
-    image: require("../assets/images/av.jpg"),
-  },
-  get_skill: [
-    {
-      id: "1",
-      skillName: "PHP",
-      skillType: "Advance",
-    },
-    {
-      id: "2",
-      skillName: "Laravel",
-      skillType: "Expert",
-    },
-    {
-      id: "3",
-      skillName: "MYSQL",
-      skillType: "Expert",
-    },
-    ,
-    {
-      id: "4",
-      skillName: "Work Press",
-      skillType: "Expert",
-    },
-  ],
-  jobPreferences: [
-    {
-      id: "1",
-      industry: "Information Technology",
-      function: "Software Developer",
-      country: "Malaysia",
-      city: "Kuala Lumpur",
-      type: "Full Time",
-    },
-  ],
 
-  experiences: [
-    {
-      id: "1",
-      post: "Software Developer",
-      company: "ePlanet Net Sdn Bsd",
-      country: "Nepal",
-      startDate: "Jul 1970",
-      endDate: "Jul 2020",
-    },
-    {
-      id: "2",
-      post: "Software Developer",
-      company: "ePlanet Net Sdn Bsd",
-      country: "Nepal",
-      startDate: "Jul 1970",
-      endDate: "Jul 2020",
-    },
-    {
-      id: "3",
-      post: "Software Developer",
-      company: "ePlanet Net Sdn Bsd",
-      country: "Nepal",
-      startDate: "Jul 1970",
-      endDate: "Jul 2020",
-    },
-  ],
-  educations: [
-    {
-      id: "1",
-      level: "Bachelor",
-      school: "SVN University",
-      country: "Nepal",
-      name: "Computer Engineering",
-      startDate: "Jul 1970",
-      endDate: "Jul 2020",
-    },
-    {
-      id: "2",
-      level: "Bachelor",
-      school: "SVN University",
-      country: "Nepal",
-      name: "Computer Engineering",
-      startDate: "Jul 1970",
-      endDate: "Jul 2020",
-    },
-    {
-      id: "3",
-      level: "Bachelor",
-      school: "SVN University",
-      country: "Nepal",
-      name: "Computer Engineering",
-      startDate: "Jul 1970",
-      endDate: "Jul 2020",
-    },
-  ],
-  tranings: [
-    {
-      id: "1",
-      name: "Computer Diploma",
-      org: "NEET Academy",
-      country: "Nepal",
-      startDate: "Jul 1970",
-      endDate: "Jul 2020",
-    },
-    {
-      id: "2",
-      name: "Graphic Designing",
-      org: "Maya Instuate",
-      country: "Nepal",
-      startDate: "Jul 1970",
-      endDate: "Jul 2020",
-    },
-    {
-      id: "3",
-      name: "Web Developer",
-      org: "Star Web Acadamy",
-      country: "Nepal",
-      startDate: "Jul 1970",
-      endDate: "Jul 2020",
-    },
-  ],
-  languages: [
-    {
-      id: "1",
-      skillName: "English",
-      skillType: "Expert",
-    },
-    {
-      id: "2",
-      skillName: "Nepali",
-      skillType: "Expert",
-    },
-    {
-      id: "3",
-      skillName: "Hindi",
-      skillType: "Learner",
-    },
-  ],
-};
-*/
 function ResumeScreen({ navigation }) {
   const { user, logOut } = useAuth();
-  //const currrentUser = user.id;
-  const currrentUser = 1;
+  const currrentUser = user.id;
+  // const currrentUser = 1;
 
   const [isLoading, setLoading] = useState(true);
   const [users, setUsers] = useState(null);
@@ -214,7 +60,7 @@ function ResumeScreen({ navigation }) {
   // const users.data[0] = users.data[0];
   return (
     <>
-      {/* <ActivityIndicator visible={getListingsAPi.loading} /> */}
+      <ActivityIndicator visible={isLoading} />
       {!isLoading && users && (
         <Screen>
           <ScrollView>

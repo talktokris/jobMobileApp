@@ -1,6 +1,6 @@
 import * as SecureStore from "expo-secure-store";
-import jwtDecode from "jwt-decode";
-import apiClient from "../api/client";
+//import jwtDecode from "jwt-decode";
+import userRetrive from "./userRetrive";
 
 const key = "authToken";
 
@@ -30,8 +30,9 @@ const removeToken = async () => {
 
 const getUser = async () => {
   const token = await getToken();
-  const profile = await apiClient.post("/profile", {});
 
+  const profile = await userRetrive(token);
+  if (!profile.ok) return;
   return token ? profile.data : null;
 };
 

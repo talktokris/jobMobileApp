@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { LogBox } from "react-native";
+
+LogBox.ignoreLogs(["EventEmitter.removeListener"]);
 import "./app/config/ignoreWarnings";
 //console.disableYellowBox = true;
 import { Button, StyleSheet, Text } from "react-native";
