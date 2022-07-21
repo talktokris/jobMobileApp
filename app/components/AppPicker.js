@@ -44,7 +44,7 @@ function AppPicker({
             />
           )}
           {selectedItem ? (
-            <AppText style={styles.text}>{selectedItem.lebel}</AppText>
+            <AppText style={styles.text}>{selectedItem.title}</AppText>
           ) : (
             <AppText style={styles.placeholder}>{placeholder}</AppText>
           )}
@@ -59,19 +59,22 @@ function AppPicker({
       <Modal visible={modalVisible} animationType="slide">
         <Screen>
           <Button title="Close" onPress={() => setModalVisible(false)} />
+
           <FlatList
             data={items}
-            keyExtractor={(item) => item.value.toString()}
+            keyExtractor={(item) => item.id.toString()}
             numColumns={numberOfColumns}
             renderItem={({ item }) => (
-              <PickerItemComponent
-                item={item}
-                lebel={item.lebel}
-                onPress={() => {
-                  setModalVisible(false);
-                  onSelectItem(item);
-                }}
-              />
+              <>
+                <PickerItemComponent
+                  item={item}
+                  lebel={JSON.stringify(item.title)}
+                  onPress={() => {
+                    setModalVisible(false);
+                    onSelectItem(item);
+                  }}
+                />
+              </>
             )}
           />
         </Screen>

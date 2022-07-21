@@ -5,13 +5,15 @@ import AppText from "./AppText";
 function PickerItem({ item, onPress }) {
   return (
     <TouchableOpacity onPress={onPress}>
-      <AppText style={styles.text}>{item.lebel}</AppText>
+      <AppText style={styles.text}>{item.title}</AppText>
     </TouchableOpacity>
   );
 }
 const styles = StyleSheet.create({
   text: {
-    padding: 20,
+    padding: 15,
+    backgroundColor: "#eee",
+    marginTop: 2,
   },
 });
 

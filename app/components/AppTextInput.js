@@ -7,7 +7,7 @@ import fonts from "../config/fonts";
 function AppTextInput({ icon, lebel, width = "100%", ...otherProps }) {
   return (
     <>
-      {lebel && <Text style={styles.lebel}>{lebel} :</Text>}
+      {lebel && <Text style={styles.lebel}>{lebel} </Text>}
       <View style={[styles.container, { width: width }]}>
         {icon && (
           <MaterialCommunityIcons

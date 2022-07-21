@@ -2,6 +2,7 @@ export default Object.freeze({
   JOBS_DETAILS: "Jobs Details",
   JOBS_FAVORITE: "Jobs Favorite",
   PRO_RESUME: "Resume",
+  PRO_DONE: "Done",
   PRO_SKILL: "Skill",
   PRO_LANGUAGE: "Language",
   PRO_EDUCATION: "Education",

@@ -19,7 +19,6 @@ const validationSchema = Yup.object().shape({
 });
 
 function LoginScreen({ navigation }) {
-  
   const { logIn } = useAuth();
   const [loginFailed, setLoginFailed] = useState(false);
   const [loginFailMessage, setloginFailMessage] = useState(null);
@@ -41,8 +40,7 @@ function LoginScreen({ navigation }) {
     }
     setLoginFailed(false);
     logIn(result.data.access_token);
-
-    //console.log(user);
+    // console.log(result.data.access_token);
   };
 
   return (

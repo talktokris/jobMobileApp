@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { StyleSheet, Image, TouchableOpacity, View, Text } from "react-native";
 
 import * as Yup from "yup";
@@ -22,143 +22,121 @@ import ActivityIndicator from "../components/ActivityIndicator";
 import colors from "../config/colors";
 import AppAutoComplete from "../components/AppAutoComplete";
 import AppFormAutoComplete from "../components/forms/AppFormAutoComplete";
+import setting from "../config/setting";
+import setList from "../api/setList";
+import userUpdate from "../api/userUpdate";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required().min(4).label("Name"),
-  email: Yup.string().required().email().label("Email"),
-  password: Yup.string().required().min(4).label("Password"),
+  skillName: Yup.object().required().nullable().label("Skill Level"),
+  skill_level: Yup.object().required().nullable().label("Skill Level"),
+  //  skill_level: Yup.object().required().nullable().label("Skill Level"),
+  // skillName: Yup.string().required().min(4).label("Password"),
 });
 
 function ResumeLanguageScreen({ navigation }) {
+  const { user, logOut } = useAuth();
+  const currrentUser = user.id;
   const [error, setError] = useState();
-  const [MainJSON, setMainJSON] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null);
-
-  const languagesData = [
-    { id: 1, title: "English" },
-    { id: 2, title: "Bhasa Malaysia" },
-    { id: 3, title: "Nepali" },
-    { id: 4, title: "Hindi" },
-    { id: 5, title: "Bangali" },
-  ];
-
-  const experienceData = [
-    { value: 1, lebel: "No experience" },
-    { value: 2, lebel: "Basic" },
-    { value: 3, lebel: "Intermediate" },
-    { value: 4, lebel: "Advanced" },
-    { value: 5, lebel: "Fluent" },
-  ];
+  const [isLoading, setLoading] = useState(true);
+  const [skillLevel, setskillLevel] = useState(null);
+  const [skill, setSkill] = useState(null);
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/todos/")
-      .then((res) => res.json())
-      .then((json) => {
-        // var as = json2array(json);
-        setMainJSON(json);
+    getData();
+  }, []);
+
+  const getData = useCallback(() => {
+    setLoading(true); // Start the loader, So when you start fetching data, you can display loading UI
+    // useApi(resume.getResumeData, { currrentUser });
+    setList
+      .skillLevel()
+      .then((data) => {
+        setskillLevel(data.data);
+        setLoading(false);
       })
-      .catch((e) => {
-        alert(e);
+      .catch((error) => {
+        // display error
+        setLoading(false); // stop the loader
+      });
+
+    // Fatching Skill Data
+    setLoading(true);
+    setList
+      .skill()
+      .then((data) => {
+        setSkill(data.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        // display error
+        setLoading(false); // stop the loader
       });
   }, []);
 
-  const categoriesList = [
-    { lebel: "Furniture", value: 1, backgroundColor: "red", icon: "apps" },
-    { lebel: "Clothing", value: 2, backgroundColor: "green", icon: "email" },
-    { lebel: "Electronics", value: 3, backgroundColor: "purple", icon: "lock" },
-    { lebel: "Camera", value: 4, backgroundColor: "orange", icon: "apps" },
-  ];
-
-  /*
-  const registerApi = useApi(usersApi.register);
-  const loginApi = useApi(authApi.login);
+  const skillApi = useApi(userUpdate.skillCreate);
+  /* const loginApi = useApi(authApi.login);
 
   const auth = useAuth();
  
-
+*/
   const handleSubmit = async (userInfo) => {
-    const result = await registerApi.request(userInfo);
+    // console.log(userInfo);
+    const result = await userUpdate.skillCreate(userInfo, currrentUser);
+    console.log(result);
     if (!result.ok) {
       if (result.data) setError(result.data.error);
       else {
         setError("An unexpedted error occurred");
-        console.log(result);
+        // console.log(result);
       }
       return;
     }
-
+    /*
     const { data: authToken } = await loginApi.request(
       userInfo.email,
       userInfo.password
     );
-    auth.logIn(authToken);
+   // auth.logIn(authToken);
+   */
   };
-*/
+
   return (
     <>
-      {/* <ActivityIndicator visible={registerApi.loading || loginApi.loading} /> */}
+      <ActivityIndicator visible={isLoading} />
       <Screen>
         <View style={styles.container}>
-          {/*  <ErrorMessage error={error} visible={setError} /> */}
+          <ErrorMessage error={error} visible={setError} />
 
           <AppForm
-            initialValues={{ name: "", email: "", password: "" }}
-            onSubmit={() => console.log("clicked")}
+            initialValues={{ skillName: "", skill_level: "" }}
+            onSubmit={handleSubmit}
             validationSchema={validationSchema}
           >
-            <AppFormAutoComplete
-              dataSet={languagesData}
-              name="languageName"
-              zIndex={5}
-              placeHolderText="Language Name"
-            />
+            {!isLoading && skillLevel && (
+              <AppFormPicker
+                items={skill}
+                name="skillName"
+                /* numberOfColumns={2} */
+                /* PickerItemComponent={PickerItem} */
 
-            <AppFormPicker
-              items={experienceData}
-              name="experience"
-              /* numberOfColumns={2} */
-              /* PickerItemComponent={PickerItem} */
+                placeholder="Skill Name"
 
-              placeholder="Experience"
+                /* width="80%" */
+              />
+            )}
 
-              /* width="80%" */
-            />
-            {/*
-            <AutocompleteDropdown
-              clearOnFocus={false}
-              closeOnBlur={true}
-              inputContainerStyle={styles.autoComText}
-              closeOnSubmit={false}
-              initialValue={{ id: "2" }} // or just '2'
-              onSelectItem={setSelectedItem}
-              dataSet={MainJSON}
-            />
-        
-            {/* 
-          
-         
-            <AppFormField
-              name="email"
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="email"
-              keyboardType="email-address"
-              placeholder="Email"
-              lebel="Email Address"
-              textContentType="emailAddress"
-            />
+            {!isLoading && skillLevel && (
+              <AppFormPicker
+                items={skillLevel}
+                name="skill_level"
+                /* numberOfColumns={2} */
+                /* PickerItemComponent={PickerItem} */
 
-            <AppFormField
-              name="password"
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="lock"
-              placeholder="Password"
-              lebel="Password"
-              textContentType="password"
-              secureTextEntry={true}
-            />
-            */}
+                placeholder="Experience"
+
+                /* width="80%" */
+              />
+            )}
 
             <SubmitButton title="SAVE" />
           </AppForm>

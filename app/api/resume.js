@@ -1,12 +1,5 @@
 import client from "./client";
 
-//const endpoint = "/jobs/list";
-
-//const getJobListings = () => client.get(endpoint);
-
-//const getJobDetails = () => client.get("jobs/1".id);
-
-//const getJobFavList = (id) => client.get("jobs/fav/".id);
 const getResumeDataSingle = (currrentUser) =>
   client.post("/resume", { id: currrentUser });
 

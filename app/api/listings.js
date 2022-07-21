@@ -1,18 +1,34 @@
 import client from "./client";
 
-const endpoint = "/jobs/list/";
+const endpoint = "/listings";
 
-const getJobListings = () => client.get(endpoint);
+const getListings = () => client.get(endpoint);
 
-const getJobDetails = ($id) => client.get("jobs/".$id);
+const addListing = (listing, onUploadProgress) => {
+  const data = new FormData();
+  data.append("title", listing.title);
+  data.append("price", listing.price);
+  data.append("categoryId", listing.category.value);
+  data.append("description", listing.description);
 
-const getJobFavList = ($id) => client.get("jobs/fav/".$id);
+  listing.images.forEach((image, index) =>
+    data.append("images", {
+      name: "name" + index,
+      type: "image/jpeg",
+      uri: image,
+    })
+  );
+  if (listing.location)
+    data.append("location", JSON.stringify(listing.location));
 
-const getJobSearchReults = ($word) => client.post("jobs/search/".$word);
+  return client.post(endpoint, data, {
+    onUploadProgress: (progress) =>
+      onUploadProgress(progress.loaded / progress.total),
+    //console.log(progress),
+  });
+};
 
 export default {
-  getJobListings,
-  getJobDetails,
-  getJobFavList,
-  getJobSearchReults,
+  getListings,
+  addListing,
 };

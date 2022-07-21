@@ -18,12 +18,13 @@ export default useAuth = () => {
   const logIn = async (authToken) => {
     // console.log(authToken);
     authStorage.storeToken(authToken);
-
+    // console.log(authToken);
     const profile = await userRetrive(authToken);
+    // console.log(profile);
     if (!profile.ok) return;
     // console.log(profile);
     // const user = jwtDecode(authToken);
     setUser(profile.data);
-  };;
+  };
   return { user, logIn, logOut };
 };;

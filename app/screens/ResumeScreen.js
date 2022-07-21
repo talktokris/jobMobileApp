@@ -11,7 +11,7 @@ import routes from "../navigation/routes";
 import resume from "../api/resume";
 import settings from "../config/setting";
 import ActivityIndicator from "../components/ActivityIndicator";
-
+import userUpdate from "../api/userUpdate";
 
 function ResumeScreen({ navigation }) {
   const { user, logOut } = useAuth();
@@ -20,10 +20,19 @@ function ResumeScreen({ navigation }) {
 
   const [isLoading, setLoading] = useState(true);
   const [users, setUsers] = useState(null);
-
+  /*
   useEffect(() => {
     getData();
   }, []);
+
+  */
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      getData();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   const getData = useCallback(() => {
     setLoading(true); // Start the loader, So when you start fetching data, you can display loading UI
@@ -38,41 +47,30 @@ function ResumeScreen({ navigation }) {
         // display error
         setLoading(false); // stop the loader
       });
-    // or your any data fetching query
-    // setUsers(getProfileApi.data);
-    // setLoading(false);
   }, []);
-  // const currrentUser = 2;
 
-  // const [search, setSearch] = useState(0);
-  /*
-  const getListingsAPi = useApi(resume.getResumeData, { currrentUser });
+  // Delete Skill Item
+  const clickSkillDelete = async (id) => {
+    // console.log(id);
 
-  useEffect(() => {
-    getListingsAPi.request(currrentUser);
-  }, []);
-*/
-  // console.log(users.id);
-  //console.log("hi");
-  // console.log(users.data[0]);
-  //idSetValue = users.data[0].id;
+    const result = await userUpdate.skillDelete(id);
+    // console.log(result);
+    if (!result.ok) return;
+    if (!result.data) {
+      // console.log(data);
+    } else if (result.data.status == "success") {
+      const messageSend = result.data.message;
+      navigation.navigate(routes.PRO_DONE, { message: messageSend });
+    } else {
+    }
+  };
 
-  // const users.data[0] = users.data[0];
   return (
     <>
       <ActivityIndicator visible={isLoading} />
       {!isLoading && users && (
         <Screen>
           <ScrollView>
-            {/* 
-          {!isLoading && users && (
-            <View>
-              <Text>Email : {}</Text>
-              <Text>Name : {users.data[0].id}</Text>
-            </View>
-          )}
-          */}
-
             <ProfileBasic
               name={
                 users.data[0].firstName +
@@ -139,9 +137,7 @@ function ResumeScreen({ navigation }) {
                 onPressUpdate={() =>
                   navigation.navigate(routes.PRO_SKILL, users.data[0].id)
                 }
-                onPressDelete={() =>
-                  navigation.navigate(routes.PRO_SKILL, users.data[0].id)
-                }
+                onPressDelete={() => clickSkillDelete(d.id)}
               />
             ))}
 

@@ -8,6 +8,7 @@ import ResumeExperienceScreen from "../screens/ResumeExperienceScreen";
 import ResumePersonalScreen from "../screens/ResumePersonalScreen";
 import ResumeJobPreferences from "../screens/ResumeJobPreferences";
 import ResumeTrainingScreen from "../screens/ResumeTrainingScreen";
+import ComplitedScreen from "../screens/ComplitedScreen";
 
 const Stack = createStackNavigator();
 
@@ -21,6 +22,7 @@ const ResumeNavigator = () => (
     <Stack.Screen name="Personal Details" component={ResumePersonalScreen} />
     <Stack.Screen name="Job Preferences" component={ResumeJobPreferences} />
     <Stack.Screen name="Training" component={ResumeTrainingScreen} />
+    <Stack.Screen name="Done" component={ComplitedScreen} />
   </Stack.Navigator>
 );
 
