@@ -44,10 +44,14 @@ const validationSchema = Yup.object().shape({
   // endDate: Yup.string().required().min(4).label("To Date"),
 });
 
-const maxDate = moment().subtract(1, "days").format("DD-MM-YYYY");
-const minDate = moment().subtract(50, "years").format("DD-MM-YYYY");
+//const maxDate = moment().subtract(1, "days").format("DD-MM-YYYY");
+//const minDate = moment().subtract(50, "years").format("DD-MM-YYYY");
 
-function ResumeTraining({ navigation }) {
+function ResumeTrainingScreenEdit({ route, navigation }) {
+  const listing = route.params.item;
+  const fromDate = route.params.item.trn.startDate.split("-");
+  const toDate = route.params.item.trn.endDate.split("-");
+  // console.log(fromDate);
   const { user, logOut } = useAuth();
   const currrentUser = user.id;
   const [error, setError] = useState();
@@ -93,7 +97,11 @@ function ResumeTraining({ navigation }) {
   const skillApi = useApi(userUpdate.skillCreate);
 
   const handleSubmit = async (userInfo) => {
-    const result = await userUpdate.trainingCreate(userInfo, currrentUser);
+    const result = await userUpdate.trainingUpdate(
+      userInfo,
+      currrentUser,
+      route.params.item.trn.id
+    );
     if (!result.ok) return;
     if (!result.data) {
       setEstatus(true);
@@ -121,13 +129,15 @@ function ResumeTraining({ navigation }) {
 
             <AppForm
               initialValues={{
-                name: "",
-                org: "",
-                country: "",
-                fromYear: "",
-                fromMonth: "",
-                toYear: "",
-                toMonth: "",
+                name: route.params.item.trn.name,
+                org: route.params.item.trn.org,
+                country: route.params.item.trn.country,
+                fromYear: fromDate[1],
+                fromMonth: fromDate[0],
+                toYear: toDate[1],
+                toMonth: toDate[0],
+                // startDate: route.params.item.tn.name,
+                //endDate: route.params.item.tn.name,
               }}
               onSubmit={handleSubmit}
               validationSchema={validationSchema}
@@ -255,4 +265,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ResumeTraining;
+export default ResumeTrainingScreenEdit;

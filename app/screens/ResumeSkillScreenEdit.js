@@ -12,6 +12,7 @@ import {
   AppFormPicker,
 } from "../components/forms";
 import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
+
 import routes from "../navigation/routes";
 import CategoryPickerItem from "../components/CategoryPickerItem";
 import usersApi from "../api/users";
@@ -27,20 +28,21 @@ import setList from "../api/setList";
 import userUpdate from "../api/userUpdate";
 
 const validationSchema = Yup.object().shape({
-  language_name: Yup.object().required().nullable().label("Language"),
-  language_level: Yup.object().required().nullable().label("Language Level"),
+  skillName: Yup.string().required().min(2).label("Skill Name"),
+  skill_level: Yup.object().required().nullable().label("Skill Level"),
   //  skill_level: Yup.object().required().nullable().label("Skill Level"),
   // skillName: Yup.string().required().min(4).label("Password"),
 });
 
-function ResumeLanguageScreen({ navigation }) {
+function ResumeSkillScreenEdit({ route, navigation }) {
+  const listing = route.params.item;
+  //console.log(route.params.item.d);
   const { user, logOut } = useAuth();
   const currrentUser = user.id;
   const [error, setError] = useState();
   const [eStatus, setEstatus] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [skillLevel, setskillLevel] = useState(null);
-  const [skill, setSkill] = useState(null);
 
   useEffect(() => {
     getData();
@@ -50,22 +52,9 @@ function ResumeLanguageScreen({ navigation }) {
     setLoading(true); // Start the loader, So when you start fetching data, you can display loading UI
     // useApi(resume.getResumeData, { currrentUser });
     setList
-      .languageLevel()
+      .skillLevel()
       .then((data) => {
         setskillLevel(data.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        // display error
-        setLoading(false); // stop the loader
-      });
-
-    // Fatching Skill Data
-    setLoading(true);
-    setList
-      .language()
-      .then((data) => {
-        setSkill(data.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -81,7 +70,11 @@ function ResumeLanguageScreen({ navigation }) {
  
 */
   const handleSubmit = async (userInfo) => {
-    const result = await userUpdate.languageCreate(userInfo, currrentUser);
+    const result = await userUpdate.skillUpdate(
+      userInfo,
+      currrentUser,
+      route.params.item.d.id
+    );
     if (!result.ok) return;
     if (!result.data) {
       setEstatus(true);
@@ -108,31 +101,29 @@ function ResumeLanguageScreen({ navigation }) {
           <ErrorMessage error={error} visible={eStatus} />
 
           <AppForm
-            initialValues={{ language_name: "", language_level: "" }}
+            initialValues={{
+              skillName: route.params.item.d.skillName,
+              skill_level: route.params.item.d.skill_level,
+            }}
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
           >
-            {!isLoading && skillLevel && (
-              <AppFormPicker
-                items={skill}
-                name="language_name"
-                /* numberOfColumns={2} */
-                /* PickerItemComponent={PickerItem} */
-
-                placeholder="Language Name"
-
-                /* width="80%" */
-              />
-            )}
+            <AppFormField
+              name="skillName"
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholder="Skill Name"
+              lebel="EX: C++, Java, Electrician ,Plumber..."
+            />
 
             {!isLoading && skillLevel && (
               <AppFormPicker
                 items={skillLevel}
-                name="language_level"
+                name="skill_level"
                 /* numberOfColumns={2} */
                 /* PickerItemComponent={PickerItem} */
 
-                placeholder="Language Name"
+                placeholder="Experience"
 
                 /* width="80%" */
               />
@@ -165,4 +156,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ResumeLanguageScreen;
+export default ResumeSkillScreenEdit;

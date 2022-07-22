@@ -32,20 +32,23 @@ import fonts from "../config/fonts";
 import { ScrollView } from "react-native";
 
 const validationSchema = Yup.object().shape({
-  post: Yup.string().required().min(4).label("Job Title"),
-  company: Yup.string().required().min(4).label("Company Name"),
-  country: Yup.object().required().nullable().label("Country"),
-  fromYear: Yup.number().required().min(1850).label("From Year"),
-  fromMonth: Yup.object().required().nullable().label("From Month"),
-  toYear: Yup.number().required().min(1850).label("From Year"),
-  toMonth: Yup.object().required().nullable().label("To Month"),
+  firstName: Yup.string().required().min(2).label("First Name"),
+  middleName: Yup.string().required().min(2).label("Middle Name"),
+  lastName: Yup.string().required().min(2).label("Last Name"),
+  profile_type: Yup.object().required().nullable().label("Profile Type"),
+  sex: Yup.object().required().nullable().label("Gender"),
+  year: Yup.number().required().min(1850).label("Year"),
+  month: Yup.object().required().nullable().label("Month"),
+  day: Yup.object().required().nullable().label("Day"),
+  mobileNo: Yup.number().required().label("Moble No"),
 });
 const maxDate = moment().subtract(1, "days").format("DD-MM-YYYY");
 const minDate = moment().subtract(50, "years").format("DD-MM-YYYY");
 
-function ResumeExperienceScreen({ navigation }) {
+function ResumeBasicInfoEdit({ route, navigation }) {
   const { user, logOut } = useAuth();
   const currrentUser = user.id;
+  const dob = user.dob.split("-");
   const [error, setError] = useState();
   const [eStatus, setEstatus] = useState(false);
   const [isLoading, setLoading] = useState(true);
@@ -72,6 +75,16 @@ function ResumeExperienceScreen({ navigation }) {
       });
   }, []);
 
+  const profileSet = [
+    { id: 1, title: "Professional" },
+    { id: 2, title: "Skill People" },
+    { id: 3, title: "General Worker" },
+  ];
+
+  const sexSet = [
+    { id: 1, title: "Male" },
+    { id: 2, title: "Female" },
+  ];
   const monthData = [
     { id: 1, title: "January" },
     { id: 2, title: "February" },
@@ -87,10 +100,48 @@ function ResumeExperienceScreen({ navigation }) {
     { id: 12, title: "December" },
   ];
 
+  const dayData = [
+    { id: 1, title: 1 },
+    { id: 2, title: 2 },
+    { id: 3, title: 3 },
+    { id: 4, title: 4 },
+    { id: 5, title: 5 },
+    { id: 6, title: 6 },
+    { id: 7, title: 7 },
+    { id: 8, title: 8 },
+    { id: 9, title: 9 },
+    { id: 10, title: 10 },
+    { id: 11, title: 11 },
+    { id: 12, title: 12 },
+    { id: 13, title: 13 },
+    { id: 14, title: 14 },
+    { id: 15, title: 15 },
+    { id: 16, title: 16 },
+    { id: 17, title: 17 },
+    { id: 18, title: 18 },
+    { id: 19, title: 19 },
+    { id: 20, title: 20 },
+    { id: 21, title: 21 },
+    { id: 22, title: 22 },
+    { id: 23, title: 23 },
+    { id: 24, title: 24 },
+    { id: 25, title: 25 },
+    { id: 26, title: 26 },
+    { id: 27, title: 27 },
+    { id: 28, title: 28 },
+    { id: 29, title: 29 },
+    { id: 30, title: 30 },
+    { id: 31, title: 31 },
+  ];
+
   const handleSubmit = async (userInfo) => {
     // console.log(userInfo);
 
-    const result = await userUpdate.experienceCreate(userInfo, currrentUser);
+    const result = await userUpdate.userBasicUpdate(
+      userInfo,
+      currrentUser,
+      currrentUser
+    );
     if (!result.ok) return;
     if (!result.data) {
       setEstatus(true);
@@ -118,94 +169,107 @@ function ResumeExperienceScreen({ navigation }) {
 
             <AppForm
               initialValues={{
-                post: "",
-                company: "",
-                country: "",
-                fromYear: "",
-                fromMonth: "",
-                toYear: "",
-                toMonth: "",
+                firstName: user.firstName,
+                middleName: user.middleName,
+                lastName: user.lastName,
+                profile_type: user.profile_type,
+                sex: user.sex,
+                year: dob[0],
+                month: dob[1],
+                day: dob[2],
+                mobileNo: user.mobileNo,
               }}
               onSubmit={handleSubmit}
               validationSchema={validationSchema}
             >
-              <AppFormField
-                name="post"
-                autoCapitalize="none"
-                autoCorrect={false}
-                placeholder="Job Title"
-              />
-              <AppFormField
-                name="company"
-                autoCapitalize="none"
-                autoCorrect={false}
-                placeholder="Company Name"
-              />
-
-              {!isLoading && skillLevel && (
-                <AppFormPicker
-                  items={skillLevel}
-                  name="country"
-                  /* numberOfColumns={2} */
-                  /* PickerItemComponent={PickerItem} */
-
-                  placeholder="Country"
-
-                  /* width="80%" */
-                />
-              )}
-
-              <Text style={styles.lebel}>From Date : </Text>
+              <Text style={styles.lebel}>Name : </Text>
               <View style={styles.dateContainer}>
                 <View style={styles.childLeft}>
+                  <View style={styles.dateContainer}>
+                    <View style={styles.childLeftSub}>
+                      <AppFormField
+                        name="firstName"
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        placeholder="First Name"
+                      />
+                    </View>
+                    <View style={styles.childRightSub}>
+                      <AppFormField
+                        name="middleName"
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        placeholder="Middle Name"
+                      />
+                    </View>
+                  </View>
+                </View>
+                <View style={styles.childRight}>
                   <AppFormField
-                    name="fromYear"
+                    name="lastName"
                     autoCapitalize="none"
                     autoCorrect={false}
-                    placeholder="Year"
-                    keyboardType="numeric"
-                    maxLength={4}
-                  />
-                </View>
-
-                <View style={styles.childRight}>
-                  <AppFormPicker
-                    items={monthData}
-                    name="fromMonth"
-                    /* numberOfColumns={2} */
-                    /* PickerItemComponent={PickerItem} */
-
-                    placeholder="Month"
-
-                    /* width="80%" */
+                    placeholder="Last Name"
                   />
                 </View>
               </View>
 
-              <Text style={styles.lebel}>To Date : </Text>
               <View style={styles.dateContainer}>
-                <View style={styles.childLeft}>
-                  <AppFormField
-                    name="toYear"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    placeholder="Year"
-                    keyboardType="numeric"
-                    maxLength={4}
-                  />
-                </View>
-
-                <View style={styles.childRight}>
+                <View style={styles.childLeftSub}>
                   <AppFormPicker
-                    items={monthData}
-                    name="toMonth"
+                    items={profileSet}
+                    name="profile_type"
                     /* numberOfColumns={2} */
                     /* PickerItemComponent={PickerItem} */
 
-                    placeholder="Month"
-
-                    /* width="80%" */
+                    placeholder="Profile Type"
                   />
+                </View>
+                <View style={styles.childRightSub}>
+                  <AppFormPicker
+                    items={sexSet}
+                    name="sex"
+                    /* numberOfColumns={2} */
+                    /* PickerItemComponent={PickerItem} */
+
+                    placeholder="Gender"
+                  />
+                </View>
+              </View>
+              <AppFormField
+                name="mobileNo"
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="Mobile No"
+                keyboardType="numeric"
+                maxLength={11}
+                lebel="Mobile No :"
+              />
+              <Text style={styles.lebel}>Date of Birth : </Text>
+              <View style={styles.dateContainer}>
+                <View style={styles.childLeft}>
+                  <View style={styles.dateContainer}>
+                    <View style={styles.childLeftSub}>
+                      <AppFormField
+                        name="year"
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        placeholder="year"
+                        keyboardType="numeric"
+                        maxLength={4}
+                      />
+                    </View>
+                    <View style={styles.childRightSub}>
+                      <AppFormPicker
+                        items={monthData}
+                        name="month"
+                        placeholder="Month"
+                      />
+                    </View>
+                  </View>
+                </View>
+                <View style={styles.childRight}>
+                  <AppFormPicker items={dayData} name="day" placeholder="Day" />
                 </View>
               </View>
 
@@ -240,8 +304,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
   },
-  childLeft: { width: "50%" },
-  childRight: { width: "50%" },
+  childLeft: { width: "70%" },
+  childRight: { width: "30%" },
+  childLeftSub: { width: "50%" },
+  childRightSub: { width: "50%" },
   lebel: {
     fontSize: 16,
     fontFamily: Platform.OS === "android" ? fonts.android : fonts.ios,
@@ -252,4 +318,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ResumeExperienceScreen;
+export default ResumeBasicInfoEdit;

@@ -24,159 +24,145 @@ import colors from "../config/colors";
 import AppAutoComplete from "../components/AppAutoComplete";
 import AppFormAutoComplete from "../components/forms/AppFormAutoComplete";
 import AppFormDatePicker from "../components/forms/AppFormDatePicker";
+import setting from "../config/setting";
+import setList from "../api/setList";
+import userUpdate from "../api/userUpdate";
+import routes from "../navigation/routes";
+import fonts from "../config/fonts";
+import { ScrollView } from "react-native";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required().min(4).label("Name"),
-  email: Yup.string().required().email().label("Email"),
-  password: Yup.string().required().min(4).label("Password"),
+  industry: Yup.string().required().min(4).label("Job Industry"),
+  function: Yup.string().required().min(4).label("Job Function"),
+  country: Yup.object().required().nullable().label("Country"),
+  city: Yup.string().required().min(4).label("City"),
+  type: Yup.object().required().nullable().label("Type"),
 });
-
 const maxDate = moment().subtract(1, "days").format("DD-MM-YYYY");
 const minDate = moment().subtract(50, "years").format("DD-MM-YYYY");
 
 function ResumeJobPreferences({ navigation }) {
+  const { user, logOut } = useAuth();
+  const currrentUser = user.id;
   const [error, setError] = useState();
-  const [MainJSON, setMainJSON] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [eStatus, setEstatus] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+  const [skillLevel, setskillLevel] = useState(null);
+  const [educationLevel, setEducationLevel] = useState(null);
   const [date, setDate] = useState("");
-  const languagesData = [
-    { id: 1, title: "O/N Level" },
-    { id: 2, title: "A-Level" },
-    { id: 3, title: "Secondry School(SLC)" },
-    { id: 4, title: "High School" },
-    { id: 5, title: "Vocational/Diploma" },
-    { id: 6, title: "Bachelor" },
-    { id: 7, title: "Master" },
-    { id: 8, title: "Phd" },
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = useCallback(() => {
+    setLoading(true); // Start the loader, So when you start fetching data, you can display loading UI
+    // useApi(resume.getResumeData, { currrentUser });
+    setList
+      .country()
+      .then((data) => {
+        setskillLevel(data.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        // display error
+        setLoading(false); // stop the loader
+      });
+  }, []);
+
+  const monthData = [
+    { id: 1, title: "Part Time" },
+    { id: 2, title: "Full Time" },
   ];
-
-  const experienceData = [
-    { value: 1, lebel: "No experience" },
-    { value: 2, lebel: "Basic" },
-    { value: 3, lebel: "Intermediate" },
-    { value: 4, lebel: "Advanced" },
-    { value: 5, lebel: "Fluent" },
-  ];
-
-  /*
-  const registerApi = useApi(usersApi.register);
-  const loginApi = useApi(authApi.login);
-
-  const auth = useAuth();
- 
 
   const handleSubmit = async (userInfo) => {
-    const result = await registerApi.request(userInfo);
-    if (!result.ok) {
-      if (result.data) setError(result.data.error);
-      else {
-        setError("An unexpedted error occurred");
-        console.log(result);
-      }
-      return;
-    }
+    // console.log(userInfo);
 
-    const { data: authToken } = await loginApi.request(
-      userInfo.email,
-      userInfo.password
-    );
-    auth.logIn(authToken);
+    const result = await userUpdate.jobPreferenceCreate(userInfo, currrentUser);
+    if (!result.ok) return;
+    if (!result.data) {
+      setEstatus(true);
+      setError(
+        "Unable to connect to server. Please check your Internet connection"
+      );
+    } else if (result.data.status != "success") {
+      setEstatus(true);
+      setError(result.data.message);
+    } else if (result.data.status == "success") {
+      const messageSend = result.data.message;
+      navigation.navigate(routes.PRO_DONE, { message: messageSend });
+    } else {
+      setEstatus(true);
+      setError("Unknown error");
+    }
   };
-*/
   return (
     <>
-      {/* <ActivityIndicator visible={registerApi.loading || loginApi.loading} /> */}
+      <ActivityIndicator visible={isLoading} />
       <Screen>
-        <View style={styles.container}>
-          {/*  <ErrorMessage error={error} visible={setError} /> */}
+        <ScrollView>
+          <View style={styles.container}>
+            <ErrorMessage error={error} visible={eStatus} />
 
-          <AppForm
-            initialValues={{ name: "", email: "", password: "" }}
-            onSubmit={() => console.log("clicked")}
-            validationSchema={validationSchema}
-          >
-            <AppFormField
-              name="positionLevel"
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholder="Position Title"
-            />
+            <AppForm
+              initialValues={{
+                industry: "",
+                function: "",
+                country: "",
+                city: "",
+                type: "",
+              }}
+              onSubmit={handleSubmit}
+              validationSchema={validationSchema}
+            >
+              <AppFormField
+                name="industry"
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="Job Industry"
+              />
+              <AppFormField
+                name="function"
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="Job Function"
+              />
 
-            <AppFormField
-              name="organizationName"
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholder="Company Name"
-              textContentType="emailAddress"
-            />
+              {!isLoading && skillLevel && (
+                <AppFormPicker
+                  items={skillLevel}
+                  name="country"
+                  /* numberOfColumns={2} */
+                  /* PickerItemComponent={PickerItem} */
 
-            <AppFormDatePicker
-              name="fromDate"
-              width="60%"
-              mode="date" //The enum of date, datetime and time
-              format="DD-MM-YYYY"
-              minDate={minDate}
-              maxDate={maxDate}
-              placeholder="From Date"
-            />
+                  placeholder="Country"
 
-            <AppFormDatePicker
-              name="toDate"
-              width="60%"
-              mode="date" //The enum of date, datetime and time
-              format="DD-MM-YYYY"
-              minDate={minDate}
-              maxDate={maxDate}
-              placeholder="From Date"
-            />
+                  /* width="80%" */
+                />
+              )}
 
-            <AppFormField
-              maxLength={255}
-              multiline
-              name="description"
-              numberOfLines={4}
-              placeholder="Enter your responsibilities and achievements"
-            />
-            {/*
-            <AutocompleteDropdown
-              clearOnFocus={false}
-              closeOnBlur={true}
-              inputContainerStyle={styles.autoComText}
-              closeOnSubmit={false}
-              initialValue={{ id: "2" }} // or just '2'
-              onSelectItem={setSelectedItem}
-              dataSet={MainJSON}
-            />
-        
-            {/* 
-          
-         
-            <AppFormField
-              name="email"
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="email"
-              keyboardType="email-address"
-              placeholder="Email"
-              lebel="Email Address"
-              textContentType="emailAddress"
-            />
+              <AppFormField
+                name="city"
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="City"
+              />
 
-            <AppFormField
-              name="password"
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="lock"
-              placeholder="Password"
-              lebel="Password"
-              textContentType="password"
-              secureTextEntry={true}
-            />
-            */}
+              <AppFormPicker
+                items={monthData}
+                name="type"
+                /* numberOfColumns={2} */
+                /* PickerItemComponent={PickerItem} */
 
-            <SubmitButton title="SAVE" />
-          </AppForm>
-        </View>
+                placeholder="Type"
+
+                /* width="80%" */
+              />
+
+              <SubmitButton title="SAVE" />
+            </AppForm>
+          </View>
+        </ScrollView>
       </Screen>
     </>
   );
@@ -198,6 +184,21 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     marginVertical: 10,
+  },
+  dateContainer: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  childLeft: { width: "50%" },
+  childRight: { width: "50%" },
+  lebel: {
+    fontSize: 16,
+    fontFamily: Platform.OS === "android" ? fonts.android : fonts.ios,
+    fontWeight: "600",
+    paddingTop: 10,
+    paddingLeft: 10,
+    color: colors.medium,
   },
 });
 

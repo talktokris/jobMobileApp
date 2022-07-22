@@ -24,158 +24,222 @@ import colors from "../config/colors";
 import AppAutoComplete from "../components/AppAutoComplete";
 import AppFormAutoComplete from "../components/forms/AppFormAutoComplete";
 import AppFormDatePicker from "../components/forms/AppFormDatePicker";
+import setting from "../config/setting";
+import setList from "../api/setList";
+import userUpdate from "../api/userUpdate";
+import routes from "../navigation/routes";
+import fonts from "../config/fonts";
+import { ScrollView } from "react-native";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required().min(4).label("Name"),
-  email: Yup.string().required().email().label("Email"),
-  password: Yup.string().required().min(4).label("Password"),
+  level: Yup.object().required().nullable().label("Education Level"),
+  school: Yup.string().required().min(4).label("School / University Name"),
+  country: Yup.object().required().nullable().label("Country"),
+  subject: Yup.string().required().min(4).label("Subject / Faculty"),
+  fromYear: Yup.number().required().min(1850).label("From Year"),
+  fromMonth: Yup.object().required().nullable().label("From Month"),
+  toYear: Yup.number().required().min(1850).label("From Year"),
+  toMonth: Yup.object().required().nullable().label("To Month"),
 });
-
 const maxDate = moment().subtract(1, "days").format("DD-MM-YYYY");
 const minDate = moment().subtract(50, "years").format("DD-MM-YYYY");
 
 function ResumeEducationScreen({ navigation }) {
+  const { user, logOut } = useAuth();
+  const currrentUser = user.id;
   const [error, setError] = useState();
-  const [MainJSON, setMainJSON] = useState([]);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [eStatus, setEstatus] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+  const [skillLevel, setskillLevel] = useState(null);
+  const [educationLevel, setEducationLevel] = useState(null);
   const [date, setDate] = useState("");
-  const languagesData = [
-    { id: 1, title: "O/N Level" },
-    { id: 2, title: "A-Level" },
-    { id: 3, title: "Secondry School(SLC)" },
-    { id: 4, title: "High School" },
-    { id: 5, title: "Vocational/Diploma" },
-    { id: 6, title: "Bachelor" },
-    { id: 7, title: "Master" },
-    { id: 8, title: "Phd" },
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = useCallback(() => {
+    setLoading(true); // Start the loader, So when you start fetching data, you can display loading UI
+    // useApi(resume.getResumeData, { currrentUser });
+    setList
+      .country()
+      .then((data) => {
+        setskillLevel(data.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        // display error
+        setLoading(false); // stop the loader
+      });
+
+    setList
+      .education()
+      .then((data) => {
+        setEducationLevel(data.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        // display error
+        setLoading(false); // stop the loader
+      });
+  }, []);
+
+  const monthData = [
+    { id: 1, title: "January" },
+    { id: 2, title: "February" },
+    { id: 3, title: "March" },
+    { id: 4, title: "April" },
+    { id: 5, title: "May" },
+    { id: 6, title: "June" },
+    { id: 7, title: "July" },
+    { id: 8, title: "August" },
+    { id: 9, title: "September" },
+    { id: 10, title: "October" },
+    { id: 11, title: "November" },
+    { id: 12, title: "December" },
   ];
-
-  const experienceData = [
-    { value: 1, lebel: "No experience" },
-    { value: 2, lebel: "Basic" },
-    { value: 3, lebel: "Intermediate" },
-    { value: 4, lebel: "Advanced" },
-    { value: 5, lebel: "Fluent" },
-  ];
-
-  /*
-  const registerApi = useApi(usersApi.register);
-  const loginApi = useApi(authApi.login);
-
-  const auth = useAuth();
- 
 
   const handleSubmit = async (userInfo) => {
-    const result = await registerApi.request(userInfo);
-    if (!result.ok) {
-      if (result.data) setError(result.data.error);
-      else {
-        setError("An unexpedted error occurred");
-        console.log(result);
-      }
-      return;
-    }
+    //console.log(userInfo);
 
-    const { data: authToken } = await loginApi.request(
-      userInfo.email,
-      userInfo.password
-    );
-    auth.logIn(authToken);
+    const result = await userUpdate.educationCreate(userInfo, currrentUser);
+    if (!result.ok) return;
+    if (!result.data) {
+      setEstatus(true);
+      setError(
+        "Unable to connect to server. Please check your Internet connection"
+      );
+    } else if (result.data.status != "success") {
+      setEstatus(true);
+      setError(result.data.message);
+    } else if (result.data.status == "success") {
+      const messageSend = result.data.message;
+      navigation.navigate(routes.PRO_DONE, { message: messageSend });
+    } else {
+      setEstatus(true);
+      setError("Unknown error");
+    }
   };
-*/
+
   return (
     <>
-      {/* <ActivityIndicator visible={registerApi.loading || loginApi.loading} /> */}
+      <ActivityIndicator visible={isLoading} />
       <Screen>
-        <View style={styles.container}>
-          {/*  <ErrorMessage error={error} visible={setError} /> */}
+        <ScrollView>
+          <View style={styles.container}>
+            <ErrorMessage error={error} visible={eStatus} />
 
-          <AppForm
-            initialValues={{ name: "", email: "", password: "" }}
-            onSubmit={() => console.log("clicked")}
-            validationSchema={validationSchema}
-          >
-            <AppFormAutoComplete
-              dataSet={languagesData}
-              name="educationName"
-              placeHolderText="Education Level"
-            />
+            <AppForm
+              initialValues={{
+                level: "",
+                school: "",
+                country: "",
+                subject: "",
+                fromYear: "",
+                fromMonth: "",
+                toYear: "",
+                toMonth: "",
+              }}
+              onSubmit={handleSubmit}
+              validationSchema={validationSchema}
+            >
+              {!isLoading && educationLevel && (
+                <AppFormPicker
+                  items={educationLevel}
+                  name="level"
+                  /* numberOfColumns={2} */
+                  /* PickerItemComponent={PickerItem} */
 
-            <AppFormField
-              name="organizationName"
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholder="Organization Name"
-              textContentType="emailAddress"
-            />
+                  placeholder="Educaion Level"
 
-            <AppFormDatePicker
-              name="fromDate"
-              width="60%"
-              mode="date" //The enum of date, datetime and time
-              format="DD-MM-YYYY"
-              minDate={minDate}
-              maxDate={maxDate}
-              placeholder="From Date"
-            />
+                  /* width="80%" */
+                />
+              )}
+              <AppFormField
+                name="school"
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="School / University Name"
+              />
 
-            <AppFormDatePicker
-              name="toDate"
-              width="60%"
-              mode="date" //The enum of date, datetime and time
-              format="DD-MM-YYYY"
-              minDate={minDate}
-              maxDate={maxDate}
-              placeholder="From Date"
-            />
+              {!isLoading && skillLevel && (
+                <AppFormPicker
+                  items={skillLevel}
+                  name="country"
+                  /* numberOfColumns={2} */
+                  /* PickerItemComponent={PickerItem} */
 
-            <AppFormField
-              maxLength={255}
-              multiline
-              name="description"
-              numberOfLines={4}
-              placeholder="Details about education"
-            />
-            {/*
-            <AutocompleteDropdown
-              clearOnFocus={false}
-              closeOnBlur={true}
-              inputContainerStyle={styles.autoComText}
-              closeOnSubmit={false}
-              initialValue={{ id: "2" }} // or just '2'
-              onSelectItem={setSelectedItem}
-              dataSet={MainJSON}
-            />
-        
-            {/* 
-          
-         
-            <AppFormField
-              name="email"
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="email"
-              keyboardType="email-address"
-              placeholder="Email"
-              lebel="Email Address"
-              textContentType="emailAddress"
-            />
+                  placeholder="Country"
 
-            <AppFormField
-              name="password"
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="lock"
-              placeholder="Password"
-              lebel="Password"
-              textContentType="password"
-              secureTextEntry={true}
-            />
-            */}
+                  /* width="80%" */
+                />
+              )}
 
-            <SubmitButton title="SAVE" />
-          </AppForm>
-        </View>
+              <AppFormField
+                name="subject"
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="Subject / Faculty"
+              />
+
+              <Text style={styles.lebel}>From Date : </Text>
+              <View style={styles.dateContainer}>
+                <View style={styles.childLeft}>
+                  <AppFormField
+                    name="fromYear"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    placeholder="Year"
+                    keyboardType="numeric"
+                    maxLength={4}
+                  />
+                </View>
+
+                <View style={styles.childRight}>
+                  <AppFormPicker
+                    items={monthData}
+                    name="fromMonth"
+                    /* numberOfColumns={2} */
+                    /* PickerItemComponent={PickerItem} */
+
+                    placeholder="Month"
+
+                    /* width="80%" */
+                  />
+                </View>
+              </View>
+
+              <Text style={styles.lebel}>To Date : </Text>
+              <View style={styles.dateContainer}>
+                <View style={styles.childLeft}>
+                  <AppFormField
+                    name="toYear"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    placeholder="Year"
+                    keyboardType="numeric"
+                    maxLength={4}
+                  />
+                </View>
+
+                <View style={styles.childRight}>
+                  <AppFormPicker
+                    items={monthData}
+                    name="toMonth"
+                    /* numberOfColumns={2} */
+                    /* PickerItemComponent={PickerItem} */
+
+                    placeholder="Month"
+
+                    /* width="80%" */
+                  />
+                </View>
+              </View>
+
+              <SubmitButton title="SAVE" />
+            </AppForm>
+          </View>
+        </ScrollView>
       </Screen>
     </>
   );
@@ -197,6 +261,21 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     marginVertical: 10,
+  },
+  dateContainer: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  childLeft: { width: "50%" },
+  childRight: { width: "50%" },
+  lebel: {
+    fontSize: 16,
+    fontFamily: Platform.OS === "android" ? fonts.android : fonts.ios,
+    fontWeight: "600",
+    paddingTop: 10,
+    paddingLeft: 10,
+    color: colors.medium,
   },
 });
 

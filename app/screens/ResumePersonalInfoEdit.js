@@ -29,31 +29,31 @@ import setList from "../api/setList";
 import userUpdate from "../api/userUpdate";
 import routes from "../navigation/routes";
 import fonts from "../config/fonts";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView } from "react-native";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required().min(4).label("Training Name"),
-  org: Yup.string().required().min(4).label("Organization Name"),
-  country: Yup.object().required().nullable().label("Country"),
-  fromYear: Yup.number().required().min(1850).label("From Year"),
-  fromMonth: Yup.object().required().nullable().label("From Month"),
-
-  toYear: Yup.number().required().min(1850).label("From Year"),
-  toMonth: Yup.object().required().nullable().label("To Month"),
-  // startDate: Yup.string().required().min(4).label("From Date"),
-  // endDate: Yup.string().required().min(4).label("To Date"),
+  nationality: Yup.object().required().nullable().label("Nationality"),
+  countryLiveIn: Yup.object().required().nullable().label("Country LiveIn"),
+  maritalStatus: Yup.object().required().nullable().label("Marital Status"),
+  religion: Yup.object().required().nullable().label("Religion"),
+  weight: Yup.number().required().min(25).label("Weight"),
+  feet: Yup.object().required().nullable().label("Feet"),
+  inches: Yup.object().required().nullable().label("Inches"),
 });
-
 const maxDate = moment().subtract(1, "days").format("DD-MM-YYYY");
 const minDate = moment().subtract(50, "years").format("DD-MM-YYYY");
 
-function ResumeTraining({ navigation }) {
+function ResumePersonalInfoEdit({ route, navigation }) {
+  const listing = route.params.item;
   const { user, logOut } = useAuth();
   const currrentUser = user.id;
+  const height = user.height.split("-");
+
   const [error, setError] = useState();
   const [eStatus, setEstatus] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [skillLevel, setskillLevel] = useState(null);
+  const [educationLevel, setEducationLevel] = useState(null);
   const [date, setDate] = useState("");
 
   useEffect(() => {
@@ -75,6 +75,31 @@ function ResumeTraining({ navigation }) {
       });
   }, []);
 
+  const feetData = [
+    { id: 1, title: "3 feet" },
+    { id: 2, title: "4 feet" },
+    { id: 3, title: "5 feet" },
+    { id: 4, title: "6 feet" },
+    { id: 5, title: "7 feet" },
+    { id: 6, title: "8 feet" },
+    { id: 7, title: "9 feet" },
+    { id: 8, title: "10 feet" },
+    { id: 9, title: "11 feet" },
+  ];
+  const inchesData = [
+    { id: 1, title: "1 inch" },
+    { id: 2, title: "2 inches" },
+    { id: 3, title: "3 inches" },
+    { id: 4, title: "4 inches" },
+    { id: 5, title: "5 inches" },
+    { id: 6, title: "6 inches" },
+    { id: 7, title: "7 inches" },
+    { id: 8, title: "8 inches" },
+    { id: 9, title: "9 inches" },
+    { id: 10, title: "10 inches" },
+    { id: 11, title: "11 inches" },
+    { id: 12, title: "12 inches" },
+  ];
   const monthData = [
     { id: 1, title: "January" },
     { id: 2, title: "February" },
@@ -90,10 +115,31 @@ function ResumeTraining({ navigation }) {
     { id: 12, title: "December" },
   ];
 
-  const skillApi = useApi(userUpdate.skillCreate);
+  const maritalStatusData = [
+    { id: 1, title: "Single" },
+    { id: 2, title: "Married" },
+    { id: 3, title: "Widowed" },
+    { id: 4, title: "Divorced" },
+  ];
+
+  const religionData = [
+    { id: 1, title: "Christianity" },
+    { id: 2, title: "Islam" },
+    { id: 3, title: "Hinduism" },
+    { id: 4, title: "Buddhism" },
+    { id: 4, title: "Sikhism" },
+    { id: 4, title: "Jainism" },
+    { id: 4, title: "Others" },
+  ];
 
   const handleSubmit = async (userInfo) => {
-    const result = await userUpdate.trainingCreate(userInfo, currrentUser);
+    // console.log(userInfo);
+
+    const result = await userUpdate.userPersonalUpdate(
+      userInfo,
+      currrentUser,
+      currrentUser
+    );
     if (!result.ok) return;
     if (!result.data) {
       setEstatus(true);
@@ -121,91 +167,99 @@ function ResumeTraining({ navigation }) {
 
             <AppForm
               initialValues={{
-                name: "",
-                org: "",
-                country: "",
-                fromYear: "",
-                fromMonth: "",
-                toYear: "",
-                toMonth: "",
+                nationality: user.nationality,
+                countryLiveIn: user.countryLiveIn,
+                maritalStatus: user.maritalStatus,
+                religion: user.religion,
+                weight: user.weight,
+                feet: height[0],
+                inches: height[1],
               }}
               onSubmit={handleSubmit}
               validationSchema={validationSchema}
             >
-              <AppFormField
-                name="name"
-                autoCapitalize="none"
-                autoCorrect={false}
-                placeholder="Training Name"
-              />
-              <AppFormField
-                name="org"
-                autoCapitalize="none"
-                autoCorrect={false}
-                placeholder="Organization Name"
-              />
-
               {!isLoading && skillLevel && (
                 <AppFormPicker
                   items={skillLevel}
-                  name="country"
+                  name="nationality"
                   /* numberOfColumns={2} */
                   /* PickerItemComponent={PickerItem} */
 
-                  placeholder="Country"
+                  placeholder="Nationality"
+                  lebel="Nationality"
 
                   /* width="80%" */
                 />
               )}
 
-              <Text style={styles.lebel}>From Date : </Text>
+              {!isLoading && skillLevel && (
+                <AppFormPicker
+                  items={skillLevel}
+                  name="countryLiveIn"
+                  /* numberOfColumns={2} */
+                  /* PickerItemComponent={PickerItem} */
+
+                  placeholder="Country LiveIn"
+                  lebel="Country LiveIn"
+
+                  /* width="80%" */
+                />
+              )}
+
+              <AppFormPicker
+                items={maritalStatusData}
+                name="maritalStatus"
+                /* numberOfColumns={2} */
+                /* PickerItemComponent={PickerItem} */
+
+                placeholder="Marital Status"
+                lebel="Marital Status"
+
+                /* width="80%" */
+              />
+
+              <AppFormPicker
+                items={religionData}
+                name="religion"
+                /* numberOfColumns={2} */
+                /* PickerItemComponent={PickerItem} */
+
+                placeholder="Religion"
+                lebel="Religion"
+                /* width="80%" */
+              />
+              <AppFormField
+                name="weight"
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="Weight (KG)"
+                width="50%"
+                lebel="Weight (KG)"
+              />
+
+              <Text style={styles.lebel}>Height : </Text>
               <View style={styles.dateContainer}>
                 <View style={styles.childLeft}>
-                  <AppFormField
-                    name="fromYear"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    placeholder="Year"
-                    keyboardType="numeric"
-                    maxLength={4}
-                  />
-                </View>
-
-                <View style={styles.childRight}>
                   <AppFormPicker
-                    items={monthData}
-                    name="fromMonth"
+                    items={feetData}
+                    name="feet"
                     /* numberOfColumns={2} */
                     /* PickerItemComponent={PickerItem} */
 
-                    placeholder="Month"
+                    placeholder="Feet"
 
                     /* width="80%" */
                   />
                 </View>
-              </View>
-
-              <Text style={styles.lebel}>To Date : </Text>
-              <View style={styles.dateContainer}>
-                <View style={styles.childLeft}>
-                  <AppFormField
-                    name="toYear"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    placeholder="Year"
-                    keyboardType="numeric"
-                    maxLength={4}
-                  />
-                </View>
 
                 <View style={styles.childRight}>
                   <AppFormPicker
-                    items={monthData}
-                    name="toMonth"
+                    items={inchesData}
+                    name="inches"
                     /* numberOfColumns={2} */
                     /* PickerItemComponent={PickerItem} */
 
-                    placeholder="Month"
+                    placeholder="Inches"
 
                     /* width="80%" */
                   />
@@ -255,4 +309,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ResumeTraining;
+export default ResumePersonalInfoEdit;

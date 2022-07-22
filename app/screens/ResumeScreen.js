@@ -65,6 +65,86 @@ function ResumeScreen({ navigation }) {
     }
   };
 
+  // Delete Language Item
+  const clickLanguageDelete = async (id) => {
+    // console.log(id);
+
+    const result = await userUpdate.languageDelete(id);
+    // console.log(result);
+    if (!result.ok) return;
+    if (!result.data) {
+      // console.log(data);
+    } else if (result.data.status == "success") {
+      const messageSend = result.data.message;
+      navigation.navigate(routes.PRO_DONE, { message: messageSend });
+    } else {
+    }
+  };
+
+  // Delete Training Item
+  const clickTrainingDelete = async (id) => {
+    // console.log(id);
+
+    const result = await userUpdate.trainingDelete(id);
+    // console.log(result);
+    if (!result.ok) return;
+    if (!result.data) {
+      // console.log(data);
+    } else if (result.data.status == "success") {
+      const messageSend = result.data.message;
+      navigation.navigate(routes.PRO_DONE, { message: messageSend });
+    } else {
+    }
+  };
+
+  // Delete Education Item
+  const clickEducationDelete = async (id) => {
+    // console.log(id);
+
+    const result = await userUpdate.educationDelete(id);
+    // console.log(result);
+    if (!result.ok) return;
+    if (!result.data) {
+      // console.log(data);
+    } else if (result.data.status == "success") {
+      const messageSend = result.data.message;
+      navigation.navigate(routes.PRO_DONE, { message: messageSend });
+    } else {
+    }
+  };
+
+  // Delete Job Experince Item
+  const experienceDelete = async (id) => {
+    // console.log(id);
+
+    const result = await userUpdate.experienceDelete(id);
+    // console.log(result);
+    if (!result.ok) return;
+    if (!result.data) {
+      // console.log(data);
+    } else if (result.data.status == "success") {
+      const messageSend = result.data.message;
+      navigation.navigate(routes.PRO_DONE, { message: messageSend });
+    } else {
+    }
+  };
+
+  // Delete Job Experince Item
+  const jobPreferenceDelete = async (id) => {
+    // console.log(id);
+
+    const result = await userUpdate.jobPreferenceDelete(id);
+    // console.log(result);
+    if (!result.ok) return;
+    if (!result.data) {
+      // console.log(data);
+    } else if (result.data.status == "success") {
+      const messageSend = result.data.message;
+      navigation.navigate(routes.PRO_DONE, { message: messageSend });
+    } else {
+    }
+  };
+
   return (
     <>
       <ActivityIndicator visible={isLoading} />
@@ -96,27 +176,60 @@ function ResumeScreen({ navigation }) {
 
             <ResumeHeading
               id={users.data[0].id}
-              title="Personal Details"
+              title="Basic Information"
               type="Update"
               onPress={() =>
-                navigation.navigate(
-                  routes.PRO_PERSONAL_DETAILS,
-                  users.data[0].id
-                )
+                navigation.navigate(routes.PRO_RESUME_BASIC, {
+                  user_id: users.data[0].id,
+                  item: {},
+                })
               }
             />
 
             <ResumeInnerView
               id={users.data[0].id}
               viewID={users.data[0].id}
-              titleOne="Date of Birth :"
-              titleFive={users.data[0].dob}
+              titleOne="Profile Type :"
+              titleFive={users.data[0].profile_type}
               titleTwo="Gender :"
               titleSix={users.data[0].sex}
-              titleThree="Nationality :"
-              titleSeven={users.data[0].nationality}
-              titleFour="Country Live in :"
-              titleEight={users.data[0].countryLiveIn}
+              titleThree="Date of Birth :"
+              titleSeven={users.data[0].dob}
+              titleFour="Mobile No :"
+              titleEight={users.data[0].mobileNo}
+            />
+
+            <ResumeHeading
+              id={users.data[0].id}
+              title="Personal Information"
+              type="Update"
+              onPress={() =>
+                navigation.navigate(routes.PRO_RESUME_PERSONAL, {
+                  user_id: users.data[0].id,
+                  item: {},
+                })
+              }
+            />
+
+            <ResumeInnerView
+              id={users.data[0].id}
+              viewID={users.data[0].id}
+              titleOne="Nationality:"
+              titleFive={users.data[0].nationality}
+              titleTwo="Live In :"
+              titleSix={users.data[0].countryLiveIn}
+              titleThree="Marital Status :"
+              titleSeven={users.data[0].maritalStatus}
+              titleFour="Religion :"
+              titleEight={users.data[0].religion}
+            />
+            <ResumeInnerView
+              id={users.data[0].id}
+              viewID={users.data[0].id}
+              titleOne="weight:"
+              titleFive={users.data[0].weight + " KG"}
+              titleTwo="Height :"
+              titleSix={users.data[0].height}
             />
 
             <ResumeHeading
@@ -124,7 +237,10 @@ function ResumeScreen({ navigation }) {
               title="Skills"
               type="Add"
               onPress={() =>
-                navigation.navigate(routes.PRO_SKILL, users.data[0].id)
+                navigation.navigate(routes.PRO_SKILL, {
+                  user_id: users.data[0].id,
+                  item: {},
+                })
               }
             />
             {users.data[0].get_skill.map((d, idx) => (
@@ -135,7 +251,10 @@ function ResumeScreen({ navigation }) {
                 titleOne={d.skillName}
                 titleTwo={d.skill_level}
                 onPressUpdate={() =>
-                  navigation.navigate(routes.PRO_SKILL, users.data[0].id)
+                  navigation.navigate(routes.PRO_SKILL_UPDATE, {
+                    user_id: users.data[0].id,
+                    item: { d },
+                  })
                 }
                 onPressDelete={() => clickSkillDelete(d.id)}
               />
@@ -144,7 +263,7 @@ function ResumeScreen({ navigation }) {
             <ResumeHeading
               id={users.data[0].get_job_preferences.id}
               title="Job Preferences"
-              type="Update"
+              type="Add"
               onPress={() =>
                 navigation.navigate(
                   routes.PRO_JOB_PREFERENCES,
@@ -161,12 +280,7 @@ function ResumeScreen({ navigation }) {
                 titleTwo={jbp.function}
                 titleThree={jbp.city + ", " + jbp.country}
                 titleFour={jbp.type}
-                onPressDelete={() =>
-                  navigation.navigate(
-                    routes.PRO_JOB_PREFERENCES,
-                    users.data[0].id
-                  )
-                }
+                onPressDelete={() => jobPreferenceDelete(jbp.id)}
               />
             ))}
 
@@ -187,11 +301,12 @@ function ResumeScreen({ navigation }) {
                 titleTwo={exp.company + ", " + exp.country}
                 titleThree={exp.startDate + " - " + exp.endDate}
                 onPressUpdate={() =>
-                  navigation.navigate(routes.PRO_EXPERIENCE, users.data[0].id)
+                  navigation.navigate(routes.PRO_EXPERIENCE_UPDATE, {
+                    user_id: users.data[0].id,
+                    item: { exp },
+                  })
                 }
-                onPressDelete={() =>
-                  navigation.navigate(routes.PRO_EXPERIENCE, users.data[0].id)
-                }
+                onPressDelete={() => experienceDelete(exp.id)}
               />
             ))}
 
@@ -213,11 +328,12 @@ function ResumeScreen({ navigation }) {
                 titleThree={edu.school + ", " + edu.country}
                 titleFour={edu.startDate + " - " + edu.endDate}
                 onPressUpdate={() =>
-                  navigation.navigate(routes.PRO_EDUCATION, users.data[0].id)
+                  navigation.navigate(routes.PRO_EDUCATION_UPDATE, {
+                    user_id: users.data[0].id,
+                    item: { edu },
+                  })
                 }
-                onPressDelete={() =>
-                  navigation.navigate(routes.PRO_EDUCATION, users.data[0].id)
-                }
+                onPressDelete={() => clickEducationDelete(edu.id)}
               />
             ))}
 
@@ -226,7 +342,10 @@ function ResumeScreen({ navigation }) {
               title="Training & Certifications "
               type="Add"
               onPress={() =>
-                navigation.navigate(routes.PRO_TRAINING, users.data[0].id)
+                navigation.navigate(routes.PRO_TRAINING, {
+                  user_id: users.data[0].id,
+                  item: {},
+                })
               }
             />
             {users.data[0].get_tranings.map((trn, idx) => (
@@ -238,11 +357,12 @@ function ResumeScreen({ navigation }) {
                 titleTwo={trn.org + ", " + trn.country}
                 titleThree={trn.startDate + " - " + trn.endDate}
                 onPressUpdate={() =>
-                  navigation.navigate(routes.PRO_TRAINING, users.data[0].id)
+                  navigation.navigate(routes.PRO_TRAINING_EDIT, {
+                    user_id: users.data[0].id,
+                    item: { trn },
+                  })
                 }
-                onPressDelete={() =>
-                  navigation.navigate(routes.PRO_TRAINING, users.data[0].id)
-                }
+                onPressDelete={() => clickTrainingDelete(trn.id)}
               />
             ))}
 
@@ -262,15 +382,12 @@ function ResumeScreen({ navigation }) {
                 titleOne={ln.language_name}
                 titleTwo={ln.language_level}
                 onPressUpdate={() =>
-                  console.log(
-                    navigation.navigate(routes.PRO_LANGUAGE, users.data[0].id)
-                  )
+                  navigation.navigate(routes.PRO_LANGUAGE_UPDATE, {
+                    user_id: users.data[0].id,
+                    item: { ln },
+                  })
                 }
-                onPressDelete={() =>
-                  console.log(
-                    navigation.navigate(routes.PRO_LANGUAGE, users.data[0].id)
-                  )
-                }
+                onPressDelete={() => clickLanguageDelete(ln.id)}
               />
             ))}
           </ScrollView>

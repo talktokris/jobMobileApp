@@ -29,31 +29,31 @@ import setList from "../api/setList";
 import userUpdate from "../api/userUpdate";
 import routes from "../navigation/routes";
 import fonts from "../config/fonts";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView } from "react-native";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required().min(4).label("Training Name"),
-  org: Yup.string().required().min(4).label("Organization Name"),
+  post: Yup.string().required().min(4).label("Job Title"),
+  company: Yup.string().required().min(4).label("Company Name"),
   country: Yup.object().required().nullable().label("Country"),
   fromYear: Yup.number().required().min(1850).label("From Year"),
   fromMonth: Yup.object().required().nullable().label("From Month"),
-
   toYear: Yup.number().required().min(1850).label("From Year"),
   toMonth: Yup.object().required().nullable().label("To Month"),
-  // startDate: Yup.string().required().min(4).label("From Date"),
-  // endDate: Yup.string().required().min(4).label("To Date"),
 });
-
 const maxDate = moment().subtract(1, "days").format("DD-MM-YYYY");
 const minDate = moment().subtract(50, "years").format("DD-MM-YYYY");
 
-function ResumeTraining({ navigation }) {
+function ResumeExperienceScreenEdit({ route, navigation }) {
+  const listing = route.params.item;
+  const fromDate = route.params.item.exp.startDate.split("-");
+  const toDate = route.params.item.exp.endDate.split("-");
   const { user, logOut } = useAuth();
   const currrentUser = user.id;
   const [error, setError] = useState();
   const [eStatus, setEstatus] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [skillLevel, setskillLevel] = useState(null);
+  const [educationLevel, setEducationLevel] = useState(null);
   const [date, setDate] = useState("");
 
   useEffect(() => {
@@ -90,10 +90,14 @@ function ResumeTraining({ navigation }) {
     { id: 12, title: "December" },
   ];
 
-  const skillApi = useApi(userUpdate.skillCreate);
-
   const handleSubmit = async (userInfo) => {
-    const result = await userUpdate.trainingCreate(userInfo, currrentUser);
+    // console.log(userInfo);
+
+    const result = await userUpdate.experienceUpdate(
+      userInfo,
+      currrentUser,
+      route.params.item.exp.id
+    );
     if (!result.ok) return;
     if (!result.data) {
       setEstatus(true);
@@ -121,28 +125,28 @@ function ResumeTraining({ navigation }) {
 
             <AppForm
               initialValues={{
-                name: "",
-                org: "",
-                country: "",
-                fromYear: "",
-                fromMonth: "",
-                toYear: "",
-                toMonth: "",
+                post: route.params.item.exp.post,
+                company: route.params.item.exp.company,
+                country: route.params.item.exp.country,
+                fromYear: fromDate[1],
+                fromMonth: fromDate[0],
+                toYear: toDate[1],
+                toMonth: toDate[0],
               }}
               onSubmit={handleSubmit}
               validationSchema={validationSchema}
             >
               <AppFormField
-                name="name"
+                name="post"
                 autoCapitalize="none"
                 autoCorrect={false}
-                placeholder="Training Name"
+                placeholder="Job Title"
               />
               <AppFormField
-                name="org"
+                name="company"
                 autoCapitalize="none"
                 autoCorrect={false}
-                placeholder="Organization Name"
+                placeholder="Company Name"
               />
 
               {!isLoading && skillLevel && (
@@ -255,4 +259,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ResumeTraining;
+export default ResumeExperienceScreenEdit;

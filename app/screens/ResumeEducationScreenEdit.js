@@ -29,31 +29,32 @@ import setList from "../api/setList";
 import userUpdate from "../api/userUpdate";
 import routes from "../navigation/routes";
 import fonts from "../config/fonts";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView } from "react-native";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required().min(4).label("Training Name"),
-  org: Yup.string().required().min(4).label("Organization Name"),
+  level: Yup.object().required().nullable().label("Education Level"),
+  school: Yup.string().required().min(4).label("School / University Name"),
   country: Yup.object().required().nullable().label("Country"),
+  subject: Yup.string().required().min(4).label("Subject / Faculty"),
   fromYear: Yup.number().required().min(1850).label("From Year"),
   fromMonth: Yup.object().required().nullable().label("From Month"),
-
   toYear: Yup.number().required().min(1850).label("From Year"),
   toMonth: Yup.object().required().nullable().label("To Month"),
-  // startDate: Yup.string().required().min(4).label("From Date"),
-  // endDate: Yup.string().required().min(4).label("To Date"),
 });
-
 const maxDate = moment().subtract(1, "days").format("DD-MM-YYYY");
 const minDate = moment().subtract(50, "years").format("DD-MM-YYYY");
 
-function ResumeTraining({ navigation }) {
+function ResumeEducationScreenEdit({ route, navigation }) {
+  const listing = route.params.item;
+  const fromDate = route.params.item.edu.startDate.split("-");
+  const toDate = route.params.item.edu.endDate.split("-");
   const { user, logOut } = useAuth();
   const currrentUser = user.id;
   const [error, setError] = useState();
   const [eStatus, setEstatus] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [skillLevel, setskillLevel] = useState(null);
+  const [educationLevel, setEducationLevel] = useState(null);
   const [date, setDate] = useState("");
 
   useEffect(() => {
@@ -67,6 +68,17 @@ function ResumeTraining({ navigation }) {
       .country()
       .then((data) => {
         setskillLevel(data.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        // display error
+        setLoading(false); // stop the loader
+      });
+
+    setList
+      .education()
+      .then((data) => {
+        setEducationLevel(data.data);
         setLoading(false);
       })
       .catch((error) => {
@@ -90,10 +102,14 @@ function ResumeTraining({ navigation }) {
     { id: 12, title: "December" },
   ];
 
-  const skillApi = useApi(userUpdate.skillCreate);
-
   const handleSubmit = async (userInfo) => {
-    const result = await userUpdate.trainingCreate(userInfo, currrentUser);
+    //console.log(userInfo);
+
+    const result = await userUpdate.educationUpdate(
+      userInfo,
+      currrentUser,
+      route.params.item.edu.id
+    );
     if (!result.ok) return;
     if (!result.data) {
       setEstatus(true);
@@ -111,6 +127,7 @@ function ResumeTraining({ navigation }) {
       setError("Unknown error");
     }
   };
+
   return (
     <>
       <ActivityIndicator visible={isLoading} />
@@ -121,28 +138,35 @@ function ResumeTraining({ navigation }) {
 
             <AppForm
               initialValues={{
-                name: "",
-                org: "",
-                country: "",
-                fromYear: "",
-                fromMonth: "",
-                toYear: "",
-                toMonth: "",
+                level: route.params.item.edu.level,
+                school: route.params.item.edu.level,
+                country: route.params.item.edu.level,
+                subject: route.params.item.edu.level,
+                fromYear: fromDate[1],
+                fromMonth: fromDate[0],
+                toYear: toDate[1],
+                toMonth: toDate[0],
               }}
               onSubmit={handleSubmit}
               validationSchema={validationSchema}
             >
+              {!isLoading && educationLevel && (
+                <AppFormPicker
+                  items={educationLevel}
+                  name="level"
+                  /* numberOfColumns={2} */
+                  /* PickerItemComponent={PickerItem} */
+
+                  placeholder="Educaion Level"
+
+                  /* width="80%" */
+                />
+              )}
               <AppFormField
-                name="name"
+                name="school"
                 autoCapitalize="none"
                 autoCorrect={false}
-                placeholder="Training Name"
-              />
-              <AppFormField
-                name="org"
-                autoCapitalize="none"
-                autoCorrect={false}
-                placeholder="Organization Name"
+                placeholder="School / University Name"
               />
 
               {!isLoading && skillLevel && (
@@ -157,6 +181,13 @@ function ResumeTraining({ navigation }) {
                   /* width="80%" */
                 />
               )}
+
+              <AppFormField
+                name="subject"
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="Subject / Faculty"
+              />
 
               <Text style={styles.lebel}>From Date : </Text>
               <View style={styles.dateContainer}>
@@ -255,4 +286,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ResumeTraining;
+export default ResumeEducationScreenEdit;

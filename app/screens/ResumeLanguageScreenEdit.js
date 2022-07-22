@@ -33,7 +33,9 @@ const validationSchema = Yup.object().shape({
   // skillName: Yup.string().required().min(4).label("Password"),
 });
 
-function ResumeLanguageScreen({ navigation }) {
+function ResumeLanguageScreenEdit({ route, navigation }) {
+  const listing = route.params.item;
+  //console.log(route.params.item.ln);
   const { user, logOut } = useAuth();
   const currrentUser = user.id;
   const [error, setError] = useState();
@@ -81,7 +83,11 @@ function ResumeLanguageScreen({ navigation }) {
  
 */
   const handleSubmit = async (userInfo) => {
-    const result = await userUpdate.languageCreate(userInfo, currrentUser);
+    const result = await userUpdate.languageUpdate(
+      userInfo,
+      currrentUser,
+      route.params.item.ln.id
+    );
     if (!result.ok) return;
     if (!result.data) {
       setEstatus(true);
@@ -108,7 +114,10 @@ function ResumeLanguageScreen({ navigation }) {
           <ErrorMessage error={error} visible={eStatus} />
 
           <AppForm
-            initialValues={{ language_name: "", language_level: "" }}
+            initialValues={{
+              language_name: route.params.item.ln.language_name,
+              language_level: route.params.item.ln.language_level,
+            }}
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
           >
@@ -165,4 +174,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ResumeLanguageScreen;
+export default ResumeLanguageScreenEdit;
