@@ -4,12 +4,26 @@ import colors from "../config/colors";
 import AppText from "./AppText";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-function ListItem({ title, subTitle, iconComponent, image, onPress }) {
+function ListItemProfile({
+  title,
+  subTitle,
+  iconComponent,
+  image,
+  imgStatus,
+  onPress,
+}) {
   return (
     <TouchableHighlight underlayColor={colors.lightGray} onPress={onPress}>
       <View style={styles.container}>
         {iconComponent}
-        {image && <Image style={styles.image} source={{ uri: image }} />}
+        {imgStatus == null ? (
+          <Image
+            style={styles.image}
+            source={require("../assets/images/av.png")}
+          />
+        ) : (
+          <Image style={styles.image} source={{ uri: image }} />
+        )}
         <View style={styles.appTextContainer}>
           <AppText style={styles.title} numberOfLines={1}>
             {title}
@@ -31,7 +45,7 @@ function ListItem({ title, subTitle, iconComponent, image, onPress }) {
   );
 }
 
-export default ListItem;
+export default ListItemProfile;
 
 const styles = StyleSheet.create({
   container: {

@@ -36,6 +36,13 @@ function JobsListScreen({ navigation }) {
     getListingsAPi.request(search);
   }, [search]);
 
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      getListingsAPi.request(search);
+    });
+    return unsubscribe;
+  }, [navigation]);
+
   const { logIn } = useAuth();
   const [loginFailed, setLoginFailed] = useState(false);
   const handleSubmit = async (words) => {
@@ -99,7 +106,7 @@ function JobsListScreen({ navigation }) {
                   uri: settings.imageUrl + "jobs/" + item.id + "/" + item.image,
                 }}
                 location={item.location}
-                date={item.date}
+                date={item.date_expire}
                 favData={item.get_fav_info}
                 job_id={item.id}
                 currency={item.currency}

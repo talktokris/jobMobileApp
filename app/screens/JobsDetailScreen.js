@@ -19,10 +19,17 @@ import AppButton from "../components/AppButton";
 import settings from "../config/setting";
 import useAuth from "../auth/useAuth";
 import userUpdate from "../api/userUpdate";
+import routes from "../navigation/routes";
+import ActivityIndicator from "../components/ActivityIndicator";
+import { ErrorMessage } from "../components/forms";
 
-function JobsDetailScreen({ route }) {
+function JobsDetailScreen({ route, navigation }) {
   const listing = route.params;
   const { user, logOut } = useAuth();
+  const [error, setError] = useState();
+  const [eStatus, setEstatus] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+  const [showResults, setShowResults] = React.useState(true);
   const currrentUser = user.id;
 
   var favDefaultName = "",
@@ -49,6 +56,15 @@ function JobsDetailScreen({ route }) {
   const [iconColor, setIconColor] = useState(favDefaultColor);
   const [heartIconName, setHeartIconName] = useState(favDefaultName);
 
+  var showBtn = 0;
+  listing.get_job_apply_users.map((userData) => {
+    // console.log(currrentUser + "--" + userData.user_id);
+
+    if (userData.user_id == currrentUser) {
+      showBtn = 1;
+    }
+  });
+
   const onPressIcon = () => {
     if (heartIconName == "cards-heart") {
       setHeartIconName((heartIconName) => "cards-heart-outline");
@@ -74,164 +90,207 @@ function JobsDetailScreen({ route }) {
     //console.log(result);
   }
 
+  const applyJob = async () => {
+    const result = await userUpdate.applyJobCreate(currrentUser, listing.id);
+
+    if (!result.ok) return;
+    if (!result.data) {
+      setEstatus(true);
+      setError(
+        "Unable to connect to server. Please check your Internet connection"
+      );
+    } else if (result.data.status != "success") {
+      setEstatus(true);
+      setError(result.data.message);
+      console.log(result).data;
+    } else if (result.data.status == "success") {
+      const messageSend = result.data.message;
+      //console.log(messageSend);
+      setShowResults(false);
+      navigation.navigate(routes.PRO_JOB_DONE, { message: messageSend });
+    } else {
+      setEstatus(true);
+      setError("Unknown error");
+    }
+  };
+
   return (
-    <ScrollView style={styles.scrollView} nestedScrollEnabled={true}>
-      <View style={styles.upperContainer}>
-        <Image
-          style={styles.image}
-          source={{
-            uri: settings.imageUrl + "jobs/" + listing.id + "/" + listing.image,
-          }}
-        />
-        <View style={styles.detailsInfo}>
-          <AppText style={styles.title} numberOfLines={2}>
-            {listing.title}
-          </AppText>
-          <AppText style={styles.subTitle} numberOfLines={2}>
-            {listing.subTitle}
-          </AppText>
+    <>
+      <ActivityIndicator visible={isLoading} />
+      <ScrollView style={styles.scrollView} nestedScrollEnabled={true}>
+        <ErrorMessage error={error} visible={eStatus} />
 
-          {listing.jobCategory && (
-            <AppText style={styles.midTitle} numberOfLines={1}>
-              <Text style={{ fontWeight: "600" }}>Category : </Text>
-              {" " + listing.jobCategory}
+        <View style={styles.upperContainer}>
+          <Image
+            style={styles.image}
+            source={{
+              uri:
+                settings.imageUrl + "jobs/" + listing.id + "/" + listing.image,
+            }}
+          />
+          <View style={styles.detailsInfo}>
+            <AppText style={styles.title} numberOfLines={2}>
+              {listing.title}
             </AppText>
-          )}
+            <AppText style={styles.subTitle} numberOfLines={2}>
+              {listing.subTitle}
+            </AppText>
 
-          {listing.education && (
-            <AppText style={styles.midTitle} numberOfLines={1}>
-              <Text style={{ fontWeight: "600" }}>Educaion : </Text>
-              {" " + listing.education}
-            </AppText>
-          )}
-
-          {listing.skillRequire && (
-            <AppText style={styles.midTitle} numberOfLines={1}>
-              <Text style={{ fontWeight: "600" }}>Skill Required : </Text>{" "}
-              {" " + listing.skillRequire}
-            </AppText>
-          )}
-
-          {listing.salleryMin && (
-            <AppText style={styles.sallery} numberOfLines={1}>
-              <Text style={{ fontWeight: "600", color: colors.medium }}>
-                Salary Min :{" "}
-              </Text>
-              {listing.currency + "  " + listing.salleryMin}
-              <Text style={{ color: colors.medium, fontWeight: "400" }}>
-                {" "}
-                / month
-              </Text>
-            </AppText>
-          )}
-          {listing.salleryMax && (
-            <AppText style={styles.sallery} numberOfLines={1}>
-              <Text style={{ fontWeight: "600", color: colors.medium }}>
-                Salary Max :{" "}
-              </Text>
-              {listing.currency + " " + listing.salleryMax}
-              <Text style={{ color: colors.medium, fontWeight: "400" }}>
-                {" "}
-                / month
-              </Text>
-            </AppText>
-          )}
-        </View>
-
-        <View style={styles.containerBottom}>
-          <View style={styles.boxBottomLeft}>
-            <View style={styles.inlineIconLeft}>
-              <MaterialCommunityIcons
-                style={styles.iconSmall}
-                name="account-outline"
-                size={16}
-                color={colors.medium}
-              />
-              <AppText
-                style={(styles.subTitle, styles.downText)}
-                numberOfLines={1}
-              >
-                {listing.vacancies + " Vacancies"}
+            {listing.jobCategory && (
+              <AppText style={styles.midTitle} numberOfLines={1}>
+                <Text style={{ fontWeight: "600" }}>Category : </Text>
+                {" " + listing.jobCategory}
               </AppText>
-            </View>
+            )}
+
+            {listing.education && (
+              <AppText style={styles.midTitle} numberOfLines={1}>
+                <Text style={{ fontWeight: "600" }}>Educaion : </Text>
+                {" " + listing.education}
+              </AppText>
+            )}
+
+            {listing.skillRequire && (
+              <AppText style={styles.midTitle} numberOfLines={1}>
+                <Text style={{ fontWeight: "600" }}>Skill Required : </Text>{" "}
+                {" " + listing.skillRequire}
+              </AppText>
+            )}
+
+            {listing.salleryMin && (
+              <AppText style={styles.sallery} numberOfLines={1}>
+                <Text style={{ fontWeight: "600", color: colors.medium }}>
+                  Salary Min :{" "}
+                </Text>
+                {listing.currency + "  " + listing.salleryMin}
+                <Text style={{ color: colors.medium, fontWeight: "400" }}>
+                  {" "}
+                  / month
+                </Text>
+              </AppText>
+            )}
+            {listing.salleryMax && (
+              <AppText style={styles.sallery} numberOfLines={1}>
+                <Text style={{ fontWeight: "600", color: colors.medium }}>
+                  Salary Max :{" "}
+                </Text>
+                {listing.currency + " " + listing.salleryMax}
+                <Text style={{ color: colors.medium, fontWeight: "400" }}>
+                  {" "}
+                  / month
+                </Text>
+              </AppText>
+            )}
           </View>
-          <View style={styles.boxBottomRight}>
-            <View style={styles.inlineIconRight}>
-              <TouchableOpacity style={styles.iconDiv} onPress={onPressIcon}>
+
+          <View style={styles.containerBottom}>
+            <View style={styles.boxBottomLeft}>
+              <View style={styles.inlineIconLeft}>
                 <MaterialCommunityIcons
-                  style={styles.icon}
-                  name={heartIconName}
-                  size={25}
-                  color={iconColor}
+                  style={styles.iconSmall}
+                  name="account-outline"
+                  size={16}
+                  color={colors.medium}
                 />
-              </TouchableOpacity>
+                <AppText
+                  style={(styles.subTitle, styles.downText)}
+                  numberOfLines={1}
+                >
+                  {listing.vacancies + " Vacancies"}
+                </AppText>
+              </View>
+            </View>
+            <View style={styles.boxBottomRight}>
+              <View style={styles.inlineIconRight}>
+                <TouchableOpacity style={styles.iconDiv} onPress={onPressIcon}>
+                  <MaterialCommunityIcons
+                    style={styles.icon}
+                    name={heartIconName}
+                    size={25}
+                    color={iconColor}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
 
-        <View style={styles.containerBottom}>
-          <View style={styles.boxBottomLeft}>
-            <View style={styles.inlineIconLeft}>
-              <MaterialCommunityIcons
-                style={styles.iconSmall}
-                name="map-marker-radius-outline"
-                size={16}
-                color={colors.medium}
-              />
-              <AppText
-                style={(styles.subTitle, styles.downText)}
-                numberOfLines={1}
-              >
-                {listing.location}
-              </AppText>
+          <View style={styles.containerBottom}>
+            <View style={styles.boxBottomLeft}>
+              <View style={styles.inlineIconLeft}>
+                <MaterialCommunityIcons
+                  style={styles.iconSmall}
+                  name="map-marker-radius-outline"
+                  size={16}
+                  color={colors.medium}
+                />
+                <AppText
+                  style={(styles.subTitle, styles.downText)}
+                  numberOfLines={1}
+                >
+                  {listing.location}
+                </AppText>
+              </View>
+            </View>
+            <View style={styles.boxBottomRight}>
+              <View style={styles.inlineIconRight}>
+                <MaterialCommunityIcons
+                  style={styles.iconSmall}
+                  name="clock-outline"
+                  size={16}
+                  color={colors.medium}
+                />
+                <AppText
+                  style={(styles.subTitle, styles.downText)}
+                  numberOfLines={1}
+                >
+                  {listing.created_at}
+                </AppText>
+              </View>
             </View>
           </View>
-          <View style={styles.boxBottomRight}>
-            <View style={styles.inlineIconRight}>
-              <MaterialCommunityIcons
-                style={styles.iconSmall}
-                name="clock-outline"
-                size={16}
-                color={colors.medium}
-              />
-              <AppText
-                style={(styles.subTitle, styles.downText)}
-                numberOfLines={1}
-              >
-                {listing.created_at}
-              </AppText>
-            </View>
+
+          {Object.keys(listing.get_job_specification).length >= 1 && (
+            <AppText style={styles.heading}>Job Specification</AppText>
+          )}
+          {listing.get_job_specification.map((d, idx) => (
+            <AppBulletText
+              key={idx}
+              title={d.title}
+              iconName="circle-medium"
+              scrollEnabled={false}
+            />
+          ))}
+
+          {Object.keys(listing.get_job_description).length >= 1 && (
+            <AppText style={styles.heading}>Job Description</AppText>
+          )}
+          {listing.get_job_description.map((d, idx) => (
+            <AppBulletText
+              key={idx}
+              title={d.title}
+              iconName="circle-medium"
+              scrollEnabled={false}
+            />
+          ))}
+
+          <View style={styles.applyBtn}>
+            {(() => {
+              if (showBtn == 0 || showResults == true) {
+                return (
+                  <AppButton
+                    title="Apply Now"
+                    style={{ margin: 10 }}
+                    onPress={applyJob}
+                  />
+                );
+              }
+
+              return null;
+            })()}
           </View>
         </View>
-
-        {Object.keys(listing.get_job_specification).length >= 1 && (
-          <AppText style={styles.heading}>Job Specification</AppText>
-        )}
-        {listing.get_job_specification.map((d, idx) => (
-          <AppBulletText
-            key={idx}
-            title={d.title}
-            iconName="circle-medium"
-            scrollEnabled={false}
-          />
-        ))}
-
-        {Object.keys(listing.get_job_description).length >= 1 && (
-          <AppText style={styles.heading}>Job Description</AppText>
-        )}
-        {listing.get_job_description.map((d, idx) => (
-          <AppBulletText
-            key={idx}
-            title={d.title}
-            iconName="circle-medium"
-            scrollEnabled={false}
-          />
-        ))}
-        <View style={styles.applyBtn}>
-          <AppButton title="Apply Now" style={{ margin: 10 }} />
-        </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </>
   );
 }
 

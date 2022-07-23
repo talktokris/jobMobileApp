@@ -273,6 +273,57 @@ const favoriteJobsDelete = async (id) => {
   return result;
 };
 
+//=============== Apply Jobs  API ===================
+
+const applyJobCreate = async (currrentUser, jobId) => {
+  //console.log(userInfo);
+  const data = new FormData();
+  data.append("user_id", currrentUser);
+  data.append("job_ads_id", jobId);
+
+  const result = await client.post("/jobs/apply", data);
+ // console.log(result);
+  return result;
+};
+
+//=============== jobSingleFatch Jobs  API ===================
+
+const jobSingleFatch = async (id) => {
+  // console.log("hi"+id);
+  const result = await client.get("/jobs/" + id);
+   //console.log(result);
+  return result;
+};
+
+//=============== Fab Jobs List  API ===================
+
+const jobFabFatch = async (id) => {
+  // console.log("hi"+id);
+  const result = await client.get("jobs/fav/" + id);
+   //console.log(result);
+  return result;
+};
+
+
+//=============== Fab Jobs List  API ===================
+
+const jobAppliedFatch = async (id) => {
+  // console.log("hi"+id);
+  const result = await client.get("jobs/applied/" + id);
+   //console.log(result);
+  return result;
+};
+
+//=============== Message List  API ===================
+
+const messageFatch = async (id) => {
+  // console.log("hi"+id);
+  const result = await client.get("push/message/" + id);
+   //console.log(result);
+  return result;
+};
+
+
 export default {
   skillCreate,
   skillUpdate,
@@ -296,5 +347,10 @@ export default {
   userPersonalUpdate,
   favoriteJobsCreate,
   favoriteJobsDelete,
+  applyJobCreate,
+  jobAppliedFatch,
+  jobSingleFatch,
+  jobFabFatch,
+  messageFatch,
 };
 

@@ -6,6 +6,9 @@ import Icon from "../components/Icon";
 import colors from "../config/colors";
 import Separater from "../components/Separater";
 import useAuth from "../auth/useAuth";
+import routes from "../navigation/routes";
+import setting from "../config/setting";
+import ListItemProfile from "../components/ListItemProfile";
 
 const menuItems = [
   {
@@ -14,7 +17,15 @@ const menuItems = [
       name: "cards-heart-outline",
       backgroundColor: colors.primary,
     },
-    targetScreen: "Messages",
+    targetScreen: routes.JOB_FAV_LIST,
+  },
+  {
+    title: "Jobs Applied",
+    icon: {
+      name: "checkbox-marked-outline",
+      backgroundColor: "orange",
+    },
+    targetScreen: routes.JOB_APL_LIST,
   },
   {
     title: "My Messages",
@@ -22,20 +33,22 @@ const menuItems = [
       name: "email",
       backgroundColor: colors.secondary,
     },
-    targetScreen: "Messages",
+    targetScreen: routes.AC_MESAGES,
   },
 ];
 
-function AccountScreen({ navigation }) {
+function AccountScreen({ route, navigation }) {
   const { user, logOut } = useAuth();
 
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
-        <ListItem
+        <ListItemProfile
           title={user.name}
           subTitle={user.email}
-          image={require("../assets/images/av.jpg")}
+          //image={require("../assets/images/av.jpg")}
+          imgStatus={user.image}
+          image={setting.imageUrl + "members/" + user.id + "/" + user.image}
         />
         <View style={styles.container}>
           <FlatList
@@ -77,6 +90,23 @@ const styles = StyleSheet.create({
   screen: { backgroundColor: colors.lightGray },
   container: {
     marginVertical: 20,
+  },
+  imageContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.primary,
+    height: 104,
+    width: 104,
+    borderRadius: 52,
+    bottom: 10,
+    marginTop: 20,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderColor: colors.white,
+    borderWidth: 5,
   },
 });
 

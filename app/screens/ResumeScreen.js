@@ -168,6 +168,7 @@ function ResumeScreen({ navigation }) {
                 "/" +
                 users.data[0].image
               }
+              imgStatus={users.data[0].image}
             />
 
             <ResumeHeading

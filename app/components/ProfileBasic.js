@@ -13,12 +13,20 @@ function ProfileBasic({
   country,
   profileType,
   image,
+  imgStatus,
   onPress,
 }) {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        {image && <Image style={styles.image} source={{ uri: image }} />}
+        {imgStatus == null ? (
+          <Image
+            style={styles.image}
+            source={require("../assets/images/av.png")}
+          />
+        ) : (
+          <Image style={styles.image} source={{ uri: image }} />
+        )}
       </View>
       <TouchableHighlight underlayColor={colors.lightGray} onPress={onPress}>
         <View style={styles.camraButton}>

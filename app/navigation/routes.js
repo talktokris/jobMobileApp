@@ -18,4 +18,9 @@ export default Object.freeze({
   PRO_TRAINING: "Training",
   PRO_TRAINING_EDIT: "Training Update",
   AC_MESAGES: "Messages",
+  AC_MESAGES_VIEW: "Message View",
+  PRO_JOB_DONE: "Job Apply",
+  JOB_List: "Jobs",
+  JOB_FAV_LIST: "Favorite Jobs",
+  JOB_APL_LIST: "Jobs Applied",
 });
