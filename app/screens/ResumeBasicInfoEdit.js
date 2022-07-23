@@ -32,9 +32,9 @@ import fonts from "../config/fonts";
 import { ScrollView } from "react-native";
 
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required().min(2).label("First Name"),
-  middleName: Yup.string().required().min(2).label("Middle Name"),
-  lastName: Yup.string().required().min(2).label("Last Name"),
+  name: Yup.string().required().min(2).label("First Name"),
+  // middleName: Yup.string().required().min(2).label("Middle Name"),
+  //lastName: Yup.string().required().min(2).label("Last Name"),
   profile_type: Yup.object().required().nullable().label("Profile Type"),
   sex: Yup.object().required().nullable().label("Gender"),
   year: Yup.number().required().min(1850).label("Year"),
@@ -48,7 +48,16 @@ const minDate = moment().subtract(50, "years").format("DD-MM-YYYY");
 function ResumeBasicInfoEdit({ route, navigation }) {
   const { user, logOut } = useAuth();
   const currrentUser = user.id;
-  const dob = user.dob.split("-");
+
+  var dobGet = "";
+  if (user.dob == null) {
+    dobGet: {
+    }
+  } else {
+    dobGet: user.dob;
+  }
+
+  const dob = dobGet.split("-");
   const [error, setError] = useState();
   const [eStatus, setEstatus] = useState(false);
   const [isLoading, setLoading] = useState(true);
@@ -169,9 +178,9 @@ function ResumeBasicInfoEdit({ route, navigation }) {
 
             <AppForm
               initialValues={{
-                firstName: user.firstName,
-                middleName: user.middleName,
-                lastName: user.lastName,
+                name: user.name,
+                // middleName: user.middleName,
+                // lastName: user.lastName,
                 profile_type: user.profile_type,
                 sex: user.sex,
                 year: dob[0],
@@ -182,7 +191,14 @@ function ResumeBasicInfoEdit({ route, navigation }) {
               onSubmit={handleSubmit}
               validationSchema={validationSchema}
             >
-              <Text style={styles.lebel}>Name : </Text>
+              <AppFormField
+                name="name"
+                autoCapitalize="none"
+                autoCorrect={false}
+                placeholder="First Name"
+              />
+              {/* <Text style={styles.lebel}>Name : </Text>
+            
               <View style={styles.dateContainer}>
                 <View style={styles.childLeft}>
                   <View style={styles.dateContainer}>
@@ -213,7 +229,7 @@ function ResumeBasicInfoEdit({ route, navigation }) {
                   />
                 </View>
               </View>
-
+            */}
               <View style={styles.dateContainer}>
                 <View style={styles.childLeftSub}>
                   <AppFormPicker
@@ -254,7 +270,7 @@ function ResumeBasicInfoEdit({ route, navigation }) {
                         name="year"
                         autoCapitalize="none"
                         autoCorrect={false}
-                        placeholder="year"
+                        placeholder="Year"
                         keyboardType="numeric"
                         maxLength={4}
                       />

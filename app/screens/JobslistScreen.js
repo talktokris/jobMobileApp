@@ -101,6 +101,8 @@ function JobsListScreen({ navigation }) {
                 location={item.location}
                 date={item.date}
                 favData={item.get_fav_info}
+                job_id={item.id}
+                currency={item.currency}
                 onPress={() => navigation.navigate(routes.JOBS_DETAILS, item)}
                 renderRightActions={() => (
                   <View style={{ backgroundColor: "red", height: 70 }}></View>

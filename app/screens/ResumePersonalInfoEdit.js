@@ -47,7 +47,14 @@ function ResumePersonalInfoEdit({ route, navigation }) {
   const listing = route.params.item;
   const { user, logOut } = useAuth();
   const currrentUser = user.id;
-  const height = user.height.split("-");
+  var dobGet = "";
+  if (user.height == null) {
+    dobGet: {
+    }
+  } else {
+    dobGet: user.height;
+  }
+  const height = dobGet.split("-");
 
   const [error, setError] = useState();
   const [eStatus, setEstatus] = useState(false);

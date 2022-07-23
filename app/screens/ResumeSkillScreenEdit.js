@@ -75,6 +75,7 @@ function ResumeSkillScreenEdit({ route, navigation }) {
       currrentUser,
       route.params.item.d.id
     );
+    //  console.log(result);
     if (!result.ok) return;
     if (!result.data) {
       setEstatus(true);

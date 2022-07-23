@@ -11,15 +11,18 @@ import AppText from "./AppText";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import useAuth from "../auth/useAuth";
+import userUpdate from "../api/userUpdate";
 
 function JobsListItem({
   title,
   subTitle,
   sallery,
+  currency = "RM ",
   iconComponent,
   image,
   location,
   date,
+  job_id,
   favData,
   onPress,
 }) {
@@ -28,6 +31,7 @@ function JobsListItem({
     favDefaultColor = "";
 
   var fav = 0;
+  var favId = null;
 
   const currrentUser = user.id;
   //console.log(currrentUser);
@@ -35,6 +39,7 @@ function JobsListItem({
     // console.log(currrentUser + "--" + userData.user_id);
     if (userData.user_id == currrentUser) {
       fav = 1;
+      favId = userData.id;
     }
   });
 
@@ -52,9 +57,24 @@ function JobsListItem({
     if (heartIconName == "cards-heart") {
       setHeartIconName((heartIconName) => "cards-heart-outline");
       setIconColor((iconColor) => colors.medium);
+      favoriteDelete(favId);
     } else {
       setHeartIconName((heartIconName) => "cards-heart");
       setIconColor((iconColor) => colors.primary);
+
+      efavoriteCreate(favId);
+
+      // Delete Fav Record
+    }
+
+    async function efavoriteCreate(favId) {
+      const result = await userUpdate.favoriteJobsCreate(currrentUser, job_id);
+      // console.log(result);
+    }
+
+    async function favoriteDelete(favId) {
+      const result = await userUpdate.favoriteJobsDelete(favId);
+      //console.log(result);
     }
   };
 
@@ -77,7 +97,7 @@ function JobsListItem({
 
               {sallery && (
                 <AppText style={styles.sallery} numberOfLines={1}>
-                  {sallery}
+                  {currency} {sallery}
                 </AppText>
               )}
             </View>

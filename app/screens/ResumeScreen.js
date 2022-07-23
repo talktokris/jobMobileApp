@@ -16,7 +16,8 @@ import userUpdate from "../api/userUpdate";
 function ResumeScreen({ navigation }) {
   const { user, logOut } = useAuth();
   const currrentUser = user.id;
-  // const currrentUser = 1;
+  //const currrentUser = 1;
+  //console.log(currrentUser);
 
   const [isLoading, setLoading] = useState(true);
   const [users, setUsers] = useState(null);
@@ -42,6 +43,7 @@ function ResumeScreen({ navigation }) {
       .then((data) => {
         setUsers(data);
         setLoading(false);
+        // console.log(data);
       })
       .catch((error) => {
         // display error
@@ -148,17 +150,11 @@ function ResumeScreen({ navigation }) {
   return (
     <>
       <ActivityIndicator visible={isLoading} />
-      {!isLoading && users && (
+      {!isLoading && users.data && (
         <Screen>
           <ScrollView>
             <ProfileBasic
-              name={
-                users.data[0].firstName +
-                " " +
-                users.data[0].middleName +
-                " " +
-                users.data[0].lastName
-              }
+              name={users.data[0].name}
               email={users.data[0].email}
               emailStatus={users.data[0].emailStatus}
               mobileNo={users.data[0].mobileNo}

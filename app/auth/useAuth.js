@@ -26,5 +26,20 @@ export default useAuth = () => {
     // const user = jwtDecode(authToken);
     setUser(profile.data);
   };
-  return { user, logIn, logOut };
+
+  const logInAuto = async (authToken) => {
+    console.log(authToken);
+    const newToken = authToken.access_token;
+
+    console.log(newToken);
+    authStorage.storeToken(newToken);
+    // console.log(authToken);
+    const profile = await userRetrive(authToken);
+    console.log(profile);
+    if (!profile.ok) return;
+    // console.log(profile);
+    // const user = jwtDecode(authToken);
+    setUser(profile.data);
+  };
+  return { user, logIn, logInAuto, logOut };
 };;

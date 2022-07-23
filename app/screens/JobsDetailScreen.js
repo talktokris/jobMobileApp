@@ -18,55 +18,23 @@ import AppBulletText from "../components/AppBulletText";
 import AppButton from "../components/AppButton";
 import settings from "../config/setting";
 import useAuth from "../auth/useAuth";
+import userUpdate from "../api/userUpdate";
 
 function JobsDetailScreen({ route }) {
   const listing = route.params;
   const { user, logOut } = useAuth();
   const currrentUser = user.id;
-  /*
-  const listing = {
-    id: 2,
-    title: "Assistant Program Coordinator",
-    subTitle: "D1 Lorem Ipsum is simply dummy text of the printing  ",
-    vacancies: "10 Vacancies",
-    salleryMin: "RM 3000",
-    salleryMax: "RM 4000",
-    jobCategory: "Administration / Officer",
-    education: "Bechelor",
-    skillRequire: "PHP / HTML / CSS",
-    location: "Kathmandu, Nepal",
-    date: "3 days ago",
-    fav: 1,
-    image: require("../assets/images/2.jpg"),
-    jobSpecification: [
-      {
-        points:
-          "S1 Lorem Ipsum is simply dummy text of the printing it. so we can",
-      },
-      { points: "S2 Lorem Ipsum is simply dummy text of the printing" },
-      { points: "33 Lorem Ipsum is simply dummy text of the printing" },
-      { points: "S4 Lorem Ipsum is simply dummy text of the printing" },
-      { points: "S5 Lorem Ipsum is simply dummy text of the printing" },
-      { points: "S6 Lorem Ipsum is simply dummy text of the printing" },
-    ],
-    jobDescription: [
-      { points: "D1 Lorem Ipsum is simply dummy text of the printing" },
-      { points: "D2 Lorem Ipsum is simply dummy text of the printing" },
-      { points: "D3 Lorem Ipsum is simply dummy text of the printing" },
-      { points: "D4 Lorem Ipsum is simply dummy text of the printing" },
-      { points: "D5 Lorem Ipsum is simply dummy text of the printing" },
-      { points: "D6 Lorem Ipsum is simply dummy text of the printing" },
-    ],
-  };
-*/
+
   var favDefaultName = "",
     favDefaultColor = "",
-    fav = 0;
+    fav = 0,
+    favId = null;
 
   listing.get_fav_info.map((userData) => {
     //console.log(userData.user_id + "-" + currrentUser);
     if (userData.user_id == currrentUser) {
       fav = 1;
+      favId = userData.id;
       // console.log("userData.user_id");
     }
   });
@@ -85,11 +53,26 @@ function JobsDetailScreen({ route }) {
     if (heartIconName == "cards-heart") {
       setHeartIconName((heartIconName) => "cards-heart-outline");
       setIconColor((iconColor) => colors.medium);
+      favoriteDelete(favId);
     } else {
       setHeartIconName((heartIconName) => "cards-heart");
       setIconColor((iconColor) => colors.primary);
+      efavoriteCreate(favId);
     }
   };
+
+  async function efavoriteCreate(favId) {
+    const result = await userUpdate.favoriteJobsCreate(
+      currrentUser,
+      listing.id
+    );
+    // console.log(result);
+  }
+
+  async function favoriteDelete(favId) {
+    const result = await userUpdate.favoriteJobsDelete(favId);
+    //console.log(result);
+  }
 
   return (
     <ScrollView style={styles.scrollView} nestedScrollEnabled={true}>
@@ -134,7 +117,7 @@ function JobsDetailScreen({ route }) {
               <Text style={{ fontWeight: "600", color: colors.medium }}>
                 Salary Min :{" "}
               </Text>
-              {"  " + listing.salleryMin}
+              {listing.currency + "  " + listing.salleryMin}
               <Text style={{ color: colors.medium, fontWeight: "400" }}>
                 {" "}
                 / month
@@ -146,7 +129,7 @@ function JobsDetailScreen({ route }) {
               <Text style={{ fontWeight: "600", color: colors.medium }}>
                 Salary Max :{" "}
               </Text>
-              {" " + listing.salleryMax}
+              {listing.currency + " " + listing.salleryMax}
               <Text style={{ color: colors.medium, fontWeight: "400" }}>
                 {" "}
                 / month

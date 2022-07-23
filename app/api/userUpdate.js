@@ -13,6 +13,7 @@ const skillCreate = async (userInfo, currrentUser) => {
 };
 
 const skillDelete = (id) => client.delete("/skill/delete/" + id);
+const data = new FormData();
 const skillUpdate = async (userInfo, currrentUser, skillId) => {
   data.append("user_id", currrentUser);
   data.append("skillName", userInfo.skillName);
@@ -220,9 +221,7 @@ const jobPreferenceUpdate = async (userInfo, currrentUser, jobPreferenceId) => {
 const userBasicUpdate = async (userInfo, currrentUser, jobPreferenceId) => {
   //console.log(userInfo);
   const data = new FormData();
-  data.append("firstName", userInfo.firstName);
-  data.append("middleName", userInfo.middleName);
-  data.append("lastName", userInfo.lastName);
+  data.append("name", userInfo.name);
   data.append("profile_type", userInfo.profile_type.title);
   data.append("sex", userInfo.sex.title);
   data.append(
@@ -254,6 +253,26 @@ const userPersonalUpdate = async (userInfo, currrentUser, jobPreferenceId) => {
   return result;
 };
 
+//=============== favorite Jobs Update API ===================
+
+const favoriteJobsCreate = async (currrentUser, jobId) => {
+  //console.log(userInfo);
+  const data = new FormData();
+  data.append("user_id", currrentUser);
+  data.append("job_ads_id", jobId);
+
+  const result = await client.post("/favorite-jobs/create", data);
+  //console.log(result);
+  return result;
+};
+
+const favoriteJobsDelete = async (id) => {
+  // console.log(id);
+  const result = await client.delete("favorite-jobs/delete/" + id);
+  // console.log(result);
+  return result;
+};
+
 export default {
   skillCreate,
   skillUpdate,
@@ -275,5 +294,7 @@ export default {
   jobPreferenceDelete,
   userBasicUpdate,
   userPersonalUpdate,
+  favoriteJobsCreate,
+  favoriteJobsDelete,
 };
 
