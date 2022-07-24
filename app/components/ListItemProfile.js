@@ -34,12 +34,6 @@ function ListItemProfile({
             </AppText>
           )}
         </View>
-        <MaterialCommunityIcons
-          style={styles.icon}
-          name="chevron-right"
-          size={25}
-          color={colors.medium}
-        />
       </View>
     </TouchableHighlight>
   );
