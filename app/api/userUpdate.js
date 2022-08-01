@@ -1,5 +1,73 @@
 import client from "./client";
 
+//=============== Month String to Number===================
+function dateStingToNumber(month) {
+  var day = 0;
+  if (month == "January") {
+    day = 1;
+  } else if (month == "February") {
+    day = 2;
+  } else if (month == "March") {
+    day = 3;
+  } else if (month == "April") {
+    day = 4;
+  } else if (month == "May") {
+    day = 5;
+  } else if (month == "June") {
+    day = 6;
+  } else if (month == "July") {
+    day = 7;
+  } else if (month == "August") {
+    day = 8;
+  } else if (month == "September") {
+    day = 9;
+  } else if (month == "October") {
+    day = 10;
+  } else if (month == "November") {
+    day = 11;
+  } else if (month == "December") {
+    day = 12;
+  } else {
+    day = 0;
+  }
+
+  return day;
+}
+
+//=============== Month Number to String===================
+
+function dateNumberToString(monthSt) {
+  var month = "";
+  if (monthSt == 1) {
+    month = "January";
+  } else if (monthSt == 2) {
+    month = "February";
+  } else if (monthSt == 3) {
+    month = "March";
+  } else if (monthSt == 4) {
+    month = "April";
+  } else if (monthSt == 5) {
+    month = "May";
+  } else if (monthSt == 6) {
+    month = "June";
+  } else if (monthSt == 7) {
+    month = "July";
+  } else if (monthSt == 8) {
+    month = "August";
+  } else if (monthSt == 9) {
+    month = "September";
+  } else if (monthSt == 10) {
+    month = "October";
+  } else if (monthSt == 11) {
+    month = "November";
+  } else if (monthSt == 12) {
+    month = "December";
+  } else {
+    month = "";
+  }
+
+  return month;
+}
 
 //=============== Skill CRUD API ===================
 const skillCreate = async (userInfo, currrentUser) => {
@@ -17,7 +85,7 @@ const data = new FormData();
 const skillUpdate = async (userInfo, currrentUser, skillId) => {
   data.append("user_id", currrentUser);
   data.append("skillName", userInfo.skillName);
-  data.append("skill_level", userInfo.skill_level.title);
+  data.append("skill_level", userInfo.skill_level);
   // console.log(data);
   const result = await client.post("/skill/update/" + skillId, data);
   return result;
@@ -40,8 +108,8 @@ const languageUpdate = async (userInfo, currrentUser, languageId) => {
   //console.log(userInfo);
   const data = new FormData();
   data.append("user_id", currrentUser);
-  data.append("language_name", userInfo.language_name.title);
-  data.append("language_level", userInfo.language_level.title);
+  data.append("language_name", userInfo.language_name);
+  data.append("language_level", userInfo.language_level);
   //console.log(data);
   const result = await client.post("/language/update/" + languageId, data);
 
@@ -77,14 +145,14 @@ const trainingUpdate = async (userInfo, currrentUser, trainingId) => {
   data.append("user_id", currrentUser);
   data.append("name", userInfo.name);
   data.append("org", userInfo.org);
-  data.append("country", userInfo.country.title);
+  data.append("country", userInfo.country);
   data.append(
     "startDate",
-    userInfo.fromMonth.title.trim() + " - " + userInfo.fromYear.trim()
+    userInfo.fromMonth.trim() + " - " + userInfo.fromYear.trim()
   );
   data.append(
     "endDate",
-    userInfo.toMonth.title.trim() + " - " + userInfo.toYear.trim()
+    userInfo.toMonth.trim() + " - " + userInfo.toYear.trim()
   ); //console.log(data);
   const result = await client.post("/training/update/" + trainingId, data);
 
@@ -119,17 +187,17 @@ const educationUpdate = async (userInfo, currrentUser, educationId) => {
   // console.log(userInfo);
   const data = new FormData();
   data.append("user_id", currrentUser);
-  data.append("level", userInfo.level.title);
+  data.append("level", userInfo.level);
   data.append("school", userInfo.school);
-  data.append("country", userInfo.country.title);
+  data.append("country", userInfo.country);
   data.append("subject", userInfo.subject);
   data.append(
     "startDate",
-    userInfo.fromMonth.title.trim() + " - " + userInfo.fromYear.trim()
+    userInfo.fromMonth.trim() + " - " + userInfo.fromYear.trim()
   );
   data.append(
     "endDate",
-    userInfo.toMonth.title.trim() + " - " + userInfo.toYear.trim()
+    userInfo.toMonth.trim() + " - " + userInfo.toYear.trim()
   ); //console.log(data);
   const result = await client.post("/education/update/" + educationId, data);
 
@@ -165,14 +233,14 @@ const experienceUpdate = async (userInfo, currrentUser, experienceId) => {
   data.append("user_id", currrentUser);
   data.append("post", userInfo.post);
   data.append("company", userInfo.company);
-  data.append("country", userInfo.country.title);
+  data.append("country", userInfo.country);
   data.append(
     "startDate",
-    userInfo.fromMonth.title.trim() + " - " + userInfo.fromYear.trim()
+    userInfo.fromMonth.trim() + " - " + userInfo.fromYear.trim()
   );
   data.append(
     "endDate",
-    userInfo.toMonth.title.trim() + " - " + userInfo.toYear.trim()
+    userInfo.toMonth.trim() + " - " + userInfo.toYear.trim()
   );
   //console.log(data);
   const result = await client.post("/experience/update/" + experienceId, data);
@@ -222,11 +290,14 @@ const userBasicUpdate = async (userInfo, currrentUser, jobPreferenceId) => {
   //console.log(userInfo);
   const data = new FormData();
   data.append("name", userInfo.name);
-  data.append("profile_type", userInfo.profile_type.title);
-  data.append("sex", userInfo.sex.title);
+  data.append("profile_type", userInfo.profile_type);
+  data.append("sex", userInfo.sex);
+
+  const monthNumber = dateStingToNumber(userInfo.month);
+
   data.append(
     "dob",
-    userInfo.year.trim() + "-" + userInfo.month.id + "-" + userInfo.day.id
+    userInfo.year.trim() + "-" + monthNumber + "-" + userInfo.day
   );
   data.append("mobileNo", userInfo.mobileNo);
 
@@ -238,15 +309,12 @@ const userBasicUpdate = async (userInfo, currrentUser, jobPreferenceId) => {
 const userPersonalUpdate = async (userInfo, currrentUser, jobPreferenceId) => {
   //console.log(userInfo);
   const data = new FormData();
-  data.append("nationality", userInfo.nationality.title);
-  data.append("countryLiveIn", userInfo.countryLiveIn.title);
-  data.append("maritalStatus", userInfo.maritalStatus.title);
-  data.append("religion", userInfo.religion.title);
+  data.append("nationality", userInfo.nationality);
+  data.append("countryLiveIn", userInfo.countryLiveIn);
+  data.append("maritalStatus", userInfo.maritalStatus);
+  data.append("religion", userInfo.religion);
   data.append("weight", userInfo.weight);
-  data.append(
-    "height",
-    userInfo.feet.title.trim() + " - " + userInfo.inches.title.trim()
-  );
+  data.append("height", userInfo.feet.trim() + " - " + userInfo.inches.trim());
   // console.log(data);
   const result = await client.post("/personal/update/" + jobPreferenceId, data);
 
@@ -282,7 +350,7 @@ const applyJobCreate = async (currrentUser, jobId) => {
   data.append("job_ads_id", jobId);
 
   const result = await client.post("/jobs/apply", data);
- // console.log(result);
+  // console.log(result);
   return result;
 };
 
@@ -291,7 +359,7 @@ const applyJobCreate = async (currrentUser, jobId) => {
 const jobSingleFatch = async (id) => {
   // console.log("hi"+id);
   const result = await client.get("/jobs/" + id);
-   //console.log(result);
+  //console.log(result);
   return result;
 };
 
@@ -300,17 +368,16 @@ const jobSingleFatch = async (id) => {
 const jobFabFatch = async (id) => {
   // console.log("hi"+id);
   const result = await client.get("jobs/fav/" + id);
-   //console.log(result);
+  //console.log(result);
   return result;
 };
-
 
 //=============== Fab Jobs List  API ===================
 
 const jobAppliedFatch = async (id) => {
   // console.log("hi"+id);
   const result = await client.get("jobs/applied/" + id);
-   //console.log(result);
+  //console.log(result);
   return result;
 };
 
@@ -319,10 +386,9 @@ const jobAppliedFatch = async (id) => {
 const messageFatch = async (id) => {
   // console.log("hi"+id);
   const result = await client.get("push/message/" + id);
-   //console.log(result);
+  //console.log(result);
   return result;
 };
-
 
 export default {
   skillCreate,
@@ -352,5 +418,7 @@ export default {
   jobSingleFatch,
   jobFabFatch,
   messageFatch,
+  dateStingToNumber,
+  dateNumberToString,
 };
 

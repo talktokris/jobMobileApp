@@ -10,7 +10,7 @@ import {
   AppFormField,
   SubmitButton,
   ErrorMessage,
-  AppFormPicker,
+  AppFormPickerEdit,
 } from "../components/forms";
 import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 
@@ -32,14 +32,15 @@ import fonts from "../config/fonts";
 import { ScrollView } from "react-native";
 
 const validationSchema = Yup.object().shape({
-  level: Yup.object().required().nullable().label("Education Level"),
+  level: Yup.string().required().min(2).label("Education Level"),
+
   school: Yup.string().required().min(4).label("School / University Name"),
-  country: Yup.object().required().nullable().label("Country"),
+  country: Yup.string().required().min(2).label("Country"),
   subject: Yup.string().required().min(4).label("Subject / Faculty"),
   fromYear: Yup.number().required().min(1850).label("From Year"),
-  fromMonth: Yup.object().required().nullable().label("From Month"),
+  fromMonth: Yup.string().required().min(2).label("From Month"),
   toYear: Yup.number().required().min(1850).label("From Year"),
-  toMonth: Yup.object().required().nullable().label("To Month"),
+  toMonth: Yup.string().required().min(2).label("To Month"),
 });
 const maxDate = moment().subtract(1, "days").format("DD-MM-YYYY");
 const minDate = moment().subtract(50, "years").format("DD-MM-YYYY");
@@ -139,19 +140,19 @@ function ResumeEducationScreenEdit({ route, navigation }) {
             <AppForm
               initialValues={{
                 level: route.params.item.edu.level,
-                school: route.params.item.edu.level,
-                country: route.params.item.edu.level,
-                subject: route.params.item.edu.level,
-                fromYear: fromDate[1],
-                fromMonth: fromDate[0],
-                toYear: toDate[1],
-                toMonth: toDate[0],
+                school: route.params.item.edu.school,
+                country: route.params.item.edu.country,
+                subject: route.params.item.edu.subject,
+                fromYear: fromDate[1].trim(),
+                fromMonth: fromDate[0].trim(),
+                toYear: toDate[1].trim(),
+                toMonth: toDate[0].trim(),
               }}
               onSubmit={handleSubmit}
               validationSchema={validationSchema}
             >
               {!isLoading && educationLevel && (
-                <AppFormPicker
+                <AppFormPickerEdit
                   items={educationLevel}
                   name="level"
                   /* numberOfColumns={2} */
@@ -170,7 +171,7 @@ function ResumeEducationScreenEdit({ route, navigation }) {
               />
 
               {!isLoading && skillLevel && (
-                <AppFormPicker
+                <AppFormPickerEdit
                   items={skillLevel}
                   name="country"
                   /* numberOfColumns={2} */
@@ -203,7 +204,7 @@ function ResumeEducationScreenEdit({ route, navigation }) {
                 </View>
 
                 <View style={styles.childRight}>
-                  <AppFormPicker
+                  <AppFormPickerEdit
                     items={monthData}
                     name="fromMonth"
                     /* numberOfColumns={2} */
@@ -230,7 +231,7 @@ function ResumeEducationScreenEdit({ route, navigation }) {
                 </View>
 
                 <View style={styles.childRight}>
-                  <AppFormPicker
+                  <AppFormPickerEdit
                     items={monthData}
                     name="toMonth"
                     /* numberOfColumns={2} */

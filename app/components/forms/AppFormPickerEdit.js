@@ -1,10 +1,10 @@
 import React from "react";
 import { useFormikContext } from "formik";
 
-import AppPicker from "../AppPicker";
+import AppPickerEdit from "../AppPickerEdit";
 import ErrorMessage from "./ErrorMessage";
 
-function AppFormPicker({
+function AppFormPickerEdit({
   items,
   name,
   lebel,
@@ -18,15 +18,16 @@ function AppFormPicker({
     useFormikContext();
   return (
     <>
-      <AppPicker
+      <AppPickerEdit
         items={items}
         numberOfColumns={numberOfColumns}
         onSelectItem={(item) => setFieldValue(name, item)}
         PickerItemComponent={PickerItemComponent}
         placeholder={placeholder}
         lebel={lebel}
-        //selectedItem={selectedItem}
+        // selectedItem={selectedItem}
         selectedItem={values[name]}
+        // selectedItem={{ id: 48, title: values[name] }}
         bnBlue={() => setFieldTouched(name)}
         width={width}
         {...otherProps}
@@ -36,4 +37,4 @@ function AppFormPicker({
   );
 }
 
-export default AppFormPicker;
+export default AppFormPickerEdit;

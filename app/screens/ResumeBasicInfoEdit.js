@@ -11,6 +11,7 @@ import {
   SubmitButton,
   ErrorMessage,
   AppFormPicker,
+  AppFormPickerEdit,
 } from "../components/forms";
 import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 
@@ -35,11 +36,16 @@ const validationSchema = Yup.object().shape({
   name: Yup.string().required().min(2).label("First Name"),
   // middleName: Yup.string().required().min(2).label("Middle Name"),
   //lastName: Yup.string().required().min(2).label("Last Name"),
-  profile_type: Yup.object().required().nullable().label("Profile Type"),
-  sex: Yup.object().required().nullable().label("Gender"),
-  year: Yup.number().required().min(1850).label("Year"),
-  month: Yup.object().required().nullable().label("Month"),
-  day: Yup.object().required().nullable().label("Day"),
+  profile_type: Yup.string().required().min(2).label("Profile Type"),
+  sex: Yup.string().required().min(2).label("Gender"),
+
+  year: Yup.number()
+    .required("Invalid Year")
+    .typeError("Invalid Year")
+    .min(1850, "Invalid Year")
+    .max(2022, "Invalid Year"),
+  month: Yup.string().required().min(1).label("Month"),
+  day: Yup.string().required().min(1).label("Day"),
   mobileNo: Yup.number().required().label("Moble No"),
 });
 const maxDate = moment().subtract(1, "days").format("DD-MM-YYYY");
@@ -47,14 +53,14 @@ const minDate = moment().subtract(50, "years").format("DD-MM-YYYY");
 
 function ResumeBasicInfoEdit({ route, navigation }) {
   const { user, logOut } = useAuth();
+  const users = route.params.item;
   const currrentUser = user.id;
 
   var dobGet = "";
-  if (user.dob == null) {
-    dobGet: {
-    }
+  if (users.dob == null) {
+    dobGet = "";
   } else {
-    dobGet: user.dob;
+    dobGet = users.dob;
   }
 
   const dob = dobGet.split("-");
@@ -178,15 +184,15 @@ function ResumeBasicInfoEdit({ route, navigation }) {
 
             <AppForm
               initialValues={{
-                name: user.name,
-                // middleName: user.middleName,
-                // lastName: user.lastName,
-                profile_type: user.profile_type,
-                sex: user.sex,
+                name: users.name,
+                // middleName: users.middleName,
+                // lastName: users.lastName,
+                profile_type: users.profile_type,
+                sex: users.sex,
                 year: dob[0],
-                month: dob[1],
+                month: userUpdate.dateNumberToString(dob[1]),
                 day: dob[2],
-                mobileNo: user.mobileNo,
+                mobileNo: users.mobileNo,
               }}
               onSubmit={handleSubmit}
               validationSchema={validationSchema}
@@ -196,6 +202,15 @@ function ResumeBasicInfoEdit({ route, navigation }) {
                 autoCapitalize="none"
                 autoCorrect={false}
                 placeholder="First Name"
+              />
+
+              <AppFormPickerEdit
+                items={profileSet}
+                name="profile_type"
+                /* numberOfColumns={2} */
+                /* PickerItemComponent={PickerItem} */
+
+                placeholder="Profile Type"
               />
               {/* <Text style={styles.lebel}>Name : </Text>
             
@@ -230,28 +245,15 @@ function ResumeBasicInfoEdit({ route, navigation }) {
                 </View>
               </View>
             */}
-              <View style={styles.dateContainer}>
-                <View style={styles.childLeftSub}>
-                  <AppFormPicker
-                    items={profileSet}
-                    name="profile_type"
-                    /* numberOfColumns={2} */
-                    /* PickerItemComponent={PickerItem} */
+              <AppFormPickerEdit
+                items={sexSet}
+                name="sex"
+                /* numberOfColumns={2} */
+                /* PickerItemComponent={PickerItem} */
 
-                    placeholder="Profile Type"
-                  />
-                </View>
-                <View style={styles.childRightSub}>
-                  <AppFormPicker
-                    items={sexSet}
-                    name="sex"
-                    /* numberOfColumns={2} */
-                    /* PickerItemComponent={PickerItem} */
+                placeholder="Gender"
+              />
 
-                    placeholder="Gender"
-                  />
-                </View>
-              </View>
               <AppFormField
                 name="mobileNo"
                 autoCapitalize="none"
@@ -276,7 +278,7 @@ function ResumeBasicInfoEdit({ route, navigation }) {
                       />
                     </View>
                     <View style={styles.childRightSub}>
-                      <AppFormPicker
+                      <AppFormPickerEdit
                         items={monthData}
                         name="month"
                         placeholder="Month"
@@ -285,7 +287,11 @@ function ResumeBasicInfoEdit({ route, navigation }) {
                   </View>
                 </View>
                 <View style={styles.childRight}>
-                  <AppFormPicker items={dayData} name="day" placeholder="Day" />
+                  <AppFormPickerEdit
+                    items={dayData}
+                    name="day"
+                    placeholder="Day"
+                  />
                 </View>
               </View>
 
@@ -322,8 +328,8 @@ const styles = StyleSheet.create({
   },
   childLeft: { width: "70%" },
   childRight: { width: "30%" },
-  childLeftSub: { width: "50%" },
-  childRightSub: { width: "50%" },
+  childLeftSub: { width: "40%" },
+  childRightSub: { width: "60%" },
   lebel: {
     fontSize: 16,
     fontFamily: Platform.OS === "android" ? fonts.android : fonts.ios,

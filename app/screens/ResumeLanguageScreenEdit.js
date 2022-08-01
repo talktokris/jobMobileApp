@@ -9,7 +9,7 @@ import {
   AppFormField,
   SubmitButton,
   ErrorMessage,
-  AppFormPicker,
+  AppFormPickerEdit,
 } from "../components/forms";
 import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 import routes from "../navigation/routes";
@@ -27,8 +27,9 @@ import setList from "../api/setList";
 import userUpdate from "../api/userUpdate";
 
 const validationSchema = Yup.object().shape({
-  language_name: Yup.object().required().nullable().label("Language"),
-  language_level: Yup.object().required().nullable().label("Language Level"),
+  language_name: Yup.string().required().min(1).label("Language"),
+  language_level: Yup.string().required().min(1).label("Language Level"),
+
   //  skill_level: Yup.object().required().nullable().label("Skill Level"),
   // skillName: Yup.string().required().min(4).label("Password"),
 });
@@ -122,7 +123,7 @@ function ResumeLanguageScreenEdit({ route, navigation }) {
             validationSchema={validationSchema}
           >
             {!isLoading && skillLevel && (
-              <AppFormPicker
+              <AppFormPickerEdit
                 items={skill}
                 name="language_name"
                 /* numberOfColumns={2} */
@@ -135,7 +136,7 @@ function ResumeLanguageScreenEdit({ route, navigation }) {
             )}
 
             {!isLoading && skillLevel && (
-              <AppFormPicker
+              <AppFormPickerEdit
                 items={skillLevel}
                 name="language_level"
                 /* numberOfColumns={2} */

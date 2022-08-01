@@ -178,7 +178,7 @@ function ResumeScreen({ navigation }) {
               onPress={() =>
                 navigation.navigate(routes.PRO_RESUME_BASIC, {
                   user_id: users.data[0].id,
-                  item: {},
+                  item: users.data[0],
                 })
               }
             />
@@ -203,7 +203,7 @@ function ResumeScreen({ navigation }) {
               onPress={() =>
                 navigation.navigate(routes.PRO_RESUME_PERSONAL, {
                   user_id: users.data[0].id,
-                  item: {},
+                  item: users.data[0],
                 })
               }
             />

@@ -1,3 +1,10 @@
+export default {
+  serverUrl: "https://www.prabhutravel.com/jobmobile/",
+  apiUrl: "https://www.prabhutravel.com/jobmobile/api",
+  imageUrl: "https://www.prabhutravel.com/jobwebapp/assets/images/",
+};
+
+/*
 import { Constants } from "expo-constants";
 
 const settings = {
@@ -26,3 +33,4 @@ const getCurrentSettings = () => {
 };
 
 export default getCurrentSettings();
+*/

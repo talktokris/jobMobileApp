@@ -34,7 +34,7 @@ function RegisterScreen({ navigation }) {
     setEstatus(false);
     // const result = await registerApi.request(userInfo);
     const result = await usersApi.register(userInfo);
-    console.log(result);
+    // console.log(result);
     setLoading(false);
     if (!result.ok) return;
 

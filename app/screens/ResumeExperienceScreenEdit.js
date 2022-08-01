@@ -10,7 +10,7 @@ import {
   AppFormField,
   SubmitButton,
   ErrorMessage,
-  AppFormPicker,
+  AppFormPickerEdit,
 } from "../components/forms";
 import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 
@@ -34,11 +34,12 @@ import { ScrollView } from "react-native";
 const validationSchema = Yup.object().shape({
   post: Yup.string().required().min(4).label("Job Title"),
   company: Yup.string().required().min(4).label("Company Name"),
-  country: Yup.object().required().nullable().label("Country"),
+  country: Yup.string().required().min(1).label("Country"),
   fromYear: Yup.number().required().min(1850).label("From Year"),
-  fromMonth: Yup.object().required().nullable().label("From Month"),
+  fromMonth: Yup.string().required().min(1).label("From Month"),
+
   toYear: Yup.number().required().min(1850).label("From Year"),
-  toMonth: Yup.object().required().nullable().label("To Month"),
+  toMonth: Yup.string().required().min(1).label("To Month"),
 });
 const maxDate = moment().subtract(1, "days").format("DD-MM-YYYY");
 const minDate = moment().subtract(50, "years").format("DD-MM-YYYY");
@@ -128,10 +129,10 @@ function ResumeExperienceScreenEdit({ route, navigation }) {
                 post: route.params.item.exp.post,
                 company: route.params.item.exp.company,
                 country: route.params.item.exp.country,
-                fromYear: fromDate[1],
-                fromMonth: fromDate[0],
-                toYear: toDate[1],
-                toMonth: toDate[0],
+                fromYear: fromDate[1].trim(),
+                fromMonth: fromDate[0].trim(),
+                toYear: toDate[1].trim(),
+                toMonth: toDate[0].trim(),
               }}
               onSubmit={handleSubmit}
               validationSchema={validationSchema}
@@ -150,7 +151,7 @@ function ResumeExperienceScreenEdit({ route, navigation }) {
               />
 
               {!isLoading && skillLevel && (
-                <AppFormPicker
+                <AppFormPickerEdit
                   items={skillLevel}
                   name="country"
                   /* numberOfColumns={2} */
@@ -176,7 +177,7 @@ function ResumeExperienceScreenEdit({ route, navigation }) {
                 </View>
 
                 <View style={styles.childRight}>
-                  <AppFormPicker
+                  <AppFormPickerEdit
                     items={monthData}
                     name="fromMonth"
                     /* numberOfColumns={2} */
@@ -203,7 +204,7 @@ function ResumeExperienceScreenEdit({ route, navigation }) {
                 </View>
 
                 <View style={styles.childRight}>
-                  <AppFormPicker
+                  <AppFormPickerEdit
                     items={monthData}
                     name="toMonth"
                     /* numberOfColumns={2} */

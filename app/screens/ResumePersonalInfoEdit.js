@@ -11,6 +11,7 @@ import {
   SubmitButton,
   ErrorMessage,
   AppFormPicker,
+  AppFormPickerEdit,
 } from "../components/forms";
 import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 
@@ -32,30 +33,40 @@ import fonts from "../config/fonts";
 import { ScrollView } from "react-native";
 
 const validationSchema = Yup.object().shape({
-  nationality: Yup.object().required().nullable().label("Nationality"),
-  countryLiveIn: Yup.object().required().nullable().label("Country LiveIn"),
-  maritalStatus: Yup.object().required().nullable().label("Marital Status"),
-  religion: Yup.object().required().nullable().label("Religion"),
-  weight: Yup.number().required().min(25).label("Weight"),
-  feet: Yup.object().required().nullable().label("Feet"),
-  inches: Yup.object().required().nullable().label("Inches"),
+  nationality: Yup.string().required().min(2).label("Nationality"),
+  countryLiveIn: Yup.string().required().min(2).label("Country LiveIn"),
+  maritalStatus: Yup.string().required().min(2).label("Marital Status"),
+  religion: Yup.string().required().min(2).label("Religion"),
+  weight: Yup.number()
+    .typeError("Invalid Age")
+    .min(25, "Invalid Age")
+    .max(150, "Invalid Age"),
+  feet: Yup.string().required().min(2).label("Feet"),
+  inches: Yup.string().required().min(2).label("Inches"),
 });
 const maxDate = moment().subtract(1, "days").format("DD-MM-YYYY");
 const minDate = moment().subtract(50, "years").format("DD-MM-YYYY");
 
 function ResumePersonalInfoEdit({ route, navigation }) {
-  const listing = route.params.item;
+  const users = route.params.item;
+
   const { user, logOut } = useAuth();
   const currrentUser = user.id;
   var dobGet = "";
-  if (user.height == null) {
-    dobGet: {
-    }
+  feet = "";
+  inches = "";
+  if (users.height == null) {
+    dobGet = "";
+    feet = "";
+    inches = "";
   } else {
-    dobGet: user.height;
+    dobGet = users.height;
+    var height = dobGet.split(" - ");
+    feet = height[0];
+    inches = height[1];
   }
-  const height = dobGet.split("-");
-
+  // const height = dobGet.split("-");
+  //console.log(inches);
   const [error, setError] = useState();
   const [eStatus, setEstatus] = useState(false);
   const [isLoading, setLoading] = useState(true);
@@ -134,9 +145,9 @@ function ResumePersonalInfoEdit({ route, navigation }) {
     { id: 2, title: "Islam" },
     { id: 3, title: "Hinduism" },
     { id: 4, title: "Buddhism" },
-    { id: 4, title: "Sikhism" },
-    { id: 4, title: "Jainism" },
-    { id: 4, title: "Others" },
+    { id: 5, title: "Sikhism" },
+    { id: 6, title: "Jainism" },
+    { id: 7, title: "Others" },
   ];
 
   const handleSubmit = async (userInfo) => {
@@ -174,19 +185,19 @@ function ResumePersonalInfoEdit({ route, navigation }) {
 
             <AppForm
               initialValues={{
-                nationality: user.nationality,
-                countryLiveIn: user.countryLiveIn,
-                maritalStatus: user.maritalStatus,
-                religion: user.religion,
-                weight: user.weight,
-                feet: height[0],
-                inches: height[1],
+                nationality: users.nationality,
+                countryLiveIn: users.countryLiveIn,
+                maritalStatus: users.maritalStatus,
+                religion: users.religion,
+                weight: users.weight,
+                feet: feet,
+                inches: inches,
               }}
               onSubmit={handleSubmit}
               validationSchema={validationSchema}
             >
               {!isLoading && skillLevel && (
-                <AppFormPicker
+                <AppFormPickerEdit
                   items={skillLevel}
                   name="nationality"
                   /* numberOfColumns={2} */
@@ -200,7 +211,7 @@ function ResumePersonalInfoEdit({ route, navigation }) {
               )}
 
               {!isLoading && skillLevel && (
-                <AppFormPicker
+                <AppFormPickerEdit
                   items={skillLevel}
                   name="countryLiveIn"
                   /* numberOfColumns={2} */
@@ -213,7 +224,7 @@ function ResumePersonalInfoEdit({ route, navigation }) {
                 />
               )}
 
-              <AppFormPicker
+              <AppFormPickerEdit
                 items={maritalStatusData}
                 name="maritalStatus"
                 /* numberOfColumns={2} */
@@ -225,7 +236,7 @@ function ResumePersonalInfoEdit({ route, navigation }) {
                 /* width="80%" */
               />
 
-              <AppFormPicker
+              <AppFormPickerEdit
                 items={religionData}
                 name="religion"
                 /* numberOfColumns={2} */
@@ -247,7 +258,7 @@ function ResumePersonalInfoEdit({ route, navigation }) {
               <Text style={styles.lebel}>Height : </Text>
               <View style={styles.dateContainer}>
                 <View style={styles.childLeft}>
-                  <AppFormPicker
+                  <AppFormPickerEdit
                     items={feetData}
                     name="feet"
                     /* numberOfColumns={2} */
@@ -260,7 +271,7 @@ function ResumePersonalInfoEdit({ route, navigation }) {
                 </View>
 
                 <View style={styles.childRight}>
-                  <AppFormPicker
+                  <AppFormPickerEdit
                     items={inchesData}
                     name="inches"
                     /* numberOfColumns={2} */
