@@ -169,6 +169,12 @@ function ResumeScreen({ navigation }) {
                 users.data[0].image
               }
               imgStatus={users.data[0].image}
+              onPress={() => {
+                navigation.navigate(routes.PRO_PHOTO_UPLOAD, {
+                  user_id: users.data[0].id,
+                  item: users.data[0],
+                });
+              }}
             />
 
             <ResumeHeading

@@ -49,7 +49,7 @@ function ImageInput({ imageUri, onChangeImage }) {
           <MaterialCommunityIcons
             name="camera"
             size={40}
-            color={colors.medium}
+            color={colors.white}
           />
         )}
         {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
@@ -64,10 +64,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lightGray,
     borderRadius: 15,
     justifyContent: "center",
-    height: 100,
-    width: 100,
+    height: 80,
+    width: 80,
+    borderRadius: 40,
     overflow: "hidden",
     margin: 5,
+    backgroundColor: colors.primary,
+    borderWidth: 5,
+    borderColor: colors.white,
   },
   image: {
     height: "100%",

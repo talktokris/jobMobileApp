@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "mobileApp",
-    "slug": "mobileApp",
+    "name": "Job Agency",
+    "slug": "Job-Agency",
     "version": "1.0.1",
     "orientation": "portrait",
     "icon": "app/assets/icon.png",

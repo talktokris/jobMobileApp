@@ -16,6 +16,8 @@ import ResumeEducationScreenEdit from "../screens/ResumeEducationScreenEdit";
 import ResumeExperienceScreenEdit from "../screens/ResumeExperienceScreenEdit";
 import ResumeBasicInfoEdit from "../screens/ResumeBasicInfoEdit";
 import ResumePersonalInfoEdit from "../screens/ResumePersonalInfoEdit";
+import ResumeUplaodScreen from "../screens/ResumeUplaodScreen";
+
 
 const Stack = createStackNavigator();
 
@@ -43,6 +45,7 @@ const ResumeNavigator = () => (
     <Stack.Screen name="Training Update" component={ResumeTrainingScreenEdit} />
     <Stack.Screen name="Done" component={ComplitedScreen} />
     <Stack.Screen name="Language Update" component={ResumeLanguageScreenEdit} />
+    <Stack.Screen name="Photo Upload" component={ResumeUplaodScreen} />
   </Stack.Navigator>
 );
 

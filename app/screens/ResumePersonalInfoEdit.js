@@ -41,6 +41,7 @@ const validationSchema = Yup.object().shape({
     .typeError("Invalid Age")
     .min(25, "Invalid Age")
     .max(150, "Invalid Age"),
+
   feet: Yup.string().required().min(2).label("Feet"),
   inches: Yup.string().required().min(2).label("Inches"),
 });
@@ -189,7 +190,8 @@ function ResumePersonalInfoEdit({ route, navigation }) {
                 countryLiveIn: users.countryLiveIn,
                 maritalStatus: users.maritalStatus,
                 religion: users.religion,
-                weight: users.weight,
+                //   weight: users.weight,
+                weight: "" + users.weight + "",
                 feet: feet,
                 inches: inches,
               }}
@@ -246,12 +248,12 @@ function ResumePersonalInfoEdit({ route, navigation }) {
                 lebel="Religion"
                 /* width="80%" */
               />
+
               <AppFormField
                 name="weight"
                 autoCapitalize="none"
                 autoCorrect={false}
                 placeholder="Weight (KG)"
-                width="50%"
                 lebel="Weight (KG)"
               />
 

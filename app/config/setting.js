@@ -1,7 +1,7 @@
 export default {
-  serverUrl: "https://www.prabhutravel.com/jobmobile/",
-  apiUrl: "https://www.prabhutravel.com/jobmobile/api",
-  imageUrl: "https://www.prabhutravel.com/jobwebapp/assets/images/",
+  serverUrl: "https://stjobagency.com/",
+  apiUrl: "https://stjobagency.com/backend_api/api",
+  imageUrl: "https://stjobagency.com/assets/images/",
 };
 
 /*

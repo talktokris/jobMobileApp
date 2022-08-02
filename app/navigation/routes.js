@@ -17,6 +17,7 @@ export default Object.freeze({
   PRO_JOB_PREFERENCES: "Job Preferences",
   PRO_TRAINING: "Training",
   PRO_TRAINING_EDIT: "Training Update",
+  PRO_PHOTO_UPLOAD: "Photo Upload",
   AC_MESAGES: "Messages",
   AC_MESAGES_VIEW: "Message View",
   PRO_JOB_DONE: "Job Apply",

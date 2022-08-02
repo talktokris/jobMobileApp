@@ -390,6 +390,24 @@ const messageFatch = async (id) => {
   return result;
 };
 
+
+//=============== Image Upload ===================
+
+const imagesUpload = async (userInfo, currrentUser) => {
+  console.log(userInfo.images[0].uri);
+ 
+  /*
+  const data = new FormData();
+  data.append("user_id", currrentUser);
+  data.append("image", userInfo.language_name);
+  data.append("language_level", userInfo.language_level);
+  //console.log(data);
+  const result = await client.post("/language/update/" + languageId, data);
+
+  return result;
+  */
+};
+
 export default {
   skillCreate,
   skillUpdate,
@@ -420,5 +438,6 @@ export default {
   messageFatch,
   dateStingToNumber,
   dateNumberToString,
+  imagesUpload,
 };
 

@@ -4,10 +4,8 @@ import { useFormikContext } from "formik";
 
 import ErrorMessage from "./ErrorMessage";
 import ImageInputList from "../ImageInputList";
-import ImageInput from "../ImageInput";
-import ImageInputSingle from "../ImageInputSingle";
 
-function AppFormImagePicker({ name, imageStatus, imagePath }) {
+function AppFormImagesPicker({ name }) {
   const { errors, setFieldValue, touched, values } = useFormikContext();
   const imageUris = values[name];
 
@@ -23,15 +21,11 @@ function AppFormImagePicker({ name, imageStatus, imagePath }) {
 
   return (
     <>
-      <ImageInputSingle
+      <ImageInputList
         imageUris={[...imageUris]}
         onAddImage={handleAdd}
         onRemoveImage={handleRemove}
-        imageStatus={imageStatus}
-        imagePath={imagePath}
-        name={name}
       />
-
       <ErrorMessage error={errors[name]} visible={touched[name]} />
     </>
   );
@@ -41,4 +35,4 @@ const styles = StyleSheet.create({
   container: {},
 });
 
-export default AppFormImagePicker;
+export default AppFormImagesPicker;
