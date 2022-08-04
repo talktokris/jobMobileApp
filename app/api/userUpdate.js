@@ -394,19 +394,21 @@ const messageFatch = async (id) => {
 //=============== Image Upload ===================
 
 const imagesUpload = async (userInfo, currrentUser) => {
-  console.log(userInfo.images[0].uri);
- 
-  /*
+  //  console.log(userInfo.images[0].uri);
+  var fileExtension = userInfo.images[0].uri.split(".").pop();
   const data = new FormData();
-  data.append("user_id", currrentUser);
-  data.append("image", userInfo.language_name);
-  data.append("language_level", userInfo.language_level);
-  //console.log(data);
-  const result = await client.post("/language/update/" + languageId, data);
-
+  data.append("id", currrentUser);
+  data.append("image_name", {
+    name: "name" + currrentUser + "." + fileExtension,
+    type: "image/jpeg",
+    uri: userInfo.images[0].uri,
+  });
+  //data.append("image_name", userInfo.images[0].uri);
+  // console.log(fileExtension);
+  const result = await client.post("/image/upload/" + currrentUser, data);
+  // console.log(result);
   return result;
-  */
-};
+};;
 
 export default {
   skillCreate,

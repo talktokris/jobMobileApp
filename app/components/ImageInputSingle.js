@@ -6,6 +6,8 @@ import {
   Image,
   TouchableWithoutFeedback,
   Alert,
+  TouchableHighlight,
+  TouchableOpacity,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
@@ -32,8 +34,7 @@ function ImageInputSingle({
   }, []);
   const granted = (requstPermission = async () => {
     const granted = ImagePicker.requestCameraPermissionsAsync();
-    if (!granted)
-      alert("You need to enable permission to access the library s");
+    if (!granted) alert("You need to enable permission to access the library");
   });
 
   const handlePress = () => {
@@ -48,7 +49,7 @@ function ImageInputSingle({
       });
       // if (!result.cancelled) onChangeImage(result.uri);
       if (!result.cancelled) {
-        // console.log(result);
+        //  console.log(result);
         setImageUriLink(result.uri);
         handleAdd(result);
       }
@@ -69,7 +70,7 @@ function ImageInputSingle({
           <Image style={styles.image} source={{ uri: imageUriLink }} />
         )}
         <View style={styles.buttonContainer}>
-          <TouchableWithoutFeedback onPress={handlePress}>
+          <TouchableOpacity onPress={handlePress}>
             <View style={styles.uploadBtn}>
               {!imageUri && (
                 <MaterialCommunityIcons
@@ -83,7 +84,7 @@ function ImageInputSingle({
               )}
             */}
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         </View>
       </View>
     </>
