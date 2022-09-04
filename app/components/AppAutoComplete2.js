@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  View,
-  Text,
-  TextInput,
-} from "react-native";
+import { StyleSheet, Text, TextInput } from "react-native";
 import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
 import fonts from "../config/fonts";

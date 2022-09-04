@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Platform } from "react-native";
+import { StyleSheet, Text, Platform } from "react-native";
 import React from "react";
 
 import fonts from "../config/fonts";

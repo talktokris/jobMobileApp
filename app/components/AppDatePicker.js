@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  TextInput,
-  StyleSheet,
-  Platform,
-  Text,
-  SafeAreaView,
-} from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { StyleSheet, Platform, SafeAreaView } from "react-native";
 import DatePicker from "react-native-datepicker";
 
 //import moment from "moment";

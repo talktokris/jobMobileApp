@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 
 import Card from "../components/Card";

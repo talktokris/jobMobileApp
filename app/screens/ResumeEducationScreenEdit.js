@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { StyleSheet, Image, TouchableOpacity, View, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import * as Yup from "yup";
 import moment from "moment";
 moment().format();
@@ -12,19 +12,10 @@ import {
   ErrorMessage,
   AppFormPickerEdit,
 } from "../components/forms";
-import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 
-import CategoryPickerItem from "../components/CategoryPickerItem";
-import usersApi from "../api/users";
 import useAuth from "../auth/useAuth";
-import authApi from "../api/auth";
-import useApi from "../hooks/useApi";
 import ActivityIndicator from "../components/ActivityIndicator";
 import colors from "../config/colors";
-import AppAutoComplete from "../components/AppAutoComplete";
-import AppFormAutoComplete from "../components/forms/AppFormAutoComplete";
-import AppFormDatePicker from "../components/forms/AppFormDatePicker";
-import setting from "../config/setting";
 import setList from "../api/setList";
 import userUpdate from "../api/userUpdate";
 import routes from "../navigation/routes";

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { StyleSheet, Image, View } from "react-native";
 import * as Yup from "yup";
 

@@ -1,11 +1,9 @@
 import React from "react";
-import { View, StyleSheet, Modal, Text } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import AppText from "../components/AppText";
-import * as Progress from "react-native-progress";
 import colors from "../config/colors";
-import LottieView from "lottie-react-native";
 import AppButton from "../components/AppButton";
 import routes from "../navigation/routes";
 

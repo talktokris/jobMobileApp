@@ -4,11 +4,8 @@ import React from "react";
 import { ImageBackground, StyleSheet, View, Image, Text } from "react-native";
 
 //import React, {useState, Component, ImageBackground} from 'react';
-import AppText from "../components/AppText"; // Standered StyleSheet
 import AppButton from "../components/AppButton"; // Standered StyleSheet
-import colors from "../config/colors";
 import fonts from "../config/fonts";
-import Constants from "expo-constants";
 
 function WelcomeScreen({ navigation }) {
   return (

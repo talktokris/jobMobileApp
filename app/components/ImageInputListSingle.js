@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import React, { useRef } from "react";
 import ImageInput from "./ImageInput";
 import ImageInputSingle from "./ImageInputSingle";

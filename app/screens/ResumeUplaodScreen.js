@@ -1,19 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Image, View } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
 import * as Yup from "yup";
 
-import {
-  AppForm,
-  AppFormField,
-  AppFormPicker,
-  ErrorMessage,
-  SubmitButton,
-} from "../components/forms";
+import { AppForm, ErrorMessage, SubmitButton } from "../components/forms";
 import Screen from "../components/Screen";
-import CategoryPickerItem from "../components/CategoryPickerItem";
 import AppFormImagePicker from "../components/forms/AppFormImagePicker";
-import useLocation from "../hooks/useLocation";
-import listingsApi from "../api/listings";
 import UploadScreen from "./UploadScreen";
 import settings from "../config/setting";
 import colors from "../config/colors";

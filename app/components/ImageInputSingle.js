@@ -1,26 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useFormikContext } from "formik";
-import {
-  View,
-  StyleSheet,
-  Image,
-  TouchableWithoutFeedback,
-  Alert,
-  TouchableHighlight,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 import colors from "../config/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-function ImageInputSingle({
-  name,
-  imageUri,
-  onChangeImage,
-  imageStatus,
-  imagePath,
-}) {
+function ImageInputSingle({ name, imageUri, imageStatus, imagePath }) {
   const [imageUriLink, setImageUriLink] = useState(imagePath);
   const { errors, setFieldValue, touched, values } = useFormikContext();
   const imageUris = values[name];

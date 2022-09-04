@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Image,
-  StyleSheet,
-  TouchableHighlight,
-  TouchableOpacity,
-} from "react-native";
+import { View, Image, StyleSheet } from "react-native";
 import colors from "../config/colors";
 import AppText from "./AppText";
 import { MaterialCommunityIcons } from "@expo/vector-icons";

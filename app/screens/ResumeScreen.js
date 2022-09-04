@@ -1,10 +1,8 @@
-import React, { useCallback, useContext, useState, useEffect } from "react";
-import { View, StyleSheet, FlatList, ScrollView, Text } from "react-native";
+import React, { useCallback, useState } from "react";
+import { StyleSheet, ScrollView } from "react-native";
 import ProfileBasic from "../components/ProfileBasic";
 import Screen from "../components/Screen";
-import AppText from "../components/AppText";
 
-import Separater from "../components/Separater";
 import ResumeHeading from "../components/ResumeHeading";
 import ResumeInnerView from "../components/ResumeInnerView";
 import routes from "../navigation/routes";

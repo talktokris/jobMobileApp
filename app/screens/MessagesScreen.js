@@ -1,14 +1,11 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 
 import { View, StyleSheet, FlatList } from "react-native";
 import ListItem from "../components/ListItem";
 import Screen from "../components/Screen";
 import Separater from "../components/Separater";
 
-import useApi from "../hooks/useApi";
 import ActivityIndicator from "../components/ActivityIndicator";
-import settings from "../config/setting";
-import SubmitIcon from "../components/forms/SubmitIcon";
 import NoDataMessage from "../components/forms/NoDataMessage";
 import userUpdate from "../api/userUpdate";
 import routes from "../navigation/routes";

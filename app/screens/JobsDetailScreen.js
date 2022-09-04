@@ -4,15 +4,12 @@ import {
   Image,
   StyleSheet,
   ScrollView,
-  FlatList,
   Text,
-  VirtualizedView,
   TouchableOpacity,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import AppText from "../components/AppText";
-import ListItem from "../components/ListItem";
 import colors from "../config/colors";
 import AppBulletText from "../components/AppBulletText";
 import AppButton from "../components/AppButton";

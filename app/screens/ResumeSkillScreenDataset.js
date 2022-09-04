@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, Image, TouchableOpacity, View, Text } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
 
 import * as Yup from "yup";
 
@@ -8,17 +8,10 @@ import {
   AppForm,
   AppFormField,
   SubmitButton,
-  ErrorMessage,
   AppFormPicker,
 } from "../components/forms";
 import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
 
-import CategoryPickerItem from "../components/CategoryPickerItem";
-import usersApi from "../api/users";
-import useAuth from "../auth/useAuth";
-import authApi from "../api/auth";
-import useApi from "../hooks/useApi";
-import ActivityIndicator from "../components/ActivityIndicator";
 import colors from "../config/colors";
 
 const validationSchema = Yup.object().shape({

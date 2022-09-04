@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Image, StyleSheet } from "react-native";
-import colors from "../config/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 function ViewImageScreen(props) {
