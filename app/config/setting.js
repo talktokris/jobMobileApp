@@ -4,6 +4,24 @@ export default {
   imageUrl: "https://stjobagency.com/assets/images/",
 };
 
+/* Live settings
+
+
+  serverUrl: "https://stjobagency.com/",
+  apiUrl: "https://stjobagency.com/backend_api/api",
+  imageUrl: "https://stjobagency.com/assets/images/",
+
+
+
+    serverUrl: "http://localhost/prabhu_jobs/web-app/backend/public",
+  apiUrl: "http://localhost/prabhu_jobs/web-app/backend/public/api",
+  imageUrl:
+    "http://localhost/prabhu_jobs/web-app/backend/public/assets/images/",
+
+
+
+*/
+
 /*
 import { Constants } from "expo-constants";
 

@@ -41,7 +41,12 @@ function FavListScreen({ navigation }) {
     userUpdate
       .jobFabFatch(currrentUser)
       .then((data) => {
+        //   if(data.get_fav_list)
+
+        //   console.log("Hi" + data[0].get_fav_list);
+
         setUsers(data);
+
         setLoading(false);
         // console.log(data);
       })
@@ -56,37 +61,47 @@ function FavListScreen({ navigation }) {
       <Screen>
         <ActivityIndicator visible={isLoading} />
         {!isLoading && users.data ? (
+          //{users.data.get_fav_list!="null" ? (
+
           <FlatList
             data={users.data}
             keyExtractor={(message) => message.id.toString()}
-            renderItem={({ item }) => (
-              <JobsListItemView
-                title={item.get_fav_list.title}
-                subTitle={item.get_fav_list.subTitle}
-                sallery={item.get_fav_list.salleryMax}
-                image={{
-                  uri:
-                    settings.imageUrl +
-                    "jobs/" +
-                    item.get_fav_list.id +
-                    "/" +
-                    item.get_fav_list.image,
-                }}
-                location={item.get_fav_list.location}
-                date={item.get_fav_list.date_expire}
-                favData={[]}
-                job_id={item.get_fav_list.id}
-                currency={item.get_fav_list.currency}
-                onPress={() => navigation.navigate(routes.JOBS_DETAILS, item)}
-                renderRightActions={() => (
-                  <View style={{ backgroundColor: "red", height: 70 }}></View>
-                )}
-              />
-            )}
+            renderItem={({ item }) => {
+              if (item.get_fav_list != null) {
+                return (
+                  <JobsListItemView
+                    title={item.get_fav_list.title}
+                    subTitle={item.get_fav_list.subTitle}
+                    sallery={item.get_fav_list.salleryMax}
+                    image={{
+                      uri:
+                        settings.imageUrl +
+                        "jobs/" +
+                        item.get_fav_list.id +
+                        "/" +
+                        item.get_fav_list.image,
+                    }}
+                    location={item.get_fav_list.location}
+                    date={item.get_fav_list.date_expire}
+                    favData={[]}
+                    job_id={item.get_fav_list.id}
+                    currency={item.get_fav_list.currency}
+                    onPress={() =>
+                      navigation.navigate(routes.JOBS_DETAILS, item)
+                    }
+                    renderRightActions={() => (
+                      <View
+                        style={{ backgroundColor: "red", height: 70 }}
+                      ></View>
+                    )}
+                  />
+                );
+              }
+            }}
             ItemSeparatorComponent={Separater}
           />
         ) : (
-          <NoDataMessage title="No Jobs Found" />
+          <NoDataMessage title="No Favorite Jobs Found" />
         )}
       </Screen>
     </>

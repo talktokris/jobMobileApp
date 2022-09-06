@@ -351,7 +351,7 @@ const applyJobCreate = async (currrentUser, jobId) => {
 
   const result = await client.post("/jobs/apply", data);
   // console.log(result);
-  return result;
+  //return result;
 };
 
 //=============== jobSingleFatch Jobs  API ===================
@@ -377,7 +377,7 @@ const jobFabFatch = async (id) => {
 const jobAppliedFatch = async (id) => {
   // console.log("hi"+id);
   const result = await client.get("jobs/applied/" + id);
-  //console.log(result);
+  // console.log(result);
   return result;
 };
 

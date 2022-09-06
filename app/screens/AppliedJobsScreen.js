@@ -42,7 +42,7 @@ function AppliedJobsScreen({ navigation }) {
       .then((data) => {
         setUsers(data);
         setLoading(false);
-        // console.log(data.data);
+        // console.log(data);
       })
       .catch((error) => {
         // display error
@@ -58,34 +58,42 @@ function AppliedJobsScreen({ navigation }) {
           <FlatList
             data={users.data}
             keyExtractor={(message) => message.id.toString()}
-            renderItem={({ item }) => (
-              <JobsListItemView
-                title={item.get_ads_apply_info.title}
-                subTitle={item.get_ads_apply_info.subTitle}
-                sallery={item.get_ads_apply_info.salleryMax}
-                image={{
-                  uri:
-                    settings.imageUrl +
-                    "jobs/" +
-                    item.get_ads_apply_info.id +
-                    "/" +
-                    item.get_ads_apply_info.image,
-                }}
-                location={item.get_ads_apply_info.location}
-                date={item.get_ads_apply_info.date_expire}
-                favData={[]}
-                job_id={item.get_ads_apply_info.id}
-                currency={item.get_ads_apply_info.currency}
-                onPress={() => navigation.navigate(routes.JOBS_DETAILS, item)}
-                renderRightActions={() => (
-                  <View style={{ backgroundColor: "red", height: 70 }}></View>
-                )}
-              />
-            )}
+            renderItem={({ item }) => {
+              if (item.get_ads_apply_info != null) {
+                return (
+                  <JobsListItemView
+                    title={item.get_ads_apply_info.title}
+                    subTitle={item.get_ads_apply_info.subTitle}
+                    sallery={item.get_ads_apply_info.salleryMax}
+                    image={{
+                      uri:
+                        settings.imageUrl +
+                        "jobs/" +
+                        item.get_ads_apply_info.id +
+                        "/" +
+                        item.get_ads_apply_info.image,
+                    }}
+                    location={item.get_ads_apply_info.location}
+                    date={item.get_ads_apply_info.date_expire}
+                    favData={[]}
+                    job_id={item.get_ads_apply_info.id}
+                    currency={item.get_ads_apply_info.currency}
+                    onPress={() =>
+                      navigation.navigate(routes.JOBS_DETAILS, item)
+                    }
+                    renderRightActions={() => (
+                      <View
+                        style={{ backgroundColor: "red", height: 70 }}
+                      ></View>
+                    )}
+                  />
+                );
+              }
+            }}
             ItemSeparatorComponent={Separater}
           />
         ) : (
-          <NoDataMessage title="No Jobs Found" />
+          <NoDataMessage title="No Applied Jobs List Found" />
         )}
       </Screen>
     </>
