@@ -4,6 +4,8 @@ import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import PasswordResetScreen from "../screens/PasswordResetScreen";
+import PasswordResetUpdateScreen from "../screens/PasswordResetUpdateScreen";
+import AuthTaskDoneScreen from "../screens/AuthTaskDoneScreen";
 
 const Stack = createStackNavigator();
 const AuthNavigator = () => (
@@ -15,7 +17,12 @@ const AuthNavigator = () => (
     />
     <Stack.Screen name="Login" component={LoginScreen} />
     <Stack.Screen name="Register" component={RegisterScreen} />
-    <Stack.Screen name="Password" component={PasswordResetScreen} />
+    <Stack.Screen name="Password Reset" component={PasswordResetScreen} />
+    <Stack.Screen
+      name="Password Reset Save"
+      component={PasswordResetUpdateScreen}
+    />
+    <Stack.Screen name="Reset Done" component={AuthTaskDoneScreen} />
   </Stack.Navigator>
 );
 

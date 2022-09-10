@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, Image, View } from "react-native";
+import {
+  StyleSheet,
+  Image,
+  View,
+  TouchableHighlight,
+  TouchableOpacity,
+} from "react-native";
 import * as Yup from "yup";
 
 import Screen from "../components/Screen";
@@ -12,6 +18,9 @@ import {
 
 import authApi from "../api/auth";
 import useAuth from "../auth/useAuth";
+import AppText from "../components/AppText";
+import colors from "../config/colors";
+import routes from "../navigation/routes";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -77,6 +86,11 @@ function LoginScreen({ navigation }) {
           />
 
           <SubmitButton title="Login" />
+          <TouchableOpacity
+            onPress={() => navigation.navigate(routes.AUTH_PASSWORD_RESET)}
+          >
+            <AppText style={styles.forgetBtn}>Forgot Password</AppText>
+          </TouchableOpacity>
         </AppForm>
       </View>
     </Screen>
@@ -87,11 +101,19 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   image: {
-    width: 150,
-    height: 110,
+    width: 90,
+    height: 80,
     alignSelf: "center",
     margin: 30,
-    marginTop: 50,
+    marginTop: 40,
+  },
+  forgetBtn: {
+    paddingTop: 30,
+    paddingLeft: 20,
+    color: colors.primary,
+    fontSize: 20,
+    fontWeight: "600",
+    textDecorationLine: "underline",
   },
 });
 

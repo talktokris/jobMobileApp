@@ -24,4 +24,9 @@ export default Object.freeze({
   JOB_List: "Jobs",
   JOB_FAV_LIST: "Favorite Jobs",
   JOB_APL_LIST: "Jobs Applied",
+  AUTH_PASSWORD_RESET: "Password Reset",
+  AUTH_PASSWORD_RESET_SAVE: "Password Reset Save",
+  AUTH_LOGIN: "Login",
+
+  RETSET_DONE: "Reset Done",
 });

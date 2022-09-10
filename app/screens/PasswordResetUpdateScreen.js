@@ -10,36 +10,40 @@ import {
   SubmitButton,
 } from "../components/forms";
 
-import AppText from "../components/AppText";
 import userUpdate from "../api/userUpdate";
 import routes from "../navigation/routes";
 import ActivityIndicator from "../components/ActivityIndicator";
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().required().email().label("Email"),
+  confirm_code: Yup.string()
+    .required()
+    .min(6)
+    .max(6)
+    .label("Confirmation Code"),
+  password: Yup.string().required().min(6).max(25).label("Password"),
+
+  password_confirmation: Yup.string()
+    .required()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .label("Confirm Password"),
 });
 
-function PasswordResetScreen({ navigation }) {
-  //  const { logIn } = useAuth();
+function PasswordResetUpdateScreen({ route, navigation }) {
+  const email = route.params.email;
+  const message = route.params.message;
+
+  // const { logIn } = useAuth();
   const [loginFailed, setLoginFailed] = useState(false);
-  const [error, setError] = useState();
-  const [eStatus, setEstatus] = useState(false);
+  const [error, setError] = useState(message);
+  const [eStatus, setEstatus] = useState(true);
   const [isLoading, setLoading] = useState(false);
 
   const handleSubmit = async (userInfo) => {
+    // console.log(userInfo);
     setLoading(true);
-    /*
-    const messageSend = "This is a test message";
-    navigation.navigate(routes.AUTH_PASSWORD_RESET_SAVE, {
-      email: userInfo.email,
-      message: messageSend,
-    });
-    */
-    // console.log(userInfo.email);
+    const result = await userUpdate.passwordResetSave(userInfo, email);
 
-    const result = await userUpdate.passwordResetTrigger(userInfo);
     setLoading(false);
-
     if (!result.ok) return;
     if (!result.data) {
       setEstatus(true);
@@ -51,10 +55,7 @@ function PasswordResetScreen({ navigation }) {
       setError(result.data.message);
     } else if (result.data.status == "success") {
       const messageSend = result.data.message;
-      navigation.navigate(routes.AUTH_PASSWORD_RESET_SAVE, {
-        email: userInfo.email,
-        message: messageSend,
-      });
+      navigation.navigate(routes.RETSET_DONE, { message: messageSend });
     } else {
       setEstatus(true);
       setError("Unknown error");
@@ -69,30 +70,49 @@ function PasswordResetScreen({ navigation }) {
           source={require("../assets/images/logo.png")}
           style={styles.image}
         />
-        <AppText style={styles.forgetPassword}>Forgot Password</AppText>
+
+        <ErrorMessage error={error} visible={eStatus} />
         <ErrorMessage
           error="Invalid email and/or password"
           visible={loginFailed}
         />
-
-        <ErrorMessage error={error} visible={eStatus} />
-
         <AppForm
-          initialValues={{ email: "" }}
+          initialValues={{
+            confirm_code: "",
+            password: "",
+            password_confirmation: "",
+          }}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >
           <AppFormField
-            name="email"
-            autoCapitalize="none"
+            name="confirm_code"
+            autoCapitalize="characters"
             autoCorrect={false}
-            icon="email"
-            keyboardType="email-address"
-            placeholder="Email"
-            textContentType="emailAddress"
+            icon="qrcode"
+            placeholder="Confirmation Code"
           />
 
-          <SubmitButton title="Reset Password" />
+          <AppFormField
+            name="password"
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="lock"
+            placeholder="Password"
+            textContentType="New Password"
+            secureTextEntry={true}
+          />
+          <AppFormField
+            name="password_confirmation"
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="lock"
+            placeholder="Confirm Password"
+            textContentType="password"
+            secureTextEntry={true}
+          />
+
+          <SubmitButton title="Login" />
         </AppForm>
       </View>
     </Screen>
@@ -106,16 +126,12 @@ const styles = StyleSheet.create({
     width: 90,
     height: 80,
     alignSelf: "center",
-    margin: 20,
+    margin: 30,
     marginTop: 40,
   },
-  forgetPassword: {
-    flexDirection: "row",
-    width: "100%",
-    textAlign: "center",
-    padding: 20,
-    fontSize: 20,
+  error: {
+    marginBottom: 30,
   },
 });
 
-export default PasswordResetScreen;
+export default PasswordResetUpdateScreen;

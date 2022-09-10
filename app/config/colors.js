@@ -10,5 +10,6 @@ export default {
   lightGray: "#f8f4f4",
   errorColor: "#ff5252",
   orange: "#FFA500",
+  green: "#9ACD32",
 };
 

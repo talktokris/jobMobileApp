@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Image } from "react-native";
 import * as Yup from "yup";
 
 import Screen from "../components/Screen";
@@ -90,6 +90,10 @@ function RegisterScreen({ navigation }) {
       {<ActivityIndicator visible={registerApi.loading || loginApi.loading} />}
       <Screen>
         <View style={styles.container}>
+          <Image
+            source={require("../assets/images/logo.png")}
+            style={styles.image}
+          />
           <ErrorMessage error={error} visible={eStatus} />
 
           <AppForm
@@ -148,11 +152,11 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   image: {
-    width: 150,
-    height: 110,
+    width: 90,
+    height: 80,
     alignSelf: "center",
-    margin: 30,
-    marginTop: 50,
+    margin: 20,
+    marginTop: 20,
   },
 });
 

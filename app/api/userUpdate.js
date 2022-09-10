@@ -408,7 +408,46 @@ const imagesUpload = async (userInfo, currrentUser) => {
   const result = await client.post("/image/upload/" + currrentUser, data);
   // console.log(result);
   return result;
-};;
+};
+
+//=============== Push Notification Device ID ===================
+
+const pushDeviceSave = async (deviceID, currrentUser) => {
+  //  console.log(userInfo.images[0].uri);
+  const data = new FormData();
+  data.append("device_id", deviceID);
+
+  const result = await client.post("/push/device/" + currrentUser, data);
+  // console.log(result);
+  //return result;
+};
+
+//=============== Password Reset Trigger ===================
+
+const passwordResetTrigger = async (userInfo) => {
+  //console.log(userInfo);
+  const data = new FormData();
+  data.append("email", userInfo.email);
+
+  const result = await client.post("/password/code", data);
+  // console.log(result);
+  return result;
+};
+
+//=============== Password Reset Trigger ===================
+
+const passwordResetSave = async (userInfo, email) => {
+  //console.log(userInfo);
+  const data = new FormData();
+  data.append("email", email);
+  data.append("confirm_code", userInfo.confirm_code);
+  data.append("password", userInfo.password);
+  data.append("password_confirmation", userInfo.password_confirmation);
+
+  const result = await client.post("/password/save", data);
+  // console.log(result);
+  return result;
+};
 
 export default {
   skillCreate,
@@ -441,5 +480,8 @@ export default {
   dateStingToNumber,
   dateNumberToString,
   imagesUpload,
+  pushDeviceSave,
+  passwordResetTrigger,
+  passwordResetSave,
 };
 
