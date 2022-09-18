@@ -23,8 +23,6 @@ import userUpdate from "../api/userUpdate";
 const validationSchema = Yup.object().shape({
   skillName: Yup.string().required().min(2).label("Skill Name"),
   skill_level: Yup.object().required().nullable().label("Skill Level"),
-  //  skill_level: Yup.object().required().nullable().label("Skill Level"),
-  // skillName: Yup.string().required().min(4).label("Password"),
 });
 
 function ResumeSkillScreen({ navigation }) {

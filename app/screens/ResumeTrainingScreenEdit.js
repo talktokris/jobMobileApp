@@ -31,12 +31,8 @@ const validationSchema = Yup.object().shape({
   fromMonth: Yup.string().required().min(2).label("From Month"),
   toYear: Yup.number().required().min(1850).label("From Year"),
   toMonth: Yup.string().required().min(2).label("To Month"),
-  // startDate: Yup.string().required().min(4).label("From Date"),
-  // endDate: Yup.string().required().min(4).label("To Date"),
 });
 
-//const maxDate = moment().subtract(1, "days").format("DD-MM-YYYY");
-//const minDate = moment().subtract(50, "years").format("DD-MM-YYYY");
 
 function ResumeTrainingScreenEdit({ route, navigation }) {
   const listing = route.params.item;

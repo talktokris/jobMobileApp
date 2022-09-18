@@ -83,31 +83,6 @@ function ResumeSkillScreen({ navigation }) {
     { lebel: "Camera", value: 4, backgroundColor: "orange", icon: "apps" },
   ];
 
-  /*
-  const registerApi = useApi(usersApi.register);
-  const loginApi = useApi(authApi.login);
-
-  const auth = useAuth();
- 
-
-  const handleSubmit = async (userInfo) => {
-    const result = await registerApi.request(userInfo);
-    if (!result.ok) {
-      if (result.data) setError(result.data.error);
-      else {
-        setError("An unexpedted error occurred");
-        console.log(result);
-      }
-      return;
-    }
-
-    const { data: authToken } = await loginApi.request(
-      userInfo.email,
-      userInfo.password
-    );
-    auth.logIn(authToken);
-  };
-*/
   return (
     <>
       {/* <ActivityIndicator visible={registerApi.loading || loginApi.loading} /> */}

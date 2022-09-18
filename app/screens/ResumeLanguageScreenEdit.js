@@ -22,8 +22,6 @@ const validationSchema = Yup.object().shape({
   language_name: Yup.string().required().min(1).label("Language"),
   language_level: Yup.string().required().min(1).label("Language Level"),
 
-  //  skill_level: Yup.object().required().nullable().label("Skill Level"),
-  // skillName: Yup.string().required().min(4).label("Password"),
 });
 
 function ResumeLanguageScreenEdit({ route, navigation }) {

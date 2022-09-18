@@ -71,17 +71,6 @@ function RegisterScreen({ navigation }) {
 
     // console.log(result.error);
     // setLoading(false);
-    /*
-    if (result.data.message != "User registered Successfully") {
-      setError(result.data.email);
-    } else {
-      const { data: authToken } = await loginApi.request(
-        userInfo.email,
-        userInfo.password
-      );
-      auth.logInAuto(authToken);
-    }
-    */
   };
 
   return (

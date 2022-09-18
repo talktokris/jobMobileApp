@@ -19,14 +19,7 @@ import authStorage from "./app/auth/storage";
 
 const Stack = createStackNavigator();
 
-/*
-const StackNavigator = () => (
-  <Stack.Navigator initialRouteName="Tweets">
-    <Stack.Screen name="Tweets" component={Tweets} />
-    <Stack.Screen name="TweetsDetails" component={TweetsDetails} />
-  </Stack.Navigator>
-);
-*/
+
 export default function App() {
   const [user, setUser] = useState();
   const [isReady, setIsReady] = useState(false);
@@ -44,25 +37,6 @@ export default function App() {
         onError={(err) => console.log(err)}
       />
     );
-  /*
-
-  const registerForPushNotifications = async () => {
-
-    const token = await Notifications.getExpoPushTokenAsync();
-    console.log("hi:" + token);
-
-    try {
-      const permissions = Permissions.askAsync(Permissions.NOTIFICATIONS);
-      console.log("hi" + token);
-      if (!permissions.granted) return;
-
-      const token = await Notifications.getExpoPushTokenAsync();
-      console.log(token);
-    } catch (error) {
-      console.log("Error getting a push token", error);
-    }
-  };
-  */
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>

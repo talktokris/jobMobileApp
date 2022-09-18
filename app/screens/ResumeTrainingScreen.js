@@ -32,8 +32,6 @@ const validationSchema = Yup.object().shape({
 
   toYear: Yup.number().required().min(1850).label("From Year"),
   toMonth: Yup.object().required().nullable().label("To Month"),
-  // startDate: Yup.string().required().min(4).label("From Date"),
-  // endDate: Yup.string().required().min(4).label("To Date"),
 });
 
 const maxDate = moment().subtract(1, "days").format("DD-MM-YYYY");

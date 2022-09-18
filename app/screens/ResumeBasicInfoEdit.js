@@ -24,8 +24,6 @@ import { ScrollView } from "react-native";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().min(2).label("First Name"),
-  // middleName: Yup.string().required().min(2).label("Middle Name"),
-  //lastName: Yup.string().required().min(2).label("Last Name"),
   profile_type: Yup.string().required().min(2).label("Profile Type"),
   sex: Yup.string().required().min(2).label("Gender"),
 

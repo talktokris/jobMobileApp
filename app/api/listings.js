@@ -18,8 +18,7 @@ const addListing = (listing, onUploadProgress) => {
       uri: image,
     })
   );
-  if (listing.location)
-    data.append("location", JSON.stringify(listing.location));
+
 
   return client.post(endpoint, data, {
     onUploadProgress: (progress) =>

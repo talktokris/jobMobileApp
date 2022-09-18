@@ -21,12 +21,9 @@ const validationSchema = Yup.object().shape({
 
 function ResumeUplaodScreen({ route, navigation, props }) {
   const users = route.params.item;
-  //console.log(users.image);
   const currrentUser = users.id;
   const imagePath =
     settings.imageUrl + "members/" + users.id + "/" + users.image;
-  // console.log(imagePath);
-  //const location = useLocation();
   const [uploadVisible, setUploadVisible] = useState(false);
   const [progress, setProgress] = useState(0);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -57,25 +54,7 @@ function ResumeUplaodScreen({ route, navigation, props }) {
       setErrorMsg("Unknown error");
     }
   };
-  /*
-  const handleSubmit = async (listing, { resetForm }) => {
-    listingsApi.addListing(listing);
-    console.log(listing);
 
-    setProgress(0);
-    setUploadVisible(true);
-    const result = await listingsApi.addListing(
-      { ...listing, location },
-      (progress) => setProgress(progress)
-    );
-
-    if (!result.ok) {
-      setUploadVisible(false);
-      return alert("Could not save the listing");
-    }
-    // resetForm();
-  };
-*/
   return (
     <Screen>
       <View style={styles.container}>
@@ -86,16 +65,7 @@ function ResumeUplaodScreen({ route, navigation, props }) {
           visible={uploadVisible}
         />
         <ErrorMessage error={errorMsg} visible={eStatus} />
-        {/*
-        {users.image == null ? (
-          <Image
-            style={styles.image}
-            source={require("../assets/images/av.png")}
-          />
-        ) : (
-          <Image style={styles.image} source={{ uri: imagePath }} />
-        )}
-        */}
+
         <AppForm
           initialValues={{
             images: [],

@@ -21,8 +21,6 @@ import userUpdate from "../api/userUpdate";
 const validationSchema = Yup.object().shape({
   language_name: Yup.object().required().nullable().label("Language"),
   language_level: Yup.object().required().nullable().label("Language Level"),
-  //  skill_level: Yup.object().required().nullable().label("Skill Level"),
-  // skillName: Yup.string().required().min(4).label("Password"),
 });
 
 function ResumeLanguageScreen({ navigation }) {

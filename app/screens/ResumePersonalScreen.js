@@ -43,31 +43,7 @@ function ResumePersonalScreen({ navigation }) {
     { value: 5, lebel: "Fluent" },
   ];
 
-  /*
-  const registerApi = useApi(usersApi.register);
-  const loginApi = useApi(authApi.login);
-
-  const auth = useAuth();
- 
-
-  const handleSubmit = async (userInfo) => {
-    const result = await registerApi.request(userInfo);
-    if (!result.ok) {
-      if (result.data) setError(result.data.error);
-      else {
-        setError("An unexpedted error occurred");
-        console.log(result);
-      }
-      return;
-    }
-
-    const { data: authToken } = await loginApi.request(
-      userInfo.email,
-      userInfo.password
-    );
-    auth.logIn(authToken);
-  };
-*/
+  
   return (
     <>
       {/* <ActivityIndicator visible={registerApi.loading || loginApi.loading} /> */}
@@ -122,42 +98,6 @@ function ResumePersonalScreen({ navigation }) {
               numberOfLines={4}
               placeholder="Enter your responsibilities and achievements"
             />
-            {/*
-            <AutocompleteDropdown
-              clearOnFocus={false}
-              closeOnBlur={true}
-              inputContainerStyle={styles.autoComText}
-              closeOnSubmit={false}
-              initialValue={{ id: "2" }} // or just '2'
-              onSelectItem={setSelectedItem}
-              dataSet={MainJSON}
-            />
-        
-            {/* 
-          
-         
-            <AppFormField
-              name="email"
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="email"
-              keyboardType="email-address"
-              placeholder="Email"
-              lebel="Email Address"
-              textContentType="emailAddress"
-            />
-
-            <AppFormField
-              name="password"
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="lock"
-              placeholder="Password"
-              lebel="Password"
-              textContentType="password"
-              secureTextEntry={true}
-            />
-            */}
 
             <SubmitButton title="SAVE" />
           </AppForm>

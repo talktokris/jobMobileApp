@@ -10,34 +10,7 @@ import AppText from "../components/AppText";
 import AppButton from "../components/AppButton";
 import ActivityIndicator from "../components/ActivityIndicator";
 import useApi from "../hooks/useApi";
-/*
-const Listings = [
-  {
-    id: 1,
-    title: "Fist Item One",
-    subTitle: "50",
-    image: require("../assets/images/img1.jpg"),
-  },
-  {
-    id: 2,
-    title: "Fist Item Two",
-    subTitle: "230",
-    image: require("../assets/images/img2.jpg"),
-  },
-  {
-    id: 3,
-    title: "Fist Item Three",
-    subTitle: "250",
-    image: require("../assets/images/img3.jpg"),
-  },
-  {
-    id: 4,
-    title: "Fist Item Four",
-    subTitle: "100",
-    image: require("../assets/images/img4.jpg"),
-  },
-];
-*/
+
 function ListingScreen({ navigation }) {
   const {
     data: listings,

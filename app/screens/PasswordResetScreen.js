@@ -28,14 +28,6 @@ function PasswordResetScreen({ navigation }) {
 
   const handleSubmit = async (userInfo) => {
     setLoading(true);
-    /*
-    const messageSend = "This is a test message";
-    navigation.navigate(routes.AUTH_PASSWORD_RESET_SAVE, {
-      email: userInfo.email,
-      message: messageSend,
-    });
-    */
-    // console.log(userInfo.email);
 
     const result = await userUpdate.passwordResetTrigger(userInfo);
     setLoading(false);

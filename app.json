@@ -2,7 +2,7 @@
   "expo": {
     "name": "Job Agency",
     "slug": "Job-Agency",
-    "version": "1.0.2",
+    "version": "2.5.5",
     "orientation": "portrait",
     "icon": "app/assets/icon.png",
     "userInterfaceStyle": "light",
@@ -10,7 +10,7 @@
       "image": "app/assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
-    },
+    }, 
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -20,11 +20,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier":"com.jobseachbykris.jobagency",
-      "buildNumber":"1.2.0"
+      "buildNumber":"2.5.5"
     },
     "android": {
       "package":"com.jobseachbykris.jobagency",
-      "versionCode":3,
+      "versionCode":28,
       "adaptiveIcon": {
         "foregroundImage": "app/assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
